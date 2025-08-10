@@ -144,11 +144,10 @@ const ShopDetails = () => {
                       <button
                         onClick={() => setPreviewImg(key)}
                         key={key}
-                        className={`flex items-center justify-center w-15 sm:w-25 h-15 sm:h-25 overflow-hidden rounded-lg bg-gray-2 shadow-1 ease-out duration-200 border-2 hover:border-blue ${
-                          key === previewImg
+                        className={`flex items-center justify-center w-15 sm:w-25 h-15 sm:h-25 overflow-hidden rounded-lg bg-gray-2 shadow-1 ease-out duration-200 border-2 hover:border-blue ${key === previewImg
                             ? "border-blue"
                             : "border-transparent"
-                        }`}
+                          }`}
                       >
                         <Image
                           width={50}
@@ -336,13 +335,13 @@ const ShopDetails = () => {
                       >
                         <path
                           d="M13.3589 8.35863C13.603 8.11455 13.603 7.71882 13.3589 7.47475C13.1149 7.23067 12.7191 7.23067 12.4751 7.47475L8.75033 11.1995L7.5256 9.97474C7.28152 9.73067 6.8858 9.73067 6.64172 9.97474C6.39764 10.2188 6.39764 10.6146 6.64172 10.8586L8.30838 12.5253C8.55246 12.7694 8.94819 12.7694 9.19227 12.5253L13.3589 8.35863Z"
-                          fill="#3C50E0"
+                          fill="currentColor"
                         />
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
                           d="M10.0003 1.04169C5.05277 1.04169 1.04199 5.05247 1.04199 10C1.04199 14.9476 5.05277 18.9584 10.0003 18.9584C14.9479 18.9584 18.9587 14.9476 18.9587 10C18.9587 5.05247 14.9479 1.04169 10.0003 1.04169ZM2.29199 10C2.29199 5.74283 5.74313 2.29169 10.0003 2.29169C14.2575 2.29169 17.7087 5.74283 17.7087 10C17.7087 14.2572 14.2575 17.7084 10.0003 17.7084C5.74313 17.7084 2.29199 14.2572 2.29199 10Z"
-                          fill="#3C50E0"
+                          fill="currentColor"
                         />
                       </svg>
                       Free delivery available
@@ -358,13 +357,13 @@ const ShopDetails = () => {
                       >
                         <path
                           d="M13.3589 8.35863C13.603 8.11455 13.603 7.71882 13.3589 7.47475C13.1149 7.23067 12.7191 7.23067 12.4751 7.47475L8.75033 11.1995L7.5256 9.97474C7.28152 9.73067 6.8858 9.73067 6.64172 9.97474C6.39764 10.2188 6.39764 10.6146 6.64172 10.8586L8.30838 12.5253C8.55246 12.7694 8.94819 12.7694 9.19227 12.5253L13.3589 8.35863Z"
-                          fill="#3C50E0"
+                          fill="currentColor"
                         />
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
                           d="M10.0003 1.04169C5.05277 1.04169 1.04199 5.05247 1.04199 10C1.04199 14.9476 5.05277 18.9584 10.0003 18.9584C14.9479 18.9584 18.9587 14.9476 18.9587 10C18.9587 5.05247 14.9479 1.04169 10.0003 1.04169ZM2.29199 10C2.29199 5.74283 5.74313 2.29169 10.0003 2.29169C14.2575 2.29169 17.7087 5.74283 17.7087 10C17.7087 14.2572 14.2575 17.7084 10.0003 17.7084C5.74313 17.7084 2.29199 14.2572 2.29199 10Z"
-                          fill="#3C50E0"
+                          fill="currentColor"
                         />
                       </svg>
                       Sales 30% Off Use Code: PROMO30
@@ -395,9 +394,8 @@ const ShopDetails = () => {
                                   onChange={() => setActiveColor(color)}
                                 />
                                 <div
-                                  className={`flex items-center justify-center w-5.5 h-5.5 rounded-full ${
-                                    activeColor === color && "border"
-                                  }`}
+                                  className={`flex items-center justify-center w-5.5 h-5.5 rounded-full ${activeColor === color && "border"
+                                    }`}
                                   style={{ borderColor: `${color}` }}
                                 >
                                   <span
@@ -435,11 +433,10 @@ const ShopDetails = () => {
 
                                 {/*  */}
                                 <div
-                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${
-                                    storage === item.id
+                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${storage === item.id
                                       ? "border-blue bg-blue"
                                       : "border-gray-4"
-                                  } `}
+                                    } `}
                                 >
                                   <span
                                     className={
@@ -461,7 +458,7 @@ const ShopDetails = () => {
                                         width="16"
                                         height="16"
                                         rx="4"
-                                        fill="#3C50E0"
+                                        fill="currentColor"
                                       />
                                       <path
                                         fillRule="evenodd"
@@ -503,11 +500,10 @@ const ShopDetails = () => {
 
                                 {/*  */}
                                 <div
-                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${
-                                    type === item.id
+                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${type === item.id
                                       ? "border-blue bg-blue"
                                       : "border-gray-4"
-                                  } `}
+                                    } `}
                                 >
                                   <span
                                     className={
@@ -529,7 +525,7 @@ const ShopDetails = () => {
                                         width="16"
                                         height="16"
                                         rx="4"
-                                        fill="#3C50E0"
+                                        fill="currentColor"
                                       />
                                       <path
                                         fillRule="evenodd"
@@ -571,11 +567,10 @@ const ShopDetails = () => {
 
                                 {/*  */}
                                 <div
-                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${
-                                    sim === item.id
+                                  className={`mr-2 flex h-4 w-4 items-center justify-center rounded border ${sim === item.id
                                       ? "border-blue bg-blue"
                                       : "border-gray-4"
-                                  } `}
+                                    } `}
                                 >
                                   <span
                                     className={
@@ -597,7 +592,7 @@ const ShopDetails = () => {
                                         width="16"
                                         height="16"
                                         rx="4"
-                                        fill="#3C50E0"
+                                        fill="currentColor"
                                       />
                                       <path
                                         fillRule="evenodd"
@@ -711,11 +706,10 @@ const ShopDetails = () => {
                   <button
                     key={key}
                     onClick={() => setActiveTab(item.id)}
-                    className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${
-                      activeTab === item.id
+                    className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
                         ? "text-blue before:w-full"
                         : "text-dark before:w-0"
-                    }`}
+                      }`}
                   >
                     {item.title}
                   </button>
@@ -727,9 +721,8 @@ const ShopDetails = () => {
               {/* <!-- tab content one start --> */}
               <div>
                 <div
-                  className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${
-                    activeTab === "tabOne" ? "flex" : "hidden"
-                  }`}
+                  className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === "tabOne" ? "flex" : "hidden"
+                    }`}
                 >
                   <div className="max-w-[670px] w-full">
                     <h2 className="font-medium text-2xl text-dark mb-7">
@@ -780,9 +773,8 @@ const ShopDetails = () => {
               {/* <!-- tab content two start --> */}
               <div>
                 <div
-                  className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${
-                    activeTab === "tabTwo" ? "block" : "hidden"
-                  }`}
+                  className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabTwo" ? "block" : "hidden"
+                    }`}
                 >
                   {/* <!-- info item --> */}
                   <div className="rounded-md even:bg-gray-1 flex py-4 px-4 sm:px-5">
@@ -923,9 +915,8 @@ const ShopDetails = () => {
               {/* <!-- tab content three start --> */}
               <div>
                 <div
-                  className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${
-                    activeTab === "tabThree" ? "flex" : "hidden"
-                  }`}
+                  className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === "tabThree" ? "flex" : "hidden"
+                    }`}
                 >
                   <div className="max-w-[570px] w-full">
                     <h2 className="font-medium text-2xl text-dark mb-9">
