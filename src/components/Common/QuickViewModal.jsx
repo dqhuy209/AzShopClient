@@ -69,7 +69,7 @@ const QuickViewModal = () => {
           <button
             onClick={() => closeModal()}
             aria-label="button for close modal"
-            className="absolute top-0 right-0 sm:top-6 sm:right-6 flex items-center justify-center w-10 h-10 rounded-full ease-in duration-150 bg-meta text-body hover:text-dark"
+            className="absolute top-0 right-0 flex items-center justify-center w-10 h-10 duration-150 ease-in rounded-full sm:top-6 sm:right-6 bg-meta text-body hover:text-dark"
           >
             <svg
               className="fill-current"
@@ -100,7 +100,7 @@ const QuickViewModal = () => {
                         }`}
                     >
                       <Image
-                        src={img || ""}
+                        src={img || " /placeholder.jpg"}
                         alt="thumbnail"
                         width={61}
                         height={61}
@@ -150,7 +150,7 @@ const QuickViewModal = () => {
                 SALE 20% OFF
               </span>
 
-              <h3 className="font-semibold text-xl xl:text-heading-5 text-dark mb-4">
+              <h3 className="mb-4 text-xl font-semibold xl:text-heading-5 text-dark">
                 {product.title}
               </h3>
 
@@ -311,10 +311,10 @@ const QuickViewModal = () => {
                   </h4>
 
                   <span className="flex items-center gap-2">
-                    <span className="font-semibold text-dark text-xl xl:text-heading-4">
+                    <span className="text-xl font-semibold text-dark xl:text-heading-4">
                       ${product.discountedPrice}
                     </span>
-                    <span className="font-medium text-dark-4 text-lg xl:text-2xl line-through">
+                    <span className="text-lg font-medium line-through text-dark-4 xl:text-2xl">
                       ${product.price}
                     </span>
                   </span>

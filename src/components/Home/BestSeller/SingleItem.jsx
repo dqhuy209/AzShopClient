@@ -1,9 +1,7 @@
 "use client";
 import React from "react";
-import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
 import { updateQuickView } from "@/redux/features/quickView-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import Image from "next/image";
@@ -84,13 +82,13 @@ const SingleItem = ({ item }) => {
             <Link href="/shop-details"> {item.title} </Link>
           </h3>
 
-          <span className="flex items-center justify-center gap-2 font-medium text-lg">
+          <span className="flex items-center justify-center gap-2 text-lg font-medium">
             <span className="text-dark">${item.discountedPrice}</span>
-            <span className="text-dark-4 line-through">${item.price}</span>
+            <span className="line-through text-dark-4">${item.price}</span>
           </span>
         </div>
 
-        <div className="flex justify-center items-center">
+        <div className="flex items-center justify-center">
           <Image src={item.imgs.previews[0]} alt="" width={280} height={280} />
         </div>
 

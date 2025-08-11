@@ -1,27 +1,24 @@
-"use client";
+
 import React from "react";
 import Image from "next/image";
-import { Product } from "@/types/product";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import { addItemToWishlist } from "@/redux/features/wishlist-slice";
-import { updateproductDetails } from "@/redux/features/product-details";
+import { updateitems } from "@/redux/features/product-details";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
 import Link from "next/link";
+import { formatVND, formatVNDRounded } from "@/utils/formatCurrency";
 
 const ProductItem = ({ item }) => {
   const { openModal } = useModalContext();
-
   const dispatch = useDispatch();
 
-  // update the QuickView state
+
   const handleQuickViewUpdate = () => {
     dispatch(updateQuickView({ ...item }));
   };
 
-  // add to cart
   const handleAddToCart = () => {
     dispatch(
       addItemToCart({
@@ -41,16 +38,26 @@ const ProductItem = ({ item }) => {
     );
   };
 
-  const handleProductDetails = () => {
-    dispatch(updateproductDetails({ ...item }));
+  const handleitems = () => {
+    dispatch(updateitems({ ...item }));
   };
 
   return (
-    <div className="group">
-      <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-[#F6F7FB] min-h-[270px] mb-4">
-        <Image src={item.imgs.previews[0]} alt="" width={250} height={250} />
+    <div className="overflow-hidden transition-all duration-300 ease-out bg-white rounded-lg group shadow-1 hover:shadow-2">
+      <div className="relative overflow-hidden flex items-center justify-center rounded-t-lg bg-gray-1 min-h-[200px] p-3">
 
-        <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
+
+        <div className="flex items-center justify-center w-full h-full">
+          <Image
+            src={item?.images?.[0] || item.imgs?.previews?.[0] || "/placeholder.jpg"}
+            alt={item?.name || item.title || ""}
+            width={200}
+            height={200}
+            className="object-cover max-w-full max-h-full transition-transform duration-300 ease-out hover:scale-105"
+          />
+        </div>
+
+        <div className="absolute bottom-0 left-0 flex items-center justify-center w-full gap-2 pb-3 duration-300 ease-linear translate-y-full group-hover:translate-y-0 bg-gradient-to-t from-black/10 to-transparent">
           <button
             onClick={() => {
               openModal();
@@ -58,12 +65,12 @@ const ProductItem = ({ item }) => {
             }}
             id="newOne"
             aria-label="button for quick view"
-            className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
+            className="flex items-center justify-center w-8 h-8 duration-300 ease-out transform bg-white rounded-lg shadow-2 text-dark-3 hover:bg-red hover:text-white hover:scale-110"
           >
             <svg
               className="fill-current"
-              width="16"
-              height="16"
+              width="14"
+              height="14"
               viewBox="0 0 16 16"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -85,84 +92,85 @@ const ProductItem = ({ item }) => {
 
           <button
             onClick={() => handleAddToCart()}
-            className="inline-flex font-medium text-custom-sm py-[7px] px-5 rounded-[5px] bg-blue text-white ease-out duration-200 hover:bg-blue-dark"
+            className="inline-flex items-center px-4 py-2 text-xs font-medium duration-300 ease-out transform bg-white rounded-lg text-dark-4 hover:bg-red hover:text-white hover:scale-105 shadow-2"
           >
-            Add to cart
-          </button>
-
-          <button
-            onClick={() => handleItemToWishList()}
-            aria-label="button for favorite select"
-            id="favOne"
-            className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
-          >
-            <svg
-              className="fill-current"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M3.74949 2.94946C2.6435 3.45502 1.83325 4.65749 1.83325 6.0914C1.83325 7.55633 2.43273 8.68549 3.29211 9.65318C4.0004 10.4507 4.85781 11.1118 5.694 11.7564C5.89261 11.9095 6.09002 12.0617 6.28395 12.2146C6.63464 12.491 6.94747 12.7337 7.24899 12.9099C7.55068 13.0862 7.79352 13.1667 7.99992 13.1667C8.20632 13.1667 8.44916 13.0862 8.75085 12.9099C9.05237 12.7337 9.3652 12.491 9.71589 12.2146C9.90982 12.0617 10.1072 11.9095 10.3058 11.7564C11.142 11.1118 11.9994 10.4507 12.7077 9.65318C13.5671 8.68549 14.1666 7.55633 14.1666 6.0914C14.1666 4.65749 13.3563 3.45502 12.2503 2.94946C11.1759 2.45832 9.73214 2.58839 8.36016 4.01382C8.2659 4.11175 8.13584 4.16709 7.99992 4.16709C7.864 4.16709 7.73393 4.11175 7.63967 4.01382C6.26769 2.58839 4.82396 2.45832 3.74949 2.94946ZM7.99992 2.97255C6.45855 1.5935 4.73256 1.40058 3.33376 2.03998C1.85639 2.71528 0.833252 4.28336 0.833252 6.0914C0.833252 7.86842 1.57358 9.22404 2.5444 10.3172C3.32183 11.1926 4.2734 11.9253 5.1138 12.5724C5.30431 12.7191 5.48911 12.8614 5.66486 12.9999C6.00636 13.2691 6.37295 13.5562 6.74447 13.7733C7.11582 13.9903 7.53965 14.1667 7.99992 14.1667C8.46018 14.1667 8.88401 13.9903 9.25537 13.7733C9.62689 13.5562 9.99348 13.2691 10.335 12.9999C10.5107 12.8614 10.6955 12.7191 10.886 12.5724C11.7264 11.9253 12.678 11.1926 13.4554 10.3172C14.4263 9.22404 15.1666 7.86842 15.1666 6.0914C15.1666 4.28336 14.1434 2.71528 12.6661 2.03998C11.2673 1.40058 9.54129 1.5935 7.99992 2.97255Z"
-                fill=""
-              />
+            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h7" />
             </svg>
+            Thêm vào giỏ
           </button>
+
         </div>
       </div>
 
-      <div className="flex items-center gap-2.5 mb-2">
-        <div className="flex items-center gap-1">
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
-          <Image
-            src="/images/icons/icon-star.svg"
-            alt="star icon"
-            width={14}
-            height={14}
-          />
+      <div className="p-3 space-y-2">
+        <div className="min-h-[1.2rem]">
+          <h3
+            className="text-sm font-semibold leading-tight transition-colors duration-300 cursor-pointer decoration-transparent text-dark-3 hover:text-red line-clamp-2"
+            onClick={() => handleitems()}
+          >
+            <Link href="/shop-details" className="hover:underline">
+              {item?.name || item.title}
+            </Link>
+          </h3>
         </div>
 
-        <p className="text-custom-sm">({item.reviews})</p>
+        {/* Category và Condition */}
+        <div className="space-y-1">
+          {item?.categoryName && (
+            <p className="flex items-center text-xs text-meta-3">
+              <svg className="w-3 h-3 mr-1 text-meta-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              </svg>
+              {item.categoryName}
+            </p>
+          )}
+
+          {item?.currentCondition && (
+            <p className="flex items-center text-xs text-green">
+              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {item.currentCondition}
+            </p>
+          )}
+        </div>
+
+        {/* Price Section */}
+        <div className="pt-2 border-t border-gray-3">
+          <div className="space-y-1.5">
+            {/* Main Price Display */}
+            <div className="flex items-baseline gap-2">
+              <span className="text-lg font-semibold text-red">
+                {formatVNDRounded.thousands(item?.finalPrice || item?.sellingPrice || item.discountedPrice)}
+              </span>
+              {item?.discountPercent > 0 && (
+                <span className="text-sm font-medium line-through text-meta-4">
+                  {formatVNDRounded.thousands(item?.sellingPrice || item.price)}
+                </span>
+              )}
+            </div>
+
+            {/* Discount Badge and Savings */}
+            {item?.discountPercent > 0 && (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1">
+                  <span className="inline-flex items-center  py-0.5 text-xs font-medium rounded-md bg-red-50 text-meta-3">
+                    Tiết kiệm {formatVNDRounded.thousands((item?.sellingPrice || item.price) - (item?.finalPrice || item.discountedPrice))}
+                  </span>
+                </div>
+
+                {/* Rating or Stock Status */}
+                <div className="flex items-center text-xs font-medium text-red-light">
+                  GIẢM {item.discountPercent}%
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+
       </div>
-
-      <h3
-        className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5"
-        onClick={() => handleProductDetails()}
-      >
-        <Link href="/shop-details"> {item.title} </Link>
-      </h3>
-
-      <span className="flex items-center gap-2 font-medium text-lg">
-        <span className="text-dark">${item.discountedPrice}</span>
-        <span className="text-dark-4 line-through">${item.price}</span>
-      </span>
     </div>
   );
 };

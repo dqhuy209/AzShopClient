@@ -1,4 +1,34 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: '46.250.228.124',
+        port: '8089',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '46.250.228.124',
+        port: '8089',
+        pathname: '/uploads/**',
+      },
+      // Thêm các hostname khác nếu cần
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+      {
+        protocol: 'https',
+        hostname: 'localhost',
+      }
+    ],
+  },
+};
 
 module.exports = nextConfig;
