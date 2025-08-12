@@ -5,8 +5,6 @@ import Image from "next/image";
 import { useModalContext } from "@/app/context/QuickViewModalContext";
 import { updateQuickView } from "@/redux/features/quickView-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
-import { addItemToWishlist } from "@/redux/features/wishlist-slice";
-import { updateitems } from "@/redux/features/product-details";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { formatVNDRounded } from "@/utils/formatCurrency";
@@ -29,32 +27,16 @@ const ProductItem = ({ item }) => {
     );
   };
 
-  const handleItemToWishList = () => {
-    dispatch(
-      addItemToWishlist({
-        ...item,
-        status: "available",
-        quantity: 1,
-      })
-    );
-  };
-
-  const handleitems = () => {
-    // 
-  };
-
   return (
     <div className="overflow-hidden transition-all duration-300 ease-out bg-white rounded-lg group shadow-1 hover:shadow-2">
-      <div className="relative overflow-hidden flex items-center justify-center rounded-t-lg bg-gray-1 min-h-[200px] p-3">
-
-
+      <div className="relative overflow-hidden flex items-center justify-center rounded-t-lg bg-gray-1 h-[250px] p-3">
         <div className="flex items-center justify-center w-full h-full">
           <Image
             src={item?.images?.[0] || item.imgs?.previews?.[0] || "/placeholder.jpg"}
             alt={item?.name || item.title || ""}
             width={200}
             height={200}
-            className="object-cover max-w-full max-h-full transition-transform duration-300 ease-out hover:scale-105"
+            className="object-cover w-full h-full transition-transform duration-300 ease-out hover:scale-105"
           />
         </div>
 
@@ -104,50 +86,48 @@ const ProductItem = ({ item }) => {
         </div>
       </div>
 
-      <div className="p-3 space-y-2">
-        <div className="min-h-[1.2rem]">
-          <h3
-            className="text-sm font-semibold leading-tight transition-colors duration-300 cursor-pointer decoration-transparent text-dark-3 hover:text-red line-clamp-2"
-            onClick={() => handleitems()}
-          >
-            <Link href="/shop-details" className="hover:underline">
+      <div className="flex flex-col h-auto p-3 space-y-2">
+        {/* Title với chiều cao cố định */}
+        <div className="min-h-[2.4rem] flex items-start">
+          <h3 className="text-sm font-semibold leading-tight transition-colors duration-300 cursor-pointer decoration-transparent text-dark-3 hover:text-red line-clamp-2">
+            <Link href={`/shop-details/${item?.id}`} className="hover:underline">
               {item?.name || item.title}
             </Link>
           </h3>
         </div>
 
-        {/* Category và Condition */}
-        <div className="space-y-1">
+        {/* Category và Condition với chiều cao cố định */}
+        <div className="space-y-1 min-h-[2.5rem] flex flex-col justify-start">
           {item?.categoryName && (
             <p className="flex items-center text-xs text-meta-3">
-              <svg className="w-3 h-3 mr-1 text-meta-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="flex-shrink-0 w-3 h-3 mr-1 text-meta-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
               </svg>
-              {item.categoryName}
+              <span className="truncate">{item.categoryName}</span>
             </p>
           )}
 
           {item?.currentCondition && (
             <p className="flex items-center text-xs text-green">
-              <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="flex-shrink-0 w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              {item.currentCondition}
+              <span className="truncate">{item.currentCondition}</span>
             </p>
           )}
         </div>
 
-        {/* Price Section */}
-        <div className="pt-2 border-t border-gray-3">
+        {/* Price Section - luôn ở cuối */}
+        <div className="pt-2 mt-auto border-t border-gray-3">
           <div className="space-y-1.5">
             {/* Main Price Display */}
             <div className="flex items-baseline gap-2">
               <span className="text-lg font-semibold text-red">
-                {formatVNDRounded.thousands(item?.finalPrice || item?.sellingPrice || item.discountedPrice)}
+                {formatVNDRounded.thousands(item?.finalPrice || item?.sellingPrice)}
               </span>
               {item?.discountPercent > 0 && (
                 <span className="text-sm font-medium line-through text-meta-4">
-                  {formatVNDRounded.thousands(item?.sellingPrice || item.price)}
+                  {formatVNDRounded.thousands(item?.sellingPrice)}
                 </span>
               )}
             </div>
@@ -156,21 +136,17 @@ const ProductItem = ({ item }) => {
             {item?.discountPercent > 0 && (
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
-                  <span className="inline-flex items-center  py-0.5 text-xs font-medium rounded-md bg-red-50 text-meta-3">
-                    Tiết kiệm {formatVNDRounded.thousands((item?.sellingPrice || item.price) - (item?.finalPrice || item.discountedPrice))}
+                  <span className="inline-flex items-center py-0.5 px-1.5 text-xs font-medium rounded-md bg-red-light-6 text-red">
+                    Tiết kiệm {formatVNDRounded.thousands((item?.sellingPrice) - (item?.finalPrice))}
                   </span>
                 </div>
-
-                {/* Rating or Stock Status */}
-                <div className="flex items-center text-xs font-medium text-red-light">
+                <div className="flex items-center text-xs font-medium text-red">
                   GIẢM {item.discountPercent}%
                 </div>
               </div>
             )}
           </div>
         </div>
-
-
       </div>
     </div>
   );

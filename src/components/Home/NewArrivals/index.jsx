@@ -6,7 +6,6 @@ import productService from "@/services/productService";
 const limit = 8;
 
 export default async function NewArrival() {
-  console.log("SSR running at", new Date().toISOString());
   let productDetail = [];
   try {
     const response = await productService.getListProductsNewArrivals(limit);
