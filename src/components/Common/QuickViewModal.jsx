@@ -139,7 +139,7 @@ const QuickViewModal = () => {
       className={`${isModalOpen ? "z-50" : "hidden"
         } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 overflow-y-auto`}
     >
-      <div className="w-full max-w-[1100px] max-h-[90vh] overflow-y-auto rounded-xl shadow-3 bg-white p-6 sm:p-8 relative modal-content my-auto">
+      <div className="w-full max-w-[1100px] max-h-[90vh] overflow-y-auto rounded-xl shadow-3 bg-white p-6  sm:p-8 relative modal-content mt-[135px]">
         <button
           onClick={() => handleCloseModal()}
           aria-label="button for close modal"
