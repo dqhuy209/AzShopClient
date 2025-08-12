@@ -6,7 +6,6 @@ import { updateQuickView } from "@/redux/features/quickView-slice";
 import { addItemToCart } from "@/redux/features/cart-slice";
 import Image from "next/image";
 import Link from "next/link";
-import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { formatVNDRounded } from "@/utils/formatCurrency";
 
 const SingleItem = ({ item }) => {
@@ -15,7 +14,10 @@ const SingleItem = ({ item }) => {
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
+    // Ensure we have a valid product before updating quick view
+    if (item?.id) {
+      dispatch(updateQuickView({ ...item }));
+    }
   };
 
   // add to cart
@@ -37,7 +39,7 @@ const SingleItem = ({ item }) => {
         <div className="flex items-center justify-center w-full h-full">
           <Link href={`/shop-details/${item?.id}`} className="flex items-center justify-center w-full h-full">
             <Image
-              src={item?.images?.[0] || "/placeholder.jpg"}
+              src={item?.images?.[0] ? (item.images[0].startsWith('http') ? item.images[0] : `/images/products/${item.images[0]}`) : "/images/placeholder.jpg"}
               alt={item?.name || ""}
               width={300}
               height={300}

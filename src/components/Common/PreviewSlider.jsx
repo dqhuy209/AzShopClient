@@ -124,14 +124,19 @@ const PreviewSliderModal = () => {
     closePreviewModal();
   }, [closePreviewModal]);
 
-  // Set initial slide khi modal mở
+  // Set initial slide khi modal mở hoặc data thay đổi
   useEffect(() => {
     if (isModalPreviewOpen && sliderRef.current && data?.initialSlideIndex !== undefined) {
-      setTimeout(() => {
-        sliderRef.current.swiper.slideTo(data.initialSlideIndex, 0);
+      // Đảm bảo swiper đã được khởi tạo
+      const timer = setTimeout(() => {
+        if (sliderRef.current && sliderRef.current.swiper) {
+          sliderRef.current.swiper.slideTo(data.initialSlideIndex, 0);
+        }
       }, 100);
+
+      return () => clearTimeout(timer);
     }
-  }, [isModalPreviewOpen, data?.initialSlideIndex]);
+  }, [isModalPreviewOpen, data?.initialSlideIndex, data?.id]); // Thêm data.id để trigger khi product thay đổi
 
   // Reset zoom và pan khi modal đóng
   useEffect(() => {
@@ -282,15 +287,17 @@ const PreviewSliderModal = () => {
       {/* Main Content */}
       <div className="flex items-center justify-center w-full h-full max-w-6xl p-4 overflow-hidden">
         <Swiper
+          key={`${data?.id}-${data?.initialSlideIndex}`} // Force re-render when product or slide changes
           ref={sliderRef}
           slidesPerView={1}
           spaceBetween={20}
-          loop={true}
+          loop={false} // Tạm tắt loop để test
           className="w-full h-full"
           allowTouchMove={zoomLevel <= 1} // Disable swipe when zoomed
           touchMoveStopPropagation={zoomLevel > 1} // Prevent touch interference when panning
           simulateTouch={zoomLevel <= 1} // Disable simulate touch when zoomed
           grabCursor={zoomLevel <= 1} // Disable grab cursor when zoomed
+          initialSlide={data?.initialSlideIndex || 0} // Set initial slide directly
         >
           {data?.images && data.images.length > 0 ? (
             data.images.map((image, index) => (

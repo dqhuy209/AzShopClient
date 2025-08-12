@@ -15,7 +15,10 @@ const ProductItem = ({ item }) => {
 
 
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
+    // Ensure we have a valid product before updating quick view
+    if (item?.id) {
+      dispatch(updateQuickView({ ...item }));
+    }
   };
 
   const handleAddToCart = () => {
@@ -33,7 +36,7 @@ const ProductItem = ({ item }) => {
         <div className="flex items-center justify-center w-full h-full">
           <Link href={`/shop-details/${item?.id}`} className="flex items-center justify-center w-full h-full">
             <Image
-              src={item?.images?.[0] || "/placeholder.jpg"}
+              src={item?.images?.[0] ? (item.images[0].startsWith('http') ? item.images[0] : `/images/products/${item.images[0]}`) : "/images/placeholder.jpg"}
               alt={item?.name || ""}
               width={280}
               height={280}

@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import Image from "next/image";
 import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
 import { updateproductDetails } from "@/redux/features/product-details";
+import { resetQuickView } from "@/redux/features/quickView-slice";
 import productService from "@/services/productService";
 import { formatVNDRounded } from "@/utils/formatCurrency";
 
@@ -17,6 +18,7 @@ const QuickViewModal = () => {
   const [quantity, setQuantity] = useState(1);
   const [productData, setProductData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [currentProductId, setCurrentProductId] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -25,19 +27,42 @@ const QuickViewModal = () => {
 
   const [activePreview, setActivePreview] = useState(0);
 
+  // Handle close modal with proper cleanup
+  const handleCloseModal = () => {
+    closeModal();
+    dispatch(resetQuickView());
+    setProductData(null);
+    setActivePreview(0);
+    setQuantity(1);
+    setCurrentProductId(null);
+  };
+
   // fetch product details when modal opens
   useEffect(() => {
     if (isModalOpen && product?.id) {
-      fetchProductDetails();
+      // Only fetch if this is a different product
+      if (currentProductId !== product.id) {
+        // Reset states when opening modal for new product
+        setActivePreview(0);
+        setQuantity(1);
+        setProductData(null);
+        setCurrentProductId(product.id);
+        fetchProductDetails();
+      }
     }
-  }, [isModalOpen, product?.id]);
+  }, [isModalOpen, product?.id, currentProductId]);
 
   const fetchProductDetails = async () => {
+    if (!product?.id) return;
+
     try {
       setLoading(true);
       const response = await productService.productDetails(product.id);
       if (response.data?.success) {
-        setProductData(response.data.data);
+        // Only update if this is still the current product
+        if (currentProductId === product.id) {
+          setProductData(response.data.data);
+        }
       }
     } catch (error) {
       console.error("Error fetching product details:", error);
@@ -70,7 +95,7 @@ const QuickViewModal = () => {
       })
     );
 
-    closeModal();
+    handleCloseModal();
   };
 
   useEffect(() => {
@@ -87,7 +112,7 @@ const QuickViewModal = () => {
       }
 
       if (!event.target.closest(".modal-content")) {
-        closeModal();
+        handleCloseModal();
       }
     }
 
@@ -97,9 +122,13 @@ const QuickViewModal = () => {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      setQuantity(1);
-      setProductData(null);
-      setActivePreview(0);
+      // Clean up when component unmounts or modal closes
+      if (!isModalOpen) {
+        setQuantity(1);
+        setProductData(null);
+        setActivePreview(0);
+        setCurrentProductId(null);
+      }
     };
   }, [isModalOpen, closeModal, isModalPreviewOpen]);
 
@@ -112,7 +141,7 @@ const QuickViewModal = () => {
     >
       <div className="w-full max-w-[1100px] max-h-[90vh] overflow-y-auto rounded-xl shadow-3 bg-white p-6 sm:p-8 relative modal-content my-auto">
         <button
-          onClick={() => closeModal()}
+          onClick={() => handleCloseModal()}
           aria-label="button for close modal"
           className="absolute z-10 flex items-center justify-center w-10 h-10 text-gray-600 duration-150 ease-in bg-gray-100 rounded-full top-4 right-4 hover:bg-red hover:text-white"
         >
@@ -262,7 +291,7 @@ const QuickViewModal = () => {
 
               {/* Specifications */}
               {displayProduct?.attributes && displayProduct.attributes.length > 0 && (
-                <div className="rounded-lg  bg-gray-50 border-blue">
+                <div className="rounded-lg bg-gray-50 border-blue">
                   <h4 className="flex items-center gap-2 mb-3 text-lg font-bold text-dark">
                     <svg className="w-5 h-5 text-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
