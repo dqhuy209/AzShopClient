@@ -1,3 +1,4 @@
+"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -8,7 +9,7 @@ import { addItemToWishlist } from "@/redux/features/wishlist-slice";
 import { updateitems } from "@/redux/features/product-details";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
-import { formatVND, formatVNDRounded } from "@/utils/formatCurrency";
+import { formatVNDRounded } from "@/utils/formatCurrency";
 
 const ProductItem = ({ item }) => {
   const { openModal } = useModalContext();
@@ -39,7 +40,7 @@ const ProductItem = ({ item }) => {
   };
 
   const handleitems = () => {
-    dispatch(updateitems({ ...item }));
+    // 
   };
 
   return (
