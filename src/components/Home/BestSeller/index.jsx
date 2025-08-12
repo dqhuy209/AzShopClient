@@ -1,28 +1,41 @@
 import React from "react";
 import SingleItem from "./SingleItem";
-import Image from "next/image";
 import Link from "next/link";
-import shopData from "@/components/Shop/shopData";
+import productService from "@/services/productService";
 
-const BestSeller = () => {
+const limit = 6;
+
+export default async function BestSeller() {
+  let productDetail = [];
+  try {
+    const response = await productService.getListProductsBestSeller(limit);
+    productDetail = response.data.data;
+  } catch (error) {
+    console.error("Error fetching best seller products:", error);
+  }
   return (
     <section className="overflow-hidden">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
         {/* <!-- section title --> */}
-        <div className="mb-10 flex items-center justify-between">
+        <div className="flex items-center justify-between mb-10">
           <div>
 
-            <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
+            <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">
               Bán chạy nhất
             </h2>
           </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7.5">
-          {/* <!-- Best Sellers item --> */}
-          {shopData.slice(1, 7).map((item, key) => (
-            <SingleItem item={item} key={key} />
-          ))}
+          {productDetail && productDetail.length > 0 ? (
+            productDetail.map((product, id) => (
+              <SingleItem item={product} key={product.id || id} />
+            ))
+          ) : (
+            <div className="py-8 text-center col-span-full">
+              <p className="text-gray-500">Không có sản phẩm bán chạy nào</p>
+            </div>
+          )}
         </div>
 
         <div className="text-center mt-12.5">
@@ -36,6 +49,4 @@ const BestSeller = () => {
       </div>
     </section>
   );
-};
-
-export default BestSeller;
+}

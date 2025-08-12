@@ -1,8 +1,8 @@
 "use client";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef, useEffect } from "react";
-import data from "./categoryData";
+import { useCallback, useRef, useEffect, useState } from "react";
 import Image from "next/image";
+import categoryService from "@/services/categoryService";
 
 // Import Swiper styles
 import "swiper/css/navigation";
@@ -11,6 +11,8 @@ import SingleItem from "./SingleItem";
 
 const Categories = () => {
   const sliderRef = useRef(null);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
@@ -28,12 +30,28 @@ const Categories = () => {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        const response = await categoryService.getListCategory();
+        setCategories(response.data.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <section className="overflow-hidden pt-17.5">
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-15 border-b border-gray-3">
         <div className="swiper categories-carousel common-carousel">
           {/* <!-- section title --> */}
-          <div className="mb-10 flex items-center justify-between">
+          <div className="flex items-center justify-between mb-10">
             <div>
               <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
                 <svg
@@ -72,7 +90,7 @@ const Categories = () => {
                 </svg>
                 Categories
               </span>
-              <h2 className="font-semibold text-xl xl:text-heading-5 text-dark">
+              <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">
                 Browse by Category
               </h2>
             </div>
@@ -134,11 +152,21 @@ const Categories = () => {
               },
             }}
           >
-            {data.map((item, key) => (
-              <SwiperSlide key={key}>
-                <SingleItem item={item} />
-              </SwiperSlide>
-            ))}
+            {loading ? (
+              <div className="py-8 text-center col-span-full">
+                <p className="text-gray-500">Đang tải danh mục...</p>
+              </div>
+            ) : categories && categories.length > 0 ? (
+              categories.map((item, key) => (
+                <SwiperSlide key={key}>
+                  <SingleItem item={item} />
+                </SwiperSlide>
+              ))
+            ) : (
+              <div className="py-8 text-center col-span-full">
+                <p className="text-gray-500">Không có danh mục nào</p>
+              </div>
+            )}
           </Swiper>
         </div>
       </div>

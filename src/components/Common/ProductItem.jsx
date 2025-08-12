@@ -28,16 +28,18 @@ const ProductItem = ({ item }) => {
   };
 
   return (
-    <div className="overflow-hidden transition-all duration-300 ease-out bg-white rounded-lg group shadow-1 hover:shadow-2">
-      <div className="relative overflow-hidden flex items-center justify-center rounded-t-lg bg-gray-1 h-[250px] p-3">
+    <div className="mb-3 overflow-hidden transition-all duration-300 ease-out bg-white rounded-lg group shadow-1 hover:shadow-2">
+      <div className="relative overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-2 h-[280px] p-3">
         <div className="flex items-center justify-center w-full h-full">
-          <Image
-            src={item?.images?.[0] || item.imgs?.previews?.[0] || "/placeholder.jpg"}
-            alt={item?.name || item.title || ""}
-            width={200}
-            height={200}
-            className="object-cover w-full h-full transition-transform duration-300 ease-out hover:scale-105"
-          />
+          <Link href={`/shop-details/${item?.id}`} className="flex items-center justify-center w-full h-full">
+            <Image
+              src={item?.images?.[0] || "/placeholder.jpg"}
+              alt={item?.name || ""}
+              width={280}
+              height={280}
+              className="object-cover w-full h-full transition-transform duration-300 ease-out rounded-lg cursor-pointer hover:scale-105"
+            />
+          </Link>
         </div>
 
         <div className="absolute bottom-0 left-0 flex items-center justify-center w-full gap-2 pb-3 duration-300 ease-linear translate-y-full group-hover:translate-y-0 bg-gradient-to-t from-black/10 to-transparent">
