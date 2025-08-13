@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import Link from 'next/link'
 import CustomSelect from './CustomSelect'
-import {menuData} from './menuData'
+import {menuData, menuDataHeader} from './menuData'
 import Dropdown from './Dropdown'
 import {useAppSelector} from '@/redux/store'
 import {useSelector} from 'react-redux'
@@ -235,17 +235,18 @@ const Header = () => {
                 </div>
                 {/* <!-- header top end --> */}
             </div>
-            <div className="border-t border-gray-3 bg-white z-[20] relative">
+            <div className="border-t border-gray-3 bg-[#ecebf0] z-[20] relative w-full">
                 <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 hidden lg:block">
-                    <div className="flex items-center justify-between h-[55px]">
+                    <div className="h-[55px] w-full">
                         {/* <!--=== Main Nav Start ===--> */}
                         <div
-                            className={`w-[288px] absolute right-4 top-full xl:static xl:w-auto h-0 xl:h-auto invisible xl:visible xl:flex items-center justify-between ${navigationOpen && `!visible bg-white shadow-lg border border-gray-3 !h-auto max-h-[400px] overflow-y-scroll rounded-md p-5`}`}
+                            className={`flex w-full  xl:w-auto h-0 xl:h-auto invisible xl:visible lg:flex items-center justify-between 
+                            ${navigationOpen && `!visible bg-white shadow-lg border border-gray-3 !h-auto max-h-[400px] overflow-y-scroll rounded-md p-5`}`}
                         >
                             {/* <!-- Main Nav Start --> */}
-                            <nav>
-                                <ul className="flex xl:items-center flex-col xl:flex-row gap-5 xl:gap-6">
-                                    {menuData.map((menuItem, i) =>
+                            <nav className={'w-full'}>
+                                <ul className="flex xl:items-center justify-evenly flex-col xl:flex-row gap-5 xl:gap-6 w-full">
+                                    {menuDataHeader.map((menuItem, i) =>
                                         menuItem.submenu ? (
                                             <Dropdown
                                                 key={i}
@@ -255,11 +256,11 @@ const Header = () => {
                                         ) : (
                                             <li
                                                 key={i}
-                                                className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:top-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full "
+                                                className="group relative before:w-0 before:h-[3px] before:bg-blue before:absolute before:left-0 before:bottom-0 before:rounded-b-[3px] before:ease-out before:duration-200 hover:before:w-full "
                                             >
                                                 <Link
                                                     href={menuItem.path}
-                                                    className={`hover:text-blue text-custom-sm font-medium text-dark flex ${stickyMenu ? 'xl:py-4' : 'xl:py-6'}`}
+                                                    className={`hover:text-blue text-custom-lg font-medium text-dark flex ${stickyMenu ? 'xl:py-4' : 'xl:py-4'}`}
                                                 >
                                                     {menuItem.title}
                                                 </Link>

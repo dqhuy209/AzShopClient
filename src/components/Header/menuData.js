@@ -127,5 +127,36 @@ export const menuData = [
   },
 ]
 
+export const menuDataHeader = [
+  {
+    id: 1,
+    title: 'Trang chủ',
+    newTab: false,
+    path: '/',
+  },
+  {
+    id: 2,
+    title: 'Apple Watch Thời Trang',
+    newTab: false,
+    path: '/',
+  },{
+    id: 3,
+    title: 'Apple Watch Thể Thao',
+    newTab: false,
+    path: '/',
+  },{
+    id: 4,
+    title: 'Về Chúng Tôi',
+    newTab: false,
+    path: '/',
+  },{
+    id: 5,
+    title: 'Chính sách',
+    newTab: false,
+    path: '/',
+  },
+]
+
+
 
 
