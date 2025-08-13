@@ -137,13 +137,13 @@ const QuickViewModal = () => {
   return (
     <div
       className={`${isModalOpen ? "z-50" : "hidden"
-        } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 overflow-y-auto`}
+        } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 overflow-y-auto z-9999`}
     >
-      <div className="w-full max-w-[1100px] max-h-[90vh] overflow-y-auto rounded-xl shadow-3 bg-white p-6  sm:p-8 relative modal-content mt-[135px]">
+      <div className="w-full max-w-[1100px] max-h-[90vh] overflow-y-auto rounded-xl shadow-3 bg-white p-6  sm:p-8 relative modal-content ">
         <button
           onClick={() => handleCloseModal()}
           aria-label="button for close modal"
-          className="absolute z-10 flex items-center justify-center w-10 h-10 text-gray-600 duration-150 ease-in bg-gray-100 rounded-full top-4 right-4 hover:bg-red hover:text-white"
+          className="absolute z-10 flex items-center justify-center w-10 h-10 text-gray-600 duration-150 ease-in bg-gray-100 rounded-full top-2 right-2 hover:bg-red hover:text-white"
         >
           <svg
             className="fill-current"
