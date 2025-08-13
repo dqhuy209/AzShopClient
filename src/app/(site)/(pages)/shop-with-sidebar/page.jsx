@@ -1,19 +1,18 @@
-import React from "react";
-import ShopWithSidebar from "@/components/ShopWithSidebar";
-
+import React from 'react'
+import ShopWithSidebar from '@/components/ShopWithSidebar'
 
 export const metadata = {
-  title: "Shop Page | NextCommerce Nextjs E-commerce template",
-  description: "This is Shop Page for NextCommerce Template",
+  title: 'Shop Page | NextCommerce Nextjs E-commerce template',
+  description: 'This is Shop Page for NextCommerce Template',
   // other metadata
-};
+}
 
 const ShopWithSidebarPage = () => {
   return (
     <main>
       <ShopWithSidebar />
     </main>
-  );
-};
+  )
+}
 
-export default ShopWithSidebarPage;
+export default ShopWithSidebarPage

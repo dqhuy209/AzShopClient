@@ -1,18 +1,18 @@
-import React from "react";
-import Breadcrumb from "../Common/Breadcrumb";
-import SearchForm from "../Blog/SearchForm";
-import LatestPosts from "../Blog/LatestPosts";
-import LatestProducts from "../Blog/LatestProducts";
-import blogData from "../BlogGrid/blogData";
-import Image from "next/image";
-import shopData from "../Shop/shopData";
+import React from 'react'
+import Breadcrumb from '../Common/Breadcrumb'
+import SearchForm from '../Blog/SearchForm'
+import LatestPosts from '../Blog/LatestPosts'
+import LatestProducts from '../Blog/LatestProducts'
+import blogData from '../BlogGrid/blogData'
+import Image from 'next/image'
+import shopData from '../Shop/shopData'
 
 const BlogDetailsWithSidebar = () => {
   return (
     <>
       <Breadcrumb
-        title={"Blog Details With Sidebar"}
-        pages={["blog details sidebar"]}
+        title={'Blog Details With Sidebar'}
+        pages={['blog details sidebar']}
       />
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -414,7 +414,7 @@ const BlogDetailsWithSidebar = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default BlogDetailsWithSidebar;
+export default BlogDetailsWithSidebar

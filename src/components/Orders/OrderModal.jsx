@@ -1,10 +1,10 @@
-import React, { useRef, useEffect } from "react";
-import OrderDetails from "./OrderDetails";
-import EditOrder from "./EditOrder";
+import React, { useRef, useEffect } from 'react'
+import OrderDetails from './OrderDetails'
+import EditOrder from './EditOrder'
 
 const OrderModal = ({ showDetails, showEdit, toggleModal, order }) => {
   if (!showDetails && !showEdit) {
-    return null;
+    return null
   }
 
   return (
@@ -39,7 +39,7 @@ const OrderModal = ({ showDetails, showEdit, toggleModal, order }) => {
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default OrderModal;
+export default OrderModal

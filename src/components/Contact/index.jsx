@@ -1,10 +1,10 @@
-import React from "react";
-import Breadcrumb from "../Common/Breadcrumb";
+import React from 'react'
+import Breadcrumb from '../Common/Breadcrumb'
 
 const Contact = () => {
   return (
     <>
-      <Breadcrumb title={"Contact"} pages={["contact"]} />
+      <Breadcrumb title={'Contact'} pages={['contact']} />
 
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -174,7 +174,7 @@ const Contact = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default Contact;
+export default Contact

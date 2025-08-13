@@ -1,19 +1,18 @@
-import React from "react";
-import Error from "@/components/Error";
-
+import React from 'react'
+import Error from '@/components/Error'
 
 export const metadata = {
-  title: "Error Page | NextCommerce Nextjs E-commerce template",
-  description: "This is Error Page for NextCommerce Template",
+  title: 'Error Page | NextCommerce Nextjs E-commerce template',
+  description: 'This is Error Page for NextCommerce Template',
   // other metadata
-};
+}
 
 const ErrorPage = () => {
   return (
     <main>
       <Error />
     </main>
-  );
-};
+  )
+}
 
-export default ErrorPage;
+export default ErrorPage

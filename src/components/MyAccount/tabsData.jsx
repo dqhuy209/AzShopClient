@@ -1,6 +1,6 @@
 const tabsData = [
   {
-    title: "dashboard",
+    title: 'dashboard',
     icon: `<svg
         className="fill-current"
         width="22"
@@ -36,7 +36,7 @@ const tabsData = [
       </svg>`,
   },
   {
-    title: "orders",
+    title: 'orders',
     icon: `<svg
     className="fill-current"
     width="22"
@@ -66,7 +66,7 @@ const tabsData = [
         </svg>`,
   },
   {
-    title: "downloads",
+    title: 'downloads',
     icon: `<svg
     className="fill-current"
     width="22"
@@ -86,7 +86,7 @@ const tabsData = [
   </svg>`,
   },
   {
-    title: "addresses",
+    title: 'addresses',
     icon: `<svg
     className="fill-current"
     width="22"
@@ -108,7 +108,7 @@ const tabsData = [
   </svg>`,
   },
   {
-    title: "account details",
+    title: 'account details',
     icon: ` <svg
     className="fill-current"
     width="22"
@@ -131,6 +131,6 @@ const tabsData = [
     />
   </svg>`,
   },
-];
+]
 
-export default tabsData;
+export default tabsData

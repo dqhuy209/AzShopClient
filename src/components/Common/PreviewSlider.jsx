@@ -1,183 +1,200 @@
-"use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef, useEffect, useState } from "react";
-import "swiper/css/navigation";
-import "swiper/css";
-import Image from "next/image";
+'use client'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { useCallback, useRef, useEffect, useState } from 'react'
+import 'swiper/css/navigation'
+import 'swiper/css'
+import Image from 'next/image'
 
-import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
-import { useAppSelector } from "@/redux/store";
+import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
+import { useAppSelector } from '@/redux/store'
 
 const PreviewSliderModal = () => {
-  const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider();
+  const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider()
 
-  const data = useAppSelector((state) => state.productDetailsReducer.value);
+  const data = useAppSelector((state) => state.productDetailsReducer.value)
 
-  const sliderRef = useRef(null);
-  const [zoomLevel, setZoomLevel] = useState(1);
-  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const sliderRef = useRef(null)
+  const [zoomLevel, setZoomLevel] = useState(1)
+  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
   const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slidePrev()
     // Reset pan khi chuyển slide
-    setPanPosition({ x: 0, y: 0 });
-  }, []);
+    setPanPosition({ x: 0, y: 0 })
+  }, [])
 
   const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slideNext()
     // Reset pan khi chuyển slide
-    setPanPosition({ x: 0, y: 0 });
-  }, []);
+    setPanPosition({ x: 0, y: 0 })
+  }, [])
 
   const handleZoomIn = useCallback(() => {
-    setZoomLevel(prev => Math.min(prev + 0.5, 3));
-  }, []);
+    setZoomLevel((prev) => Math.min(prev + 0.5, 3))
+  }, [])
 
   const handleZoomOut = useCallback(() => {
-    setZoomLevel(prev => {
-      const newZoom = Math.max(prev - 0.5, 0.5);
+    setZoomLevel((prev) => {
+      const newZoom = Math.max(prev - 0.5, 0.5)
       // Reset pan position when zooming out to normal
       if (newZoom <= 1) {
-        setPanPosition({ x: 0, y: 0 });
+        setPanPosition({ x: 0, y: 0 })
       }
-      return newZoom;
-    });
-  }, []);
+      return newZoom
+    })
+  }, [])
 
   const handleZoomReset = useCallback(() => {
-    setZoomLevel(1);
-    setPanPosition({ x: 0, y: 0 });
-  }, []);
+    setZoomLevel(1)
+    setPanPosition({ x: 0, y: 0 })
+  }, [])
 
   // Helper function để tính toán giới hạn pan dựa trên zoom level
   const calculatePanLimits = useCallback((zoom) => {
     // Khi zoom càng cao, cho phép pan xa hơn để xem được toàn bộ ảnh
-    const baseLimit = 300;
-    return baseLimit * Math.max(0, zoom - 1);
-  }, []);
+    const baseLimit = 300
+    return baseLimit * Math.max(0, zoom - 1)
+  }, [])
 
   // Mouse drag handlers để di chuyển trong ảnh khi zoom
-  const handleMouseDown = useCallback((e) => {
-    if (zoomLevel > 1) {
-      e.preventDefault();
-      e.stopPropagation(); // Ngăn Swiper nhận event
-      setIsDragging(true);
-      setDragStart({
-        x: e.clientX - panPosition.x,
-        y: e.clientY - panPosition.y
-      });
+  const handleMouseDown = useCallback(
+    (e) => {
+      if (zoomLevel > 1) {
+        e.preventDefault()
+        e.stopPropagation() // Ngăn Swiper nhận event
+        setIsDragging(true)
+        setDragStart({
+          x: e.clientX - panPosition.x,
+          y: e.clientY - panPosition.y,
+        })
 
-      // Disable Swiper completely khi bắt đầu drag
-      if (sliderRef.current) {
-        sliderRef.current.swiper.allowTouchMove = false;
-        sliderRef.current.swiper.allowSlideNext = false;
-        sliderRef.current.swiper.allowSlidePrev = false;
+        // Disable Swiper completely khi bắt đầu drag
+        if (sliderRef.current) {
+          sliderRef.current.swiper.allowTouchMove = false
+          sliderRef.current.swiper.allowSlideNext = false
+          sliderRef.current.swiper.allowSlidePrev = false
+        }
       }
-    }
-  }, [zoomLevel, panPosition]);
+    },
+    [zoomLevel, panPosition]
+  )
 
-  const handleMouseMove = useCallback((e) => {
-    if (isDragging && zoomLevel > 1) {
-      e.preventDefault();
-      e.stopPropagation(); // Ngăn Swiper nhận event
-      // Calculate new position
-      const newX = e.clientX - dragStart.x;
-      const newY = e.clientY - dragStart.y;
+  const handleMouseMove = useCallback(
+    (e) => {
+      if (isDragging && zoomLevel > 1) {
+        e.preventDefault()
+        e.stopPropagation() // Ngăn Swiper nhận event
+        // Calculate new position
+        const newX = e.clientX - dragStart.x
+        const newY = e.clientY - dragStart.y
 
-      // Sử dụng helper function để tính giới hạn
-      const maxPan = calculatePanLimits(zoomLevel);
+        // Sử dụng helper function để tính giới hạn
+        const maxPan = calculatePanLimits(zoomLevel)
 
-      const constrainedX = Math.max(-maxPan, Math.min(maxPan, newX));
-      const constrainedY = Math.max(-maxPan, Math.min(maxPan, newY));
+        const constrainedX = Math.max(-maxPan, Math.min(maxPan, newX))
+        const constrainedY = Math.max(-maxPan, Math.min(maxPan, newY))
 
-      setPanPosition({
-        x: constrainedX,
-        y: constrainedY
-      });
-    }
-  }, [isDragging, dragStart, zoomLevel, calculatePanLimits]);
-
-  const handleMouseUp = useCallback((e) => {
-    if (isDragging) {
-      e.preventDefault();
-      e.stopPropagation(); // Ngăn Swiper nhận event
-      setIsDragging(false);
-
-      // Re-enable Swiper chỉ khi zoom level = 1
-      if (sliderRef.current) {
-        const shouldEnableSwiper = zoomLevel <= 1;
-        sliderRef.current.swiper.allowTouchMove = shouldEnableSwiper;
-        sliderRef.current.swiper.allowSlideNext = shouldEnableSwiper;
-        sliderRef.current.swiper.allowSlidePrev = shouldEnableSwiper;
+        setPanPosition({
+          x: constrainedX,
+          y: constrainedY,
+        })
       }
-    }
-  }, [isDragging, zoomLevel]);
+    },
+    [isDragging, dragStart, zoomLevel, calculatePanLimits]
+  )
+
+  const handleMouseUp = useCallback(
+    (e) => {
+      if (isDragging) {
+        e.preventDefault()
+        e.stopPropagation() // Ngăn Swiper nhận event
+        setIsDragging(false)
+
+        // Re-enable Swiper chỉ khi zoom level = 1
+        if (sliderRef.current) {
+          const shouldEnableSwiper = zoomLevel <= 1
+          sliderRef.current.swiper.allowTouchMove = shouldEnableSwiper
+          sliderRef.current.swiper.allowSlideNext = shouldEnableSwiper
+          sliderRef.current.swiper.allowSlidePrev = shouldEnableSwiper
+        }
+      }
+    },
+    [isDragging, zoomLevel]
+  )
 
   // Handle close modal properly
-  const handleCloseModal = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    closePreviewModal();
-  }, [closePreviewModal]);
+  const handleCloseModal = useCallback(
+    (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      closePreviewModal()
+    },
+    [closePreviewModal]
+  )
 
   // Set initial slide khi modal mở hoặc data thay đổi
   useEffect(() => {
-    if (isModalPreviewOpen && sliderRef.current && data?.initialSlideIndex !== undefined) {
+    if (
+      isModalPreviewOpen &&
+      sliderRef.current &&
+      data?.initialSlideIndex !== undefined
+    ) {
       // Đảm bảo swiper đã được khởi tạo
       const timer = setTimeout(() => {
         if (sliderRef.current && sliderRef.current.swiper) {
-          sliderRef.current.swiper.slideTo(data.initialSlideIndex, 0);
+          sliderRef.current.swiper.slideTo(data.initialSlideIndex, 0)
         }
-      }, 100);
+      }, 100)
 
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer)
     }
-  }, [isModalPreviewOpen, data?.initialSlideIndex, data?.id]); // Thêm data.id để trigger khi product thay đổi
+  }, [isModalPreviewOpen, data?.initialSlideIndex, data?.id]) // Thêm data.id để trigger khi product thay đổi
 
   // Reset zoom và pan khi modal đóng
   useEffect(() => {
     if (!isModalPreviewOpen) {
-      setZoomLevel(1);
-      setPanPosition({ x: 0, y: 0 });
-      setIsDragging(false);
+      setZoomLevel(1)
+      setPanPosition({ x: 0, y: 0 })
+      setIsDragging(false)
     }
-  }, [isModalPreviewOpen]);
+  }, [isModalPreviewOpen])
 
   // Add mouse event listeners
   useEffect(() => {
     if (isModalPreviewOpen) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
       return () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+      }
     }
-  }, [isModalPreviewOpen, handleMouseMove, handleMouseUp]);
+  }, [isModalPreviewOpen, handleMouseMove, handleMouseUp])
 
   // Control Swiper based on zoom level
   useEffect(() => {
     if (sliderRef.current) {
-      const shouldEnableSwiper = zoomLevel <= 1;
-      sliderRef.current.swiper.allowTouchMove = shouldEnableSwiper;
-      sliderRef.current.swiper.allowSlideNext = shouldEnableSwiper;
-      sliderRef.current.swiper.allowSlidePrev = shouldEnableSwiper;
+      const shouldEnableSwiper = zoomLevel <= 1
+      sliderRef.current.swiper.allowTouchMove = shouldEnableSwiper
+      sliderRef.current.swiper.allowSlideNext = shouldEnableSwiper
+      sliderRef.current.swiper.allowSlidePrev = shouldEnableSwiper
     }
-  }, [zoomLevel]);
+  }, [zoomLevel])
 
   return (
     <div
-      className={`preview-slider w-full h-screen z-[99999] inset-0 flex justify-center items-center bg-black bg-opacity-90 ${isModalPreviewOpen ? "fixed" : "hidden"
-        }`}
+      className={`preview-slider w-full h-screen z-[99999] inset-0 flex justify-center items-center bg-black bg-opacity-90 ${
+        isModalPreviewOpen ? 'fixed' : 'hidden'
+      }`}
       onMouseDown={(e) => {
         // Ngăn background clicks khi zoom
         if (zoomLevel > 1 && !e.target.closest('.image-container')) {
-          e.preventDefault();
-          e.stopPropagation();
+          e.preventDefault()
+          e.stopPropagation()
         }
       }}
     >
@@ -211,8 +228,19 @@ const PreviewSliderModal = () => {
           aria-label="Zoom in"
           className="flex items-center justify-center w-12 h-12 text-white duration-150 ease-in bg-black bg-opacity-50 rounded-full hover:bg-opacity-70"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 5V19M5 12H19"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
           </svg>
         </button>
 
@@ -221,8 +249,19 @@ const PreviewSliderModal = () => {
           aria-label="Zoom out"
           className="flex items-center justify-center w-12 h-12 text-white duration-150 ease-in bg-black bg-opacity-50 rounded-full hover:bg-opacity-70"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5 12H19"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
           </svg>
         </button>
 
@@ -307,21 +346,66 @@ const PreviewSliderModal = () => {
                     className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out select-none image-container max-h-4xl"
                     style={{
                       transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
-                      cursor: zoomLevel > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
-                      transitionDuration: isDragging ? '0ms' : '200ms' // Smooth transition khi không drag
+                      cursor:
+                        zoomLevel > 1
+                          ? isDragging
+                            ? 'grabbing'
+                            : 'grab'
+                          : 'default',
+                      transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
                     }}
                     onMouseDown={handleMouseDown}
                     onTouchStart={(e) => {
                       // Ngăn touch events khi zoom để tránh conflict với Swiper
                       if (zoomLevel > 1) {
-                        e.preventDefault();
-                        e.stopPropagation();
+                        e.preventDefault()
+                        e.stopPropagation()
                       }
                     }}
                   >
                     <Image
-                      src={image || "/next.svg"}
-                      alt={`${data.name || "Product"} image ${index + 1}`}
+                      src={image || '/next.svg'}
+                      alt={`${data.name || 'Product'} image ${index + 1}`}
+                      fill
+                      className="object-contain pointer-events-none"
+                      quality={100}
+                      priority={index === (data.initialSlideIndex || 0)}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                      draggable={false}
+                    />
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))
+          ) : // Fallback to legacy imgs structure if new images array is not available
+          data?.imgs?.previews && data.imgs.previews.length > 0 ? (
+            data.imgs.previews.map((image, index) => (
+              <SwiperSlide key={index}>
+                <div className="flex items-center justify-center w-full h-full overflow-hidden">
+                  <div
+                    className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
+                    style={{
+                      transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                      cursor:
+                        zoomLevel > 1
+                          ? isDragging
+                            ? 'grabbing'
+                            : 'grab'
+                          : 'default',
+                      transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
+                    }}
+                    onMouseDown={handleMouseDown}
+                    onTouchStart={(e) => {
+                      // Ngăn touch events khi zoom để tránh conflict với Swiper
+                      if (zoomLevel > 1) {
+                        e.preventDefault()
+                        e.stopPropagation()
+                      }
+                    }}
+                  >
+                    <Image
+                      src={image || '/next.svg'}
+                      alt={`${data.title || 'Product'} image ${index + 1}`}
                       fill
                       className="object-contain pointer-events-none"
                       quality={100}
@@ -334,79 +418,47 @@ const PreviewSliderModal = () => {
               </SwiperSlide>
             ))
           ) : (
-            // Fallback to legacy imgs structure if new images array is not available
-            data?.imgs?.previews && data.imgs.previews.length > 0 ? (
-              data.imgs.previews.map((image, index) => (
-                <SwiperSlide key={index}>
-                  <div className="flex items-center justify-center w-full h-full overflow-hidden">
-                    <div
-                      className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
-                      style={{
-                        transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
-                        cursor: zoomLevel > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
-                        transitionDuration: isDragging ? '0ms' : '200ms' // Smooth transition khi không drag
-                      }}
-                      onMouseDown={handleMouseDown}
-                      onTouchStart={(e) => {
-                        // Ngăn touch events khi zoom để tránh conflict với Swiper
-                        if (zoomLevel > 1) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                        }
-                      }}
-                    >
-                      <Image
-                        src={image || "/next.svg"}
-                        alt={`${data.title || "Product"} image ${index + 1}`}
-                        fill
-                        className="object-contain pointer-events-none"
-                        quality={100}
-                        priority={index === (data.initialSlideIndex || 0)}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                        draggable={false}
-                      />
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))
-            ) : (
-              // Ultimate fallback
-              <SwiperSlide>
-                <div className="flex items-center justify-center w-full h-full overflow-hidden">
-                  <div
-                    className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
-                    style={{
-                      transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
-                      cursor: zoomLevel > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',
-                      transitionDuration: isDragging ? '0ms' : '200ms' // Smooth transition khi không drag
-                    }}
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={(e) => {
-                      // Ngăn touch events khi zoom để tránh conflict với Swiper
-                      if (zoomLevel > 1) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }
-                    }}
-                  >
-                    <Image
-                      src="/next.svg"
-                      alt="Product image"
-                      fill
-                      className="object-contain pointer-events-none"
-                      quality={100}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                      draggable={false}
-                    />
-                  </div>
+            // Ultimate fallback
+            <SwiperSlide>
+              <div className="flex items-center justify-center w-full h-full overflow-hidden">
+                <div
+                  className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
+                  style={{
+                    transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                    cursor:
+                      zoomLevel > 1
+                        ? isDragging
+                          ? 'grabbing'
+                          : 'grab'
+                        : 'default',
+                    transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
+                  }}
+                  onMouseDown={handleMouseDown}
+                  onTouchStart={(e) => {
+                    // Ngăn touch events khi zoom để tránh conflict với Swiper
+                    if (zoomLevel > 1) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
+                >
+                  <Image
+                    src="/next.svg"
+                    alt="Product image"
+                    fill
+                    className="object-contain pointer-events-none"
+                    quality={100}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                    draggable={false}
+                  />
                 </div>
-              </SwiperSlide>
-            )
+              </div>
+            </SwiperSlide>
           )}
         </Swiper>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PreviewSliderModal;
+export default PreviewSliderModal

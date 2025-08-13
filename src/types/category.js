@@ -1,5 +1,5 @@
 export const defaultValues = {
-  title: "",
+  title: '',
   id: 0,
-  img: "",
-};
+  img: '',
+}

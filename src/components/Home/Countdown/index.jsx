@@ -1,30 +1,30 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
+'use client'
+import React, { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 const CounDown = () => {
-  const [days, setDays] = useState(0);
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [seconds, setSeconds] = useState(0);
+  const [days, setDays] = useState(0)
+  const [hours, setHours] = useState(0)
+  const [minutes, setMinutes] = useState(0)
+  const [seconds, setSeconds] = useState(0)
 
-  const deadline = "December, 31, 2024";
+  const deadline = 'December, 31, 2024'
 
   const getTime = () => {
-    const time = Date.parse(deadline) - Date.now();
+    const time = Date.parse(deadline) - Date.now()
 
-    setDays(Math.floor(time / (1000 * 60 * 60 * 24)));
-    setHours(Math.floor((time / (1000 * 60 * 60)) % 24));
-    setMinutes(Math.floor((time / 1000 / 60) % 60));
-    setSeconds(Math.floor((time / 1000) % 60));
-  };
+    setDays(Math.floor(time / (1000 * 60 * 60 * 24)))
+    setHours(Math.floor((time / (1000 * 60 * 60)) % 24))
+    setMinutes(Math.floor((time / 1000 / 60) % 60))
+    setSeconds(Math.floor((time / 1000) % 60))
+  }
 
   useEffect(() => {
     // @ts-ignore
-    const interval = setInterval(() => getTime(deadline), 1000);
+    const interval = setInterval(() => getTime(deadline), 1000)
 
-    return () => clearInterval(interval);
-  }, []);
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <section className="overflow-hidden py-20">
@@ -53,8 +53,8 @@ const CounDown = () => {
                   className="min-w-[64px] h-14.5 font-semibold text-xl lg:text-3xl text-dark rounded-lg flex items-center justify-center bg-white shadow-2 px-4 mb-2"
                   x-text="days"
                 >
-                  {" "}
-                  {days < 10 ? "0" + days : days}{" "}
+                  {' '}
+                  {days < 10 ? '0' + days : days}{' '}
                 </span>
                 <span className="block text-custom-sm text-dark text-center">
                   Days
@@ -67,8 +67,8 @@ const CounDown = () => {
                   className="min-w-[64px] h-14.5 font-semibold text-xl lg:text-3xl text-dark rounded-lg flex items-center justify-center bg-white shadow-2 px-4 mb-2"
                   x-text="hours"
                 >
-                  {" "}
-                  {hours < 10 ? "0" + hours : hours}{" "}
+                  {' '}
+                  {hours < 10 ? '0' + hours : hours}{' '}
                 </span>
                 <span className="block text-custom-sm text-dark text-center">
                   Hours
@@ -81,7 +81,7 @@ const CounDown = () => {
                   className="min-w-[64px] h-14.5 font-semibold text-xl lg:text-3xl text-dark rounded-lg flex items-center justify-center bg-white shadow-2 px-4 mb-2"
                   x-text="minutes"
                 >
-                  {minutes < 10 ? "0" + minutes : minutes}{" "}
+                  {minutes < 10 ? '0' + minutes : minutes}{' '}
                 </span>
                 <span className="block text-custom-sm text-dark text-center">
                   Minutes
@@ -94,7 +94,7 @@ const CounDown = () => {
                   className="min-w-[64px] h-14.5 font-semibold text-xl lg:text-3xl text-dark rounded-lg flex items-center justify-center bg-white shadow-2 px-4 mb-2"
                   x-text="seconds"
                 >
-                  {seconds < 10 ? "0" + seconds : seconds}{" "}
+                  {seconds < 10 ? '0' + seconds : seconds}{' '}
                 </span>
                 <span className="block text-custom-sm text-dark text-center">
                   Seconds
@@ -129,7 +129,7 @@ const CounDown = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default CounDown;
+export default CounDown

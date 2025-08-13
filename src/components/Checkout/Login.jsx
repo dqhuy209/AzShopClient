@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 const Login = () => {
-  const [dropdown, setDropdown] = useState(false);
+  const [dropdown, setDropdown] = useState(false)
 
   return (
     <div className="bg-white shadow-1 rounded-[10px]">
       <div
         onClick={() => setDropdown(!dropdown)}
-        className={`cursor-pointer flex items-center gap-0.5 py-5 px-5.5 ${dropdown && "border-b border-gray-3"
-          }`}
+        className={`cursor-pointer flex items-center gap-0.5 py-5 px-5.5 ${
+          dropdown && 'border-b border-gray-3'
+        }`}
       >
         Returning customer?
         <span className="flex items-center gap-2.5 pl-1 font-medium text-dark">
           Click here to login
           <svg
-            className={`${dropdown && "rotate-180"
-              } fill-current ease-out duration-200`}
+            className={`${
+              dropdown && 'rotate-180'
+            } fill-current ease-out duration-200`}
             width="22"
             height="22"
             viewBox="0 0 22 22"
@@ -34,8 +36,9 @@ const Login = () => {
 
       {/* <!-- dropdown menu --> */}
       <div
-        className={`${dropdown ? "block" : "hidden"
-          } pt-7.5 pb-8.5 px-4 sm:px-8.5`}
+        className={`${
+          dropdown ? 'block' : 'hidden'
+        } pt-7.5 pb-8.5 px-4 sm:px-8.5`}
       >
         <p className="text-custom-sm mb-6">
           If you didn&apos;t Logged in, Please Log in first.
@@ -76,7 +79,7 @@ const Login = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

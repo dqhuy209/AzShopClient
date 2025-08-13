@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 const Shipping = () => {
-  const [dropdown, setDropdown] = useState(false);
+  const [dropdown, setDropdown] = useState(false)
 
   return (
     <div className="bg-white shadow-1 rounded-[10px] mt-7.5">
@@ -12,7 +12,7 @@ const Shipping = () => {
         Ship to a different address?
         <svg
           className={`fill-current ease-out duration-200 ${
-            dropdown && "rotate-180"
+            dropdown && 'rotate-180'
           }`}
           width="22"
           height="22"
@@ -30,7 +30,7 @@ const Shipping = () => {
       </div>
 
       {/* <!-- dropdown menu --> */}
-      <div className={`p-4 sm:p-8.5 ${dropdown ? "block" : "hidden"}`}>
+      <div className={`p-4 sm:p-8.5 ${dropdown ? 'block' : 'hidden'}`}>
         <div className="mb-5">
           <label htmlFor="countryName" className="block mb-2.5">
             Country/ Region
@@ -136,7 +136,7 @@ const Shipping = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Shipping;
+export default Shipping

@@ -1,44 +1,44 @@
-import React from "react";
-import Breadcrumb from "../Common/Breadcrumb";
-import BlogItem from "../Blog/BlogItem";
-import blogData from "../BlogGrid/blogData";
-import SearchForm from "../Blog/SearchForm";
-import LatestPosts from "../Blog/LatestPosts";
-import LatestProducts from "../Blog/LatestProducts";
-import Categories from "../Blog/Categories";
-import shopData from "../Shop/shopData";
+import React from 'react'
+import Breadcrumb from '../Common/Breadcrumb'
+import BlogItem from '../Blog/BlogItem'
+import blogData from '../BlogGrid/blogData'
+import SearchForm from '../Blog/SearchForm'
+import LatestPosts from '../Blog/LatestPosts'
+import LatestProducts from '../Blog/LatestProducts'
+import Categories from '../Blog/Categories'
+import shopData from '../Shop/shopData'
 
 const BlogGridWithSidebar = () => {
   const categories = [
     {
-      name: "Desktop",
+      name: 'Desktop',
       products: 10,
     },
     {
-      name: "Laptop",
+      name: 'Laptop',
       products: 12,
     },
     {
-      name: "Monitor",
+      name: 'Monitor',
       products: 30,
     },
     {
-      name: "UPS",
+      name: 'UPS',
       products: 23,
     },
     {
-      name: "Phone",
+      name: 'Phone',
       products: 10,
     },
     {
-      name: "Watch",
+      name: 'Watch',
       products: 13,
     },
-  ];
+  ]
 
   return (
     <>
-      <Breadcrumb title={"Blog Grid Sidebar"} pages={["blog grid sidebar"]} />
+      <Breadcrumb title={'Blog Grid Sidebar'} pages={['blog grid sidebar']} />
 
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -255,7 +255,7 @@ const BlogGridWithSidebar = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default BlogGridWithSidebar;
+export default BlogGridWithSidebar

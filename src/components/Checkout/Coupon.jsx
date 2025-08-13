@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const Coupon = () => {
   return (
@@ -26,7 +26,7 @@ const Coupon = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Coupon;
+export default Coupon

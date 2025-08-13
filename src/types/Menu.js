@@ -1,7 +1,7 @@
 export const defaultValues = {
   id: 0,
-  title: "",
-  path: "",
+  title: '',
+  path: '',
   newTab: false,
   submenu: [],
-};
+}

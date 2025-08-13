@@ -1,25 +1,25 @@
-"use client";
-import React, { useState } from "react";
-import Breadcrumb from "../Common/Breadcrumb";
-import Image from "next/image";
-import AddressModal from "./AddressModal";
-import Orders from "../Orders";
+'use client'
+import React, { useState } from 'react'
+import Breadcrumb from '../Common/Breadcrumb'
+import Image from 'next/image'
+import AddressModal from './AddressModal'
+import Orders from '../Orders'
 
 const MyAccount = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const [addressModal, setAddressModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard')
+  const [addressModal, setAddressModal] = useState(false)
 
   const openAddressModal = () => {
-    setAddressModal(true);
-  };
+    setAddressModal(true)
+  }
 
   const closeAddressModal = () => {
-    setAddressModal(false);
-  };
+    setAddressModal(false)
+  }
 
   return (
     <>
-      <Breadcrumb title={"My Account"} pages={["my account"]} />
+      <Breadcrumb title={'My Account'} pages={['my account']} />
 
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -48,11 +48,11 @@ const MyAccount = () => {
                 <div className="p-4 sm:p-7.5 xl:p-9">
                   <div className="flex flex-wrap xl:flex-nowrap xl:flex-col gap-4">
                     <button
-                      onClick={() => setActiveTab("dashboard")}
+                      onClick={() => setActiveTab('dashboard')}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "dashboard"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
+                        activeTab === 'dashboard'
+                          ? 'text-white bg-blue'
+                          : 'text-dark-2 bg-gray-1'
                       }`}
                     >
                       <svg
@@ -91,11 +91,11 @@ const MyAccount = () => {
                       Dashboard
                     </button>
                     <button
-                      onClick={() => setActiveTab("orders")}
+                      onClick={() => setActiveTab('orders')}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "orders"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
+                        activeTab === 'orders'
+                          ? 'text-white bg-blue'
+                          : 'text-dark-2 bg-gray-1'
                       }`}
                     >
                       <svg
@@ -129,11 +129,11 @@ const MyAccount = () => {
                     </button>
 
                     <button
-                      onClick={() => setActiveTab("downloads")}
+                      onClick={() => setActiveTab('downloads')}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "downloads"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
+                        activeTab === 'downloads'
+                          ? 'text-white bg-blue'
+                          : 'text-dark-2 bg-gray-1'
                       }`}
                     >
                       <svg
@@ -157,11 +157,11 @@ const MyAccount = () => {
                     </button>
 
                     <button
-                      onClick={() => setActiveTab("addresses")}
+                      onClick={() => setActiveTab('addresses')}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "addresses"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
+                        activeTab === 'addresses'
+                          ? 'text-white bg-blue'
+                          : 'text-dark-2 bg-gray-1'
                       }`}
                     >
                       <svg
@@ -187,11 +187,11 @@ const MyAccount = () => {
                     </button>
 
                     <button
-                      onClick={() => setActiveTab("account-details")}
+                      onClick={() => setActiveTab('account-details')}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "account-details"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
+                        activeTab === 'account-details'
+                          ? 'text-white bg-blue'
+                          : 'text-dark-2 bg-gray-1'
                       }`}
                     >
                       <svg
@@ -219,11 +219,11 @@ const MyAccount = () => {
                     </button>
 
                     <button
-                      onClick={() => setActiveTab("logout")}
+                      onClick={() => setActiveTab('logout')}
                       className={`flex items-center rounded-md gap-2.5 py-3 px-4.5 ease-out duration-200 hover:bg-blue hover:text-white ${
-                        activeTab === "logout"
-                          ? "text-white bg-blue"
-                          : "text-dark-2 bg-gray-1"
+                        activeTab === 'logout'
+                          ? 'text-white bg-blue'
+                          : 'text-dark-2 bg-gray-1'
                       }`}
                     >
                       <svg
@@ -257,7 +257,7 @@ const MyAccount = () => {
 
             <div
               className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 py-9.5 px-4 sm:px-7.5 xl:px-10 ${
-                activeTab === "dashboard" ? "block" : "hidden"
+                activeTab === 'dashboard' ? 'block' : 'hidden'
               }`}
             >
               <p className="text-dark">
@@ -282,7 +282,7 @@ const MyAccount = () => {
           <!-- orders tab content start --> */}
             <div
               className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 ${
-                activeTab === "orders" ? "block" : "hidden"
+                activeTab === 'orders' ? 'block' : 'hidden'
               }`}
             >
               <Orders />
@@ -292,7 +292,7 @@ const MyAccount = () => {
           <!-- downloads tab content start --> */}
             <div
               className={`xl:max-w-[770px] w-full bg-white rounded-xl shadow-1 py-9.5 px-4 sm:px-7.5 xl:px-10 ${
-                activeTab === "downloads" ? "block" : "hidden"
+                activeTab === 'downloads' ? 'block' : 'hidden'
               }`}
             >
               <p>You don&apos;t have any download</p>
@@ -302,7 +302,7 @@ const MyAccount = () => {
           <!-- addresses tab content start --> */}
             <div
               className={`flex-col sm:flex-row gap-7.5 ${
-                activeTab === "addresses" ? "flex" : "hidden"
+                activeTab === 'addresses' ? 'flex' : 'hidden'
               }`}
             >
               <div className="xl:max-w-[370px] w-full bg-white shadow-1 rounded-xl">
@@ -574,7 +574,7 @@ const MyAccount = () => {
           <!-- details tab content start --> */}
             <div
               className={`xl:max-w-[770px] w-full ${
-                activeTab === "account-details" ? "block" : "hidden"
+                activeTab === 'account-details' ? 'block' : 'hidden'
               }`}
             >
               <form>
@@ -723,7 +723,7 @@ const MyAccount = () => {
 
       <AddressModal isOpen={addressModal} closeModal={closeAddressModal} />
     </>
-  );
-};
+  )
+}
 
-export default MyAccount;
+export default MyAccount

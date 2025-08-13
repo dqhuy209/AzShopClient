@@ -1,24 +1,24 @@
-"use client";
-import React from "react";
-import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { useDispatch } from "react-redux";
-import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
-import Image from "next/image";
-import Link from "next/link";
-import { formatVNDRounded } from "@/utils/formatCurrency";
+'use client'
+import React from 'react'
+import { useModalContext } from '@/app/context/QuickViewModalContext'
+import { useDispatch } from 'react-redux'
+import { updateQuickView } from '@/redux/features/quickView-slice'
+import { addItemToCart } from '@/redux/features/cart-slice'
+import Image from 'next/image'
+import Link from 'next/link'
+import { formatVNDRounded } from '@/utils/formatCurrency'
 
 const SingleItem = ({ item }) => {
-  const { openModal } = useModalContext();
-  const dispatch = useDispatch();
+  const { openModal } = useModalContext()
+  const dispatch = useDispatch()
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
     // Ensure we have a valid product before updating quick view
     if (item?.id) {
-      dispatch(updateQuickView({ ...item }));
+      dispatch(updateQuickView({ ...item }))
     }
-  };
+  }
 
   // add to cart
   const handleAddToCart = () => {
@@ -27,20 +27,27 @@ const SingleItem = ({ item }) => {
         ...item,
         quantity: 1,
       })
-    );
-  };
-
-
+    )
+  }
 
   return (
     <div className="h-full overflow-hidden transition-all duration-300 ease-out bg-white rounded-xl group shadow-1 hover:shadow-2">
       {/* Image Section - Large size */}
       <div className="relative overflow-hidden flex items-center justify-center rounded-t-xl bg-gray h-[300px] p-4">
         <div className="flex items-center justify-center w-full h-full">
-          <Link href={`/shop-details/${item?.id}`} className="flex items-center justify-center w-full h-full">
+          <Link
+            href={`/shop-details/${item?.id}`}
+            className="flex items-center justify-center w-full h-full"
+          >
             <Image
-              src={item?.images?.[0] ? (item.images[0].startsWith('http') ? item.images[0] : `/images/products/${item.images[0]}`) : "/images/placeholder.jpg"}
-              alt={item?.name || ""}
+              src={
+                item?.images?.[0]
+                  ? item.images[0].startsWith('http')
+                    ? item.images[0]
+                    : `/images/products/${item.images[0]}`
+                  : '/images/placeholder.jpg'
+              }
+              alt={item?.name || ''}
               width={300}
               height={300}
               className="object-cover w-full h-full transition-transform duration-300 ease-out rounded-lg hover:scale-105"
@@ -52,8 +59,8 @@ const SingleItem = ({ item }) => {
         <div className="absolute flex flex-col gap-2 duration-300 ease-linear translate-x-full opacity-0 right-4 top-4 group-hover:translate-x-0 group-hover:opacity-100">
           <button
             onClick={() => {
-              handleQuickViewUpdate();
-              openModal();
+              handleQuickViewUpdate()
+              openModal()
             }}
             aria-label="button for quick view"
             className="flex items-center justify-center w-10 h-10 text-white duration-200 ease-out rounded-full shadow-lg bg-teal hover:bg-teal-dark hover:scale-110"
@@ -132,8 +139,18 @@ const SingleItem = ({ item }) => {
         <div className="space-y-2 min-h-[3rem] flex flex-col justify-start">
           {item?.categoryName && (
             <p className="flex items-center text-sm text-meta-3">
-              <svg className="flex-shrink-0 w-4 h-4 mr-2 text-meta-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              <svg
+                className="flex-shrink-0 w-4 h-4 mr-2 text-meta-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                />
               </svg>
               <span className="truncate">{item.categoryName}</span>
             </p>
@@ -141,8 +158,18 @@ const SingleItem = ({ item }) => {
 
           {item?.currentCondition && (
             <p className="flex items-center text-sm text-green">
-              <svg className="flex-shrink-0 w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="flex-shrink-0 w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <span className="truncate">{item.currentCondition}</span>
             </p>
@@ -155,11 +182,17 @@ const SingleItem = ({ item }) => {
             {/* Main Price Display */}
             <div className="flex items-baseline gap-3">
               <span className="text-2xl font-bold text-red">
-                {formatVNDRounded?.thousands ? formatVNDRounded.thousands(item?.finalPrice || item?.sellingPrice) : `$${item?.finalPrice || item?.sellingPrice}`}
+                {formatVNDRounded?.thousands
+                  ? formatVNDRounded.thousands(
+                      item?.finalPrice || item?.sellingPrice
+                    )
+                  : `$${item?.finalPrice || item?.sellingPrice}`}
               </span>
               {item?.discountPercent > 0 && (
                 <span className="text-lg font-medium line-through text-meta-4">
-                  {formatVNDRounded?.thousands ? formatVNDRounded.thousands(item?.sellingPrice) : `$${item?.sellingPrice}`}
+                  {formatVNDRounded?.thousands
+                    ? formatVNDRounded.thousands(item?.sellingPrice)
+                    : `$${item?.sellingPrice}`}
                 </span>
               )}
             </div>
@@ -169,7 +202,12 @@ const SingleItem = ({ item }) => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="inline-flex items-center px-3 py-1 text-sm font-medium rounded-lg bg-red-light-6 text-red">
-                    Tiết kiệm {formatVNDRounded?.thousands ? formatVNDRounded.thousands((item?.sellingPrice) - (item?.finalPrice)) : `$${(item?.sellingPrice - item?.finalPrice).toFixed(2)}`}
+                    Tiết kiệm{' '}
+                    {formatVNDRounded?.thousands
+                      ? formatVNDRounded.thousands(
+                          item?.sellingPrice - item?.finalPrice
+                        )
+                      : `$${(item?.sellingPrice - item?.finalPrice).toFixed(2)}`}
                   </span>
                 </div>
                 <div className="flex items-center text-sm font-medium text-red">
@@ -181,7 +219,7 @@ const SingleItem = ({ item }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SingleItem;
+export default SingleItem

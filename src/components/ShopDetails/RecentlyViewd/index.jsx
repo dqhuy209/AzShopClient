@@ -1,27 +1,27 @@
-"use client";
-import React from "react";
-import shopData from "@/components/Shop/shopData";
-import ProductItem from "@/components/Common/ProductItem";
-import Image from "next/image";
-import Link from "next/link";
+'use client'
+import React from 'react'
+import shopData from '@/components/Shop/shopData'
+import ProductItem from '@/components/Common/ProductItem'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef } from "react";
-import "swiper/css/navigation";
-import "swiper/css";
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { useCallback, useRef } from 'react'
+import 'swiper/css/navigation'
+import 'swiper/css'
 
 const RecentlyViewdItems = () => {
-  const sliderRef = useRef(null);
+  const sliderRef = useRef(null)
 
   const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
-  }, []);
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slidePrev()
+  }, [])
 
   const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
-  }, []);
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slideNext()
+  }, [])
 
   return (
     <section className="overflow-hidden pt-17.5">
@@ -98,7 +98,7 @@ const RecentlyViewdItems = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default RecentlyViewdItems;
+export default RecentlyViewdItems

@@ -1,20 +1,20 @@
-"use client";
-import React from "react";
-import Discount from "./Discount";
-import OrderSummary from "./OrderSummary";
-import { useAppSelector } from "@/redux/store";
-import SingleItem from "./SingleItem";
-import Breadcrumb from "../Common/Breadcrumb";
-import Link from "next/link";
+'use client'
+import React from 'react'
+import Discount from './Discount'
+import OrderSummary from './OrderSummary'
+import { useAppSelector } from '@/redux/store'
+import SingleItem from './SingleItem'
+import Breadcrumb from '../Common/Breadcrumb'
+import Link from 'next/link'
 
 const Cart = () => {
-  const cartItems = useAppSelector((state) => state.cartReducer.items);
+  const cartItems = useAppSelector((state) => state.cartReducer.items)
 
   return (
     <>
       {/* <!-- ===== Breadcrumb Section Start ===== --> */}
       <section>
-        <Breadcrumb title={"Cart"} pages={["Cart"]} />
+        <Breadcrumb title={'Cart'} pages={['Cart']} />
       </section>
       {/* <!-- ===== Breadcrumb Section End ===== --> */}
       {cartItems.length > 0 ? (
@@ -112,7 +112,7 @@ const Cart = () => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Cart;
+export default Cart

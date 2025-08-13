@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import RangeSlider from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
+import { useState } from 'react'
+import RangeSlider from 'react-range-slider-input'
+import 'react-range-slider-input/dist/style.css'
 
 const PriceDropdown = () => {
-  const [toggleDropdown, setToggleDropdown] = useState(true);
+  const [toggleDropdown, setToggleDropdown] = useState(true)
 
   const [selectedPrice, setSelectedPrice] = useState({
     from: 0,
     to: 100,
-  });
+  })
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
@@ -82,7 +82,7 @@ const PriceDropdown = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PriceDropdown;
+export default PriceDropdown

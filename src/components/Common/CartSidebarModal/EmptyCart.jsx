@@ -1,9 +1,9 @@
-import React from "react";
-import Link from "next/link";
-import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
+import React from 'react'
+import Link from 'next/link'
+import { useCartModalContext } from '@/app/context/CartSidebarModalContext'
 
 const EmptyCart = () => {
-  const { closeCartModal } = useCartModalContext();
+  const { closeCartModal } = useCartModalContext()
 
   return (
     <div className="text-center">
@@ -48,7 +48,7 @@ const EmptyCart = () => {
         Continue Shopping
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default EmptyCart;
+export default EmptyCart

@@ -1,50 +1,50 @@
-"use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef, useEffect, useState } from "react";
-import Image from "next/image";
-import categoryService from "@/services/categoryService";
+'use client'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { useCallback, useRef, useEffect, useState } from 'react'
+import Image from 'next/image'
+import categoryService from '@/services/categoryService'
 
 // Import Swiper styles
-import "swiper/css/navigation";
-import "swiper/css";
-import SingleItem from "./SingleItem";
+import 'swiper/css/navigation'
+import 'swiper/css'
+import SingleItem from './SingleItem'
 
 const Categories = () => {
-  const sliderRef = useRef(null);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const sliderRef = useRef(null)
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(true)
 
   const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
-  }, []);
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slidePrev()
+  }, [])
 
   const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
-  }, []);
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slideNext()
+  }, [])
 
   useEffect(() => {
     if (sliderRef.current) {
-      sliderRef.current.swiper.init();
+      sliderRef.current.swiper.init()
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        setLoading(true);
-        const response = await categoryService.getListCategory();
-        setCategories(response.data.data);
+        setLoading(true)
+        const response = await categoryService.getListCategory()
+        setCategories(response.data.data)
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error('Error fetching categories:', error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchCategories();
-  }, []);
+    fetchCategories()
+  }, [])
 
   return (
     <section className="overflow-hidden pt-17.5">
@@ -171,7 +171,7 @@ const Categories = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Categories;
+export default Categories

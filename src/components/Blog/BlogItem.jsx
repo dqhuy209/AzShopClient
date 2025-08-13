@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
 
 const BlogItem = ({ blog }) => {
   return (
@@ -61,7 +61,7 @@ const BlogItem = ({ blog }) => {
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BlogItem;
+export default BlogItem

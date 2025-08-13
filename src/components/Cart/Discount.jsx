@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const Discount = () => {
   return (
@@ -33,7 +33,7 @@ const Discount = () => {
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default Discount;
+export default Discount

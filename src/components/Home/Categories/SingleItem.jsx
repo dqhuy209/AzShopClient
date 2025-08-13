@@ -1,5 +1,5 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react'
+import Image from 'next/image'
 
 const SingleItem = ({ item }) => {
   return (
@@ -14,7 +14,7 @@ const SingleItem = ({ item }) => {
         </h3>
       </div>
     </a>
-  );
-};
+  )
+}
 
-export default SingleItem;
+export default SingleItem

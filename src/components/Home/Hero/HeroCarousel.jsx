@@ -1,12 +1,12 @@
-"use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+'use client'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay, Pagination } from 'swiper/modules'
 
 // Import Swiper styles
-import "swiper/css/pagination";
-import "swiper/css";
+import 'swiper/css/pagination'
+import 'swiper/css'
 
-import Image from "next/image";
+import Image from 'next/image'
 
 const HeroCarousal = () => {
   return (
@@ -42,7 +42,8 @@ const HeroCarousal = () => {
             </h1>
 
             <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at ipsum at risus euismod lobortis in
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at
+              ipsum at risus euismod lobortis in
             </p>
 
             <a
@@ -64,7 +65,7 @@ const HeroCarousal = () => {
         </div>
       </SwiperSlide>
       <SwiperSlide>
-        {" "}
+        {' '}
         <div className="flex items-center pt-6 sm:pt-0 flex-col-reverse sm:flex-row">
           <div className="max-w-[394px] py-10 sm:py-15 lg:py-26 pl-4 sm:pl-7.5 lg:pl-12.5">
             <div className="flex items-center gap-4 mb-7.5 sm:mb-10">
@@ -106,7 +107,7 @@ const HeroCarousal = () => {
         </div>
       </SwiperSlide>
     </Swiper>
-  );
-};
+  )
+}
 
-export default HeroCarousal;
+export default HeroCarousal

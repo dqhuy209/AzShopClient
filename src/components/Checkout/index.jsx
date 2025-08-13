@@ -1,17 +1,17 @@
-"use client";
-import React from "react";
-import Breadcrumb from "../Common/Breadcrumb";
-import Login from "./Login";
-import Shipping from "./Shipping";
-import ShippingMethod from "./ShippingMethod";
-import PaymentMethod from "./PaymentMethod";
-import Coupon from "./Coupon";
-import Billing from "./Billing";
+'use client'
+import React from 'react'
+import Breadcrumb from '../Common/Breadcrumb'
+import Login from './Login'
+import Shipping from './Shipping'
+import ShippingMethod from './ShippingMethod'
+import PaymentMethod from './PaymentMethod'
+import Coupon from './Coupon'
+import Billing from './Billing'
 
 const Checkout = () => {
   return (
     <>
-      <Breadcrumb title={"Checkout"} pages={["checkout"]} />
+      <Breadcrumb title={'Checkout'} pages={['checkout']} />
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <form>
@@ -144,7 +144,7 @@ const Checkout = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default Checkout;
+export default Checkout

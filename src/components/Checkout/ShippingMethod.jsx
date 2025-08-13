@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useState } from 'react'
+import Image from 'next/image'
 
 const ShippingMethod = () => {
-  const [shippingMethod, setShippingMethod] = useState("free");
+  const [shippingMethod, setShippingMethod] = useState('free')
   return (
     <div className="bg-white shadow-1 rounded-[10px] mt-7.5">
       <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
@@ -21,14 +21,14 @@ const ShippingMethod = () => {
                 name="free"
                 id="free"
                 className="sr-only"
-                onChange={() => setShippingMethod("free")}
+                onChange={() => setShippingMethod('free')}
               />
               {/* selectShipping === 'free' ? 'border-4 border-blue' : 'border border-gray-4' */}
               <div
                 className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  shippingMethod === "free"
-                    ? "border-4 border-blue"
-                    : "border border-gray-4"
+                  shippingMethod === 'free'
+                    ? 'border-4 border-blue'
+                    : 'border border-gray-4'
                 }`}
               ></div>
             </div>
@@ -45,13 +45,13 @@ const ShippingMethod = () => {
                 name="fedex"
                 id="fedex"
                 className="sr-only"
-                onChange={() => setShippingMethod("fedex")}
+                onChange={() => setShippingMethod('fedex')}
               />
               <div
                 className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  shippingMethod === "fedex"
-                    ? "border-4 border-blue"
-                    : "border border-gray-4"
+                  shippingMethod === 'fedex'
+                    ? 'border-4 border-blue'
+                    : 'border border-gray-4'
                 }`}
               ></div>
             </div>
@@ -85,13 +85,13 @@ const ShippingMethod = () => {
                 name="dhl"
                 id="dhl"
                 className="sr-only"
-                onChange={() => setShippingMethod("dhl")}
+                onChange={() => setShippingMethod('dhl')}
               />
               <div
                 className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  shippingMethod === "dhl"
-                    ? "border-4 border-blue"
-                    : "border border-gray-4"
+                  shippingMethod === 'dhl'
+                    ? 'border-4 border-blue'
+                    : 'border border-gray-4'
                 }`}
               ></div>
             </div>
@@ -117,7 +117,7 @@ const ShippingMethod = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ShippingMethod;
+export default ShippingMethod

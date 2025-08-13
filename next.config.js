@@ -26,9 +26,9 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'localhost',
-      }
+      },
     ],
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
