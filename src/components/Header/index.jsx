@@ -134,10 +134,10 @@ const Header = () => {
 
                             <div>
                 <span className="block text-custom-sm text-white uppercase whitespace-nowrap">
-                  24/7 SUPPORT
+                  HỖ TRỢ 24/7
                 </span>
                                 <p className="font-medium text-custom-lg text-white whitespace-nowrap">
-                                    (+965) 7492-3477
+                                    0855.38.2525
                                 </p>
                             </div>
                         </div>
@@ -191,8 +191,8 @@ const Header = () => {
                   </span>
 
                                     <div>
-                    <span className="hidden lg:block text-custom-sm text-white uppercase">
-                      cart
+                    <span className="hidden lg:block text-custom-sm text-white uppercase whitespace-nowrap">
+                      GIỎ HÀNG
                     </span>
                                         <p className="font-medium text-custom-lg text-white">
                                             ${totalPrice}
