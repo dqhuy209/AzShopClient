@@ -1,24 +1,24 @@
-"use client";
-import React from "react";
-import { Product } from "@/types/product";
-import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
-import { addItemToWishlist } from "@/redux/features/wishlist-slice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import Link from "next/link";
-import Image from "next/image";
+'use client'
+import React from 'react'
+import { Product } from '@/types/product'
+import { useModalContext } from '@/app/context/QuickViewModalContext'
+import { updateQuickView } from '@/redux/features/quickView-slice'
+import { addItemToCart } from '@/redux/features/cart-slice'
+import { addItemToWishlist } from '@/redux/features/wishlist-slice'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/redux/store'
+import Link from 'next/link'
+import Image from 'next/image'
 
 const SingleGridItem = ({ item }) => {
-  const { openModal } = useModalContext();
+  const { openModal } = useModalContext()
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
-  };
+    dispatch(updateQuickView({ ...item }))
+  }
 
   // add to cart
   const handleAddToCart = () => {
@@ -27,18 +27,18 @@ const SingleGridItem = ({ item }) => {
         ...item,
         quantity: 1,
       })
-    );
-  };
+    )
+  }
 
   const handleItemToWishList = () => {
     dispatch(
       addItemToWishlist({
         ...item,
-        status: "available",
+        status: 'available',
         quantity: 1,
       })
-    );
-  };
+    )
+  }
 
   return (
     <div className="group">
@@ -48,8 +48,8 @@ const SingleGridItem = ({ item }) => {
         <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
           <button
             onClick={() => {
-              openModal();
-              handleQuickViewUpdate();
+              openModal()
+              handleQuickViewUpdate()
             }}
             id="newOne"
             aria-label="button for quick view"
@@ -156,7 +156,7 @@ const SingleGridItem = ({ item }) => {
         <span className="text-dark-4 line-through">${item.price}</span>
       </span>
     </div>
-  );
-};
+  )
+}
 
-export default SingleGridItem;
+export default SingleGridItem

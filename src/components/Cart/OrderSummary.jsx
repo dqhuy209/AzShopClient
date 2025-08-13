@@ -1,11 +1,11 @@
-import { selectTotalPrice } from "@/redux/features/cart-slice";
-import { useAppSelector } from "@/redux/store";
-import React from "react";
-import { useSelector } from "react-redux";
+import { selectTotalPrice } from '@/redux/features/cart-slice'
+import { useAppSelector } from '@/redux/store'
+import React from 'react'
+import { useSelector } from 'react-redux'
 
 const OrderSummary = () => {
-  const cartItems = useAppSelector((state) => state.cartReducer.items);
-  const totalPrice = useSelector(selectTotalPrice);
+  const cartItems = useAppSelector((state) => state.cartReducer.items)
+  const totalPrice = useSelector(selectTotalPrice)
 
   return (
     <div className="lg:max-w-[455px] w-full">
@@ -28,7 +28,10 @@ const OrderSummary = () => {
 
           {/* <!-- product item --> */}
           {cartItems.map((item, key) => (
-            <div key={key} className="flex items-center justify-between py-5 border-b border-gray-3">
+            <div
+              key={key}
+              className="flex items-center justify-between py-5 border-b border-gray-3"
+            >
               <div>
                 <p className="text-dark">{item.title}</p>
               </div>
@@ -62,7 +65,7 @@ const OrderSummary = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OrderSummary;
+export default OrderSummary

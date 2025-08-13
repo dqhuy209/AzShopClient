@@ -1,6 +1,6 @@
-import Link from "next/link";
-import React from "react";
-import Image from "next/image";
+import Link from 'next/link'
+import React from 'react'
+import Image from 'next/image'
 
 const LatestPosts = ({ blogs }) => {
   return (
@@ -30,7 +30,9 @@ const LatestPosts = ({ blogs }) => {
 
               <div>
                 <h3 className="text-dark leading-[22px] ease-out duration-200 mb-1.5 hover:text-blue">
-                  <Link href="/blogs/blog-details-with-sidebar">{blog.title}</Link>
+                  <Link href="/blogs/blog-details-with-sidebar">
+                    {blog.title}
+                  </Link>
                 </h3>
 
                 <span className="flex items-center gap-3">
@@ -57,7 +59,7 @@ const LatestPosts = ({ blogs }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LatestPosts;
+export default LatestPosts

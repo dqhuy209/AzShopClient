@@ -1,24 +1,24 @@
-"use client";
-import React from "react";
+'use client'
+import React from 'react'
 
-import { Product } from "@/types/product";
-import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
-import { addItemToWishlist } from "@/redux/features/wishlist-slice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
-import Link from "next/link";
-import Image from "next/image";
+import { Product } from '@/types/product'
+import { useModalContext } from '@/app/context/QuickViewModalContext'
+import { updateQuickView } from '@/redux/features/quickView-slice'
+import { addItemToCart } from '@/redux/features/cart-slice'
+import { addItemToWishlist } from '@/redux/features/wishlist-slice'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/redux/store'
+import Link from 'next/link'
+import Image from 'next/image'
 
 const SingleListItem = ({ item }) => {
-  const { openModal } = useModalContext();
-  const dispatch = useDispatch();
+  const { openModal } = useModalContext()
+  const dispatch = useDispatch()
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
-    dispatch(updateQuickView({ ...item }));
-  };
+    dispatch(updateQuickView({ ...item }))
+  }
 
   // add to cart
   const handleAddToCart = () => {
@@ -27,18 +27,18 @@ const SingleListItem = ({ item }) => {
         ...item,
         quantity: 1,
       })
-    );
-  };
+    )
+  }
 
   const handleItemToWishList = () => {
     dispatch(
       addItemToWishlist({
         ...item,
-        status: "available",
+        status: 'available',
         quantity: 1,
       })
-    );
-  };
+    )
+  }
 
   return (
     <div className="group rounded-lg bg-white shadow-1">
@@ -49,8 +49,8 @@ const SingleListItem = ({ item }) => {
           <div className="absolute left-0 bottom-0 translate-y-full w-full flex items-center justify-center gap-2.5 pb-5 ease-linear duration-200 group-hover:translate-y-0">
             <button
               onClick={() => {
-                openModal();
-                handleQuickViewUpdate();
+                openModal()
+                handleQuickViewUpdate()
               }}
               aria-label="button for quick view"
               className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"
@@ -160,7 +160,7 @@ const SingleListItem = ({ item }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SingleListItem;
+export default SingleListItem

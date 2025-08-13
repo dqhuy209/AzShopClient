@@ -1,18 +1,18 @@
-import React from "react";
-import { AppDispatch } from "@/redux/store";
-import { useDispatch } from "react-redux";
+import React from 'react'
+import { AppDispatch } from '@/redux/store'
+import { useDispatch } from 'react-redux'
 
-import { removeItemFromWishlist } from "@/redux/features/wishlist-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
+import { removeItemFromWishlist } from '@/redux/features/wishlist-slice'
+import { addItemToCart } from '@/redux/features/cart-slice'
 
-import Image from "next/image";
+import Image from 'next/image'
 
 const SingleItem = ({ item }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleRemoveFromWishlist = () => {
-    dispatch(removeItemFromWishlist(item.id));
-  };
+    dispatch(removeItemFromWishlist(item.id))
+  }
 
   const handleAddToCart = () => {
     dispatch(
@@ -20,8 +20,8 @@ const SingleItem = ({ item }) => {
         ...item,
         quantity: 1,
       })
-    );
-  };
+    )
+  }
 
   return (
     <div className="flex items-center border-t border-gray-3 py-5 px-10">
@@ -57,7 +57,12 @@ const SingleItem = ({ item }) => {
         <div className="flex items-center justify-between gap-5">
           <div className="w-full flex items-center gap-5.5">
             <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5">
-              <Image src={item.imgs?.thumbnails[0]} alt="product" width={200} height={200} />
+              <Image
+                src={item.imgs?.thumbnails[0]}
+                alt="product"
+                width={200}
+                height={200}
+              />
             </div>
 
             <div>
@@ -111,7 +116,7 @@ const SingleItem = ({ item }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SingleItem;
+export default SingleItem

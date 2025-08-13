@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import SingleOrder from "./SingleOrder";
-import ordersData from "./ordersData";
+import React, { useEffect, useState } from 'react'
+import SingleOrder from './SingleOrder'
+import ordersData from './ordersData'
 
 const Orders = () => {
-  const [orders, setOrders] = useState<any>([]);
+  const [orders, setOrders] = useState < any > []
 
   useEffect(() => {
     fetch(`/api/order`)
       .then((res) => res.json())
       .then((data) => {
-        setOrders(data.orders);
+        setOrders(data.orders)
       })
       .catch((err) => {
-        console.log(err.message);
-      });
-  }, []);
+        console.log(err.message)
+      })
+  }, [])
 
   return (
     <>
@@ -64,7 +64,7 @@ const Orders = () => {
           ))}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Orders;
+export default Orders

@@ -1,5 +1,5 @@
 export const defaultValues = {
-  title: "",
+  title: '',
   reviews: 0,
   price: 0,
   discountedPrice: 0,
@@ -8,4 +8,4 @@ export const defaultValues = {
     thumbnails: [],
     previews: [],
   },
-};
+}

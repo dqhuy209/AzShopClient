@@ -1,11 +1,11 @@
-import Breadcrumb from "@/components/Common/Breadcrumb";
-import Link from "next/link";
-import React from "react";
+import Breadcrumb from '@/components/Common/Breadcrumb'
+import Link from 'next/link'
+import React from 'react'
 
 const Signin = () => {
   return (
     <>
-      <Breadcrumb title={"Signin"} pages={["Signin"]} />
+      <Breadcrumb title={'Signin'} pages={['Signin']} />
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="max-w-[570px] w-full mx-auto rounded-xl bg-white shadow-1 p-4 sm:p-7.5 xl:p-11">
@@ -146,7 +146,7 @@ const Signin = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default Signin;
+export default Signin

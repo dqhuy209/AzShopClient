@@ -1,26 +1,26 @@
-"use client";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef } from "react";
-import testimonialsData from "./testimonialsData";
-import Image from "next/image";
+'use client'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { useCallback, useRef } from 'react'
+import testimonialsData from './testimonialsData'
+import Image from 'next/image'
 
 // Import Swiper styles
-import "swiper/css/navigation";
-import "swiper/css";
-import SingleItem from "./SingleItem";
+import 'swiper/css/navigation'
+import 'swiper/css'
+import SingleItem from './SingleItem'
 
 const Testimonials = () => {
-  const sliderRef = useRef(null);
+  const sliderRef = useRef(null)
 
   const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slidePrev();
-  }, []);
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slidePrev()
+  }, [])
 
   const handleNext = useCallback(() => {
-    if (!sliderRef.current) return;
-    sliderRef.current.swiper.slideNext();
-  }, []);
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slideNext()
+  }, [])
 
   return (
     <section className="overflow-hidden pb-16.5">
@@ -112,7 +112,7 @@ const Testimonials = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Testimonials;
+export default Testimonials

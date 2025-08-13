@@ -1,17 +1,17 @@
-import React from "react";
-import SingleItem from "./SingleItem";
-import Link from "next/link";
-import productService from "@/services/productService";
+import React from 'react'
+import SingleItem from './SingleItem'
+import Link from 'next/link'
+import productService from '@/services/productService'
 
-const limit = 6;
+const limit = 6
 
 export default async function BestSeller() {
-  let productDetail = [];
+  let productDetail = []
   try {
-    const response = await productService.getListProductsBestSeller(limit);
-    productDetail = response.data.data;
+    const response = await productService.getListProductsBestSeller(limit)
+    productDetail = response.data.data
   } catch (error) {
-    console.error("Error fetching best seller products:", error);
+    console.error('Error fetching best seller products:', error)
   }
   return (
     <section className="overflow-hidden">
@@ -19,7 +19,6 @@ export default async function BestSeller() {
         {/* <!-- section title --> */}
         <div className="flex items-center justify-between mb-10">
           <div>
-
             <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">
               Bán chạy nhất
             </h2>
@@ -48,5 +47,5 @@ export default async function BestSeller() {
         </div>
       </div>
     </section>
-  );
+  )
 }

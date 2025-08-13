@@ -1,44 +1,44 @@
-"use client";
-import React, { useEffect, useState } from "react";
+'use client'
+import React, { useEffect, useState } from 'react'
 
-import { useCartModalContext } from "@/app/context/CartSidebarModalContext";
+import { useCartModalContext } from '@/app/context/CartSidebarModalContext'
 import {
   removeItemFromCart,
   selectTotalPrice,
-} from "@/redux/features/cart-slice";
-import { useAppSelector } from "@/redux/store";
-import { useSelector } from "react-redux";
-import SingleItem from "./SingleItem";
-import Link from "next/link";
-import EmptyCart from "./EmptyCart";
+} from '@/redux/features/cart-slice'
+import { useAppSelector } from '@/redux/store'
+import { useSelector } from 'react-redux'
+import SingleItem from './SingleItem'
+import Link from 'next/link'
+import EmptyCart from './EmptyCart'
 
 const CartSidebarModal = () => {
-  const { isCartModalOpen, closeCartModal } = useCartModalContext();
-  const cartItems = useAppSelector((state) => state.cartReducer.items);
+  const { isCartModalOpen, closeCartModal } = useCartModalContext()
+  const cartItems = useAppSelector((state) => state.cartReducer.items)
 
-  const totalPrice = useSelector(selectTotalPrice);
+  const totalPrice = useSelector(selectTotalPrice)
 
   useEffect(() => {
     // closing modal while clicking outside
     function handleClickOutside(event) {
-      if (!event.target.closest(".modal-content")) {
-        closeCartModal();
+      if (!event.target.closest('.modal-content')) {
+        closeCartModal()
       }
     }
 
     if (isCartModalOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isCartModalOpen, closeCartModal]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isCartModalOpen, closeCartModal])
 
   return (
     <div
       className={`fixed top-0 left-0 z-99999 overflow-y-auto no-scrollbar w-full h-screen bg-dark/70 ease-linear duration-300 ${
-        isCartModalOpen ? "translate-x-0" : "translate-x-full"
+        isCartModalOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
     >
       <div className="flex items-center justify-end">
@@ -118,7 +118,7 @@ const CartSidebarModal = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CartSidebarModal;
+export default CartSidebarModal

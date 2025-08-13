@@ -1,27 +1,26 @@
-"use client";
-import React, { createContext, useContext, useState } from "react";
+'use client'
+import React, { createContext, useContext, useState } from 'react'
 
-
-const PreviewSlider = createContext(undefined);
+const PreviewSlider = createContext(undefined)
 
 export const usePreviewSlider = () => {
-  const context = useContext(PreviewSlider);
+  const context = useContext(PreviewSlider)
   if (!context) {
-    throw new Error("usePreviewSlider must be used within a ModalProvider");
+    throw new Error('usePreviewSlider must be used within a ModalProvider')
   }
-  return context;
-};
+  return context
+}
 
 export const PreviewSliderProvider = ({ children }) => {
-  const [isModalPreviewOpen, setIsModalOpen] = useState(false);
+  const [isModalPreviewOpen, setIsModalOpen] = useState(false)
 
   const openPreviewModal = () => {
-    setIsModalOpen(true);
-  };
+    setIsModalOpen(true)
+  }
 
   const closePreviewModal = () => {
-    setIsModalOpen(false);
-  };
+    setIsModalOpen(false)
+  }
 
   return (
     <PreviewSlider.Provider
@@ -29,5 +28,5 @@ export const PreviewSliderProvider = ({ children }) => {
     >
       {children}
     </PreviewSlider.Provider>
-  );
-};
+  )
+}

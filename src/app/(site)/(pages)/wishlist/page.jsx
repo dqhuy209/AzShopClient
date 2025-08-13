@@ -1,19 +1,18 @@
-import React from "react";
-import { Wishlist } from "@/components/Wishlist";
-
+import React from 'react'
+import { Wishlist } from '@/components/Wishlist'
 
 export const metadata = {
-  title: "Wishlist Page | NextCommerce Nextjs E-commerce template",
-  description: "This is Wishlist Page for NextCommerce Template",
+  title: 'Wishlist Page | NextCommerce Nextjs E-commerce template',
+  description: 'This is Wishlist Page for NextCommerce Template',
   // other metadata
-};
+}
 
 const WishlistPage = () => {
   return (
     <main>
       <Wishlist />
     </main>
-  );
-};
+  )
+}
 
-export default WishlistPage;
+export default WishlistPage

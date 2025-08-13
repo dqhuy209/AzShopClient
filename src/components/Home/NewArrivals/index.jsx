@@ -1,17 +1,17 @@
-import React from "react";
-import Link from "next/link";
-import ProductItem from "@/components/Common/ProductItem";
-import productService from "@/services/productService";
+import React from 'react'
+import Link from 'next/link'
+import ProductItem from '@/components/Common/ProductItem'
+import productService from '@/services/productService'
 
-const limit = 8;
+const limit = 8
 
 export default async function NewArrival() {
-  let productDetail = [];
+  let productDetail = []
   try {
-    const response = await productService.getListProductsNewArrivals(limit);
-    productDetail = response.data.data;
+    const response = await productService.getListProductsNewArrivals(limit)
+    productDetail = response.data.data
   } catch (error) {
-    console.error("Error fetching product detail:", error);
+    console.error('Error fetching product detail:', error)
   }
 
   return (
@@ -46,5 +46,5 @@ export default async function NewArrival() {
         </div>
       </div>
     </section>
-  );
+  )
 }

@@ -1,27 +1,26 @@
-"use client";
-import React, { createContext, useContext, useState } from "react";
+'use client'
+import React, { createContext, useContext, useState } from 'react'
 
-
-const CartModalContext = createContext(undefined);
+const CartModalContext = createContext(undefined)
 
 export const useCartModalContext = () => {
-  const context = useContext(CartModalContext);
+  const context = useContext(CartModalContext)
   if (!context) {
-    throw new Error("useModalContext must be used within a ModalProvider");
+    throw new Error('useModalContext must be used within a ModalProvider')
   }
-  return context;
-};
+  return context
+}
 
 export const CartModalProvider = ({ children }) => {
-  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false)
 
   const openCartModal = () => {
-    setIsCartModalOpen(true);
-  };
+    setIsCartModalOpen(true)
+  }
 
   const closeCartModal = () => {
-    setIsCartModalOpen(false);
-  };
+    setIsCartModalOpen(false)
+  }
 
   return (
     <CartModalContext.Provider
@@ -29,5 +28,5 @@ export const CartModalProvider = ({ children }) => {
     >
       {children}
     </CartModalContext.Provider>
-  );
-};
+  )
+}

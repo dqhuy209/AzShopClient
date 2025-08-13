@@ -1,6 +1,6 @@
 export const defaultValues = {
-  date: "",
+  date: '',
   views: 0,
-  title: "",
-  img: "",
-};
+  title: '',
+  img: '',
+}

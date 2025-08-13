@@ -1,41 +1,41 @@
-"use client";
-import React, { useEffect, useState } from "react";
+'use client'
+import React, { useEffect, useState } from 'react'
 
-import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { useAppSelector } from "@/redux/store";
-import { addItemToCart } from "@/redux/features/cart-slice";
-import { useDispatch } from "react-redux";
-import Image from "next/image";
-import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
-import { updateproductDetails } from "@/redux/features/product-details";
-import { resetQuickView } from "@/redux/features/quickView-slice";
-import productService from "@/services/productService";
-import { formatVNDRounded } from "@/utils/formatCurrency";
+import { useModalContext } from '@/app/context/QuickViewModalContext'
+import { useAppSelector } from '@/redux/store'
+import { addItemToCart } from '@/redux/features/cart-slice'
+import { useDispatch } from 'react-redux'
+import Image from 'next/image'
+import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
+import { updateproductDetails } from '@/redux/features/product-details'
+import { resetQuickView } from '@/redux/features/quickView-slice'
+import productService from '@/services/productService'
+import { formatVNDRounded } from '@/utils/formatCurrency'
 
 const QuickViewModal = () => {
-  const { isModalOpen, closeModal } = useModalContext();
-  const { openPreviewModal, isModalPreviewOpen } = usePreviewSlider();
-  const [quantity, setQuantity] = useState(1);
-  const [productData, setProductData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [currentProductId, setCurrentProductId] = useState(null);
+  const { isModalOpen, closeModal } = useModalContext()
+  const { openPreviewModal, isModalPreviewOpen } = usePreviewSlider()
+  const [quantity, setQuantity] = useState(1)
+  const [productData, setProductData] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [currentProductId, setCurrentProductId] = useState(null)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   // get the product data
-  const product = useAppSelector((state) => state.quickViewReducer.value);
+  const product = useAppSelector((state) => state.quickViewReducer.value)
 
-  const [activePreview, setActivePreview] = useState(0);
+  const [activePreview, setActivePreview] = useState(0)
 
   // Handle close modal with proper cleanup
   const handleCloseModal = () => {
-    closeModal();
-    dispatch(resetQuickView());
-    setProductData(null);
-    setActivePreview(0);
-    setQuantity(1);
-    setCurrentProductId(null);
-  };
+    closeModal()
+    dispatch(resetQuickView())
+    setProductData(null)
+    setActivePreview(0)
+    setQuantity(1)
+    setCurrentProductId(null)
+  }
 
   // fetch product details when modal opens
   useEffect(() => {
@@ -43,47 +43,47 @@ const QuickViewModal = () => {
       // Only fetch if this is a different product
       if (currentProductId !== product.id) {
         // Reset states when opening modal for new product
-        setActivePreview(0);
-        setQuantity(1);
-        setProductData(null);
-        setCurrentProductId(product.id);
-        fetchProductDetails();
+        setActivePreview(0)
+        setQuantity(1)
+        setProductData(null)
+        setCurrentProductId(product.id)
+        fetchProductDetails()
       }
     }
-  }, [isModalOpen, product?.id, currentProductId]);
+  }, [isModalOpen, product?.id, currentProductId])
 
   const fetchProductDetails = async () => {
-    if (!product?.id) return;
+    if (!product?.id) return
 
     try {
-      setLoading(true);
-      const response = await productService.productDetails(product.id);
+      setLoading(true)
+      const response = await productService.productDetails(product.id)
       if (response.data?.success) {
         // Only update if this is still the current product
         if (currentProductId === product.id) {
-          setProductData(response.data.data);
+          setProductData(response.data.data)
         }
       }
     } catch (error) {
-      console.error("Error fetching product details:", error);
+      console.error('Error fetching product details:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   // preview modal
   const handlePreviewSlider = () => {
     const productToPreview = {
       ...(productData || product),
       initialSlideIndex: activePreview, // Truyền index ảnh hiện tại
-    };
-    dispatch(updateproductDetails(productToPreview));
-    openPreviewModal();
-  };
+    }
+    dispatch(updateproductDetails(productToPreview))
+    openPreviewModal()
+  }
 
   // add to cart
   const handleAddToCart = () => {
-    const productToAdd = productData || product;
+    const productToAdd = productData || product
     dispatch(
       addItemToCart({
         id: productToAdd.id,
@@ -93,51 +93,52 @@ const QuickViewModal = () => {
         images: productToAdd.images,
         quantity,
       })
-    );
+    )
 
-    handleCloseModal();
-  };
+    handleCloseModal()
+  }
 
   useEffect(() => {
     // closing modal while clicking outside, nhưng không đóng khi PreviewSlider đang mở
     function handleClickOutside(event) {
       // Không đóng QuickViewModal nếu PreviewSlider đang mở
       if (isModalPreviewOpen) {
-        return;
+        return
       }
 
       // Không đóng nếu click vào preview-slider element
-      if (event.target.closest(".preview-slider")) {
-        return;
+      if (event.target.closest('.preview-slider')) {
+        return
       }
 
-      if (!event.target.closest(".modal-content")) {
-        handleCloseModal();
+      if (!event.target.closest('.modal-content')) {
+        handleCloseModal()
       }
     }
 
     if (isModalOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside)
       // Clean up when component unmounts or modal closes
       if (!isModalOpen) {
-        setQuantity(1);
-        setProductData(null);
-        setActivePreview(0);
-        setCurrentProductId(null);
+        setQuantity(1)
+        setProductData(null)
+        setActivePreview(0)
+        setCurrentProductId(null)
       }
-    };
-  }, [isModalOpen, closeModal, isModalPreviewOpen]);
+    }
+  }, [isModalOpen, closeModal, isModalPreviewOpen])
 
-  const displayProduct = productData || product;
+  const displayProduct = productData || product
 
   return (
     <div
-      className={`${isModalOpen ? "z-50" : "hidden"
-        } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 overflow-y-auto z-9999`}
+      className={`${
+        isModalOpen ? 'z-50' : 'hidden'
+      } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 overflow-y-auto z-9999`}
     >
       <div className="w-full max-w-[1100px] max-h-[90vh] overflow-y-auto rounded-xl shadow-3 bg-white p-6  sm:p-8 relative modal-content ">
         <button
@@ -175,11 +176,12 @@ const QuickViewModal = () => {
                     <button
                       onClick={() => setActivePreview(key)}
                       key={key}
-                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && "border-2 border-blue"
-                        }`}
+                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${
+                        activePreview === key && 'border-2 border-blue'
+                      }`}
                     >
                       <Image
-                        src={img || "/next.svg"}
+                        src={img || '/next.svg'}
                         alt="thumbnail"
                         width={61}
                         height={61}
@@ -214,7 +216,9 @@ const QuickViewModal = () => {
                     </button>
 
                     <Image
-                      src={displayProduct?.images?.[activePreview] || "/next.svg"}
+                      src={
+                        displayProduct?.images?.[activePreview] || '/next.svg'
+                      }
                       alt="product-preview"
                       width={400}
                       height={400}
@@ -237,7 +241,7 @@ const QuickViewModal = () => {
 
               {/* Product Title */}
               <h3 className="text-2xl font-bold leading-tight text-dark">
-                {displayProduct?.name || "Tên sản phẩm"}
+                {displayProduct?.name || 'Tên sản phẩm'}
               </h3>
 
               {/* Product Info */}
@@ -267,7 +271,7 @@ const QuickViewModal = () => {
                     </defs>
                   </svg>
                   <span className="text-sm text-[#22AD5C]">
-                    {displayProduct?.currentCondition || "Nguyên seal"}
+                    {displayProduct?.currentCondition || 'Nguyên seal'}
                   </span>
                 </div>
 
@@ -290,37 +294,53 @@ const QuickViewModal = () => {
               )}
 
               {/* Specifications */}
-              {displayProduct?.attributes && displayProduct.attributes.length > 0 && (
-                <div className="rounded-lg bg-gray-50 border-blue">
-                  <h4 className="flex items-center gap-2 mb-3 text-lg font-bold text-dark">
-                    <svg className="w-5 h-5 text-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    Thông số kỹ thuật
-                  </h4>
-                  <div className="space-y-3">
-                    {displayProduct.attributes.map((attr) => (
-                      <div key={attr.id} className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
-                        <span className="font-medium text-dark-2">
-                          {attr.name}
-                        </span>
-                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
-                          {attr.value}
-                        </span>
-                      </div>
-                    ))}
+              {displayProduct?.attributes &&
+                displayProduct.attributes.length > 0 && (
+                  <div className="rounded-lg bg-gray-50 border-blue">
+                    <h4 className="flex items-center gap-2 mb-3 text-lg font-bold text-dark">
+                      <svg
+                        className="w-5 h-5 text-blue"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                        />
+                      </svg>
+                      Thông số kỹ thuật
+                    </h4>
+                    <div className="space-y-3">
+                      {displayProduct.attributes.map((attr) => (
+                        <div
+                          key={attr.id}
+                          className="flex items-center justify-between px-3 py-2 bg-white rounded-md"
+                        >
+                          <span className="font-medium text-dark-2">
+                            {attr.name}
+                          </span>
+                          <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                            {attr.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Price Section */}
               <div className="space-y-2">
-                <h4 className="text-lg font-bold text-dark">
-                  Giá bán
-                </h4>
+                <h4 className="text-lg font-bold text-dark">Giá bán</h4>
                 <div className="flex flex-wrap items-baseline gap-3">
                   <span className="text-3xl font-bold text-red">
-                    {formatVNDRounded.thousands(displayProduct?.finalPrice || displayProduct?.sellingPrice || displayProduct.discountedPrice)}
+                    {formatVNDRounded.thousands(
+                      displayProduct?.finalPrice ||
+                        displayProduct?.sellingPrice ||
+                        displayProduct.discountedPrice
+                    )}
                   </span>
                   {displayProduct?.discountPercent > 0 && (
                     <span className="text-lg font-medium text-gray-500 line-through">
@@ -336,8 +356,18 @@ const QuickViewModal = () => {
                   onClick={() => handleAddToCart()}
                   className="inline-flex items-center justify-center w-full gap-2 px-8 py-4 font-bold text-white transition-colors duration-200 ease-out rounded-lg shadow-lg bg-gradient-to-r from-blue to-blue-light hover:from-blue-dark hover:to-blue-light"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h7" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h7"
+                    />
                   </svg>
                   Thêm vào giỏ hàng
                 </button>
@@ -347,7 +377,7 @@ const QuickViewModal = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default QuickViewModal;
+export default QuickViewModal

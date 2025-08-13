@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const Billing = () => {
   return (
@@ -204,7 +204,7 @@ const Billing = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Billing;
+export default Billing

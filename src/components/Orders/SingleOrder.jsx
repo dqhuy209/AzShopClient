@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import OrderActions from "./OrderActions";
-import OrderModal from "./OrderModal";
+import React, { useState } from 'react'
+import OrderActions from './OrderActions'
+import OrderModal from './OrderModal'
 
 const SingleOrder = ({ orderItem, smallView }) => {
-  const [showDetails, setShowDetails] = useState(false);
-  const [showEdit, setShowEdit] = useState(false);
+  const [showDetails, setShowDetails] = useState(false)
+  const [showEdit, setShowEdit] = useState(false)
 
   const toggleDetails = () => {
-    setShowDetails(!showDetails);
-  };
+    setShowDetails(!showDetails)
+  }
 
   const toggleEdit = () => {
-    setShowEdit(!showEdit);
-  };
+    setShowEdit(!showEdit)
+  }
 
   const toggleModal = (status) => {
-    setShowDetails(status);
-    setShowEdit(status);
-  };
+    setShowDetails(status)
+    setShowEdit(status)
+  }
 
   return (
     <>
@@ -35,13 +35,13 @@ const SingleOrder = ({ orderItem, smallView }) => {
           <div className="min-w-[128px]">
             <p
               className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${
-                orderItem.status === "delivered"
-                  ? "text-green bg-green-light-6"
-                  : orderItem.status === "on-hold"
-                  ? "text-red bg-red-light-6"
-                  : orderItem.status === "processing"
-                  ? "text-yellow bg-yellow-light-4"
-                  : "Unknown Status"
+                orderItem.status === 'delivered'
+                  ? 'text-green bg-green-light-6'
+                  : orderItem.status === 'on-hold'
+                    ? 'text-red bg-red-light-6'
+                    : orderItem.status === 'processing'
+                      ? 'text-yellow bg-yellow-light-4'
+                      : 'Unknown Status'
               }`}
             >
               {orderItem.status}
@@ -76,23 +76,23 @@ const SingleOrder = ({ orderItem, smallView }) => {
             </div>
             <div className="">
               <p className="text-custom-sm text-dark">
-                <span className="font-bold pr-2">Date:</span>{" "}
+                <span className="font-bold pr-2">Date:</span>{' '}
                 {orderItem.createdAt}
               </p>
             </div>
 
             <div className="">
               <p className="text-custom-sm text-dark">
-                <span className="font-bold pr-2">Status:</span>{" "}
+                <span className="font-bold pr-2">Status:</span>{' '}
                 <span
                   className={`inline-block text-custom-sm  py-0.5 px-2.5 rounded-[30px] capitalize ${
-                    orderItem.status === "delivered"
-                      ? "text-green bg-green-light-6"
-                      : orderItem.status === "on-hold"
-                      ? "text-red bg-red-light-6"
-                      : orderItem.status === "processing"
-                      ? "text-yellow bg-yellow-light-4"
-                      : "Unknown Status"
+                    orderItem.status === 'delivered'
+                      ? 'text-green bg-green-light-6'
+                      : orderItem.status === 'on-hold'
+                        ? 'text-red bg-red-light-6'
+                        : orderItem.status === 'processing'
+                          ? 'text-yellow bg-yellow-light-4'
+                          : 'Unknown Status'
                   }`}
                 >
                   {orderItem.status}
@@ -115,7 +115,7 @@ const SingleOrder = ({ orderItem, smallView }) => {
 
             <div className="">
               <p className="text-custom-sm text-dark flex items-center">
-                <span className="font-bold pr-2">Actions:</span>{" "}
+                <span className="font-bold pr-2">Actions:</span>{' '}
                 <OrderActions
                   toggleDetails={toggleDetails}
                   toggleEdit={toggleEdit}
@@ -133,7 +133,7 @@ const SingleOrder = ({ orderItem, smallView }) => {
         order={orderItem}
       />
     </>
-  );
-};
+  )
+}
 
-export default SingleOrder;
+export default SingleOrder

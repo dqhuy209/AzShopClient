@@ -1,11 +1,11 @@
-import Axios from "@/services/Axios";
+import Axios from '@/services/Axios'
 
 const getListCategory = () => {
-  return Axios.getRequest(`/categories`);
-};
+  return Axios.getRequest(`/categories`)
+}
 
 const categoryService = {
   getListCategory,
-};
+}
 
-export default categoryService;
+export default categoryService

@@ -1,50 +1,49 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Breadcrumb from "../Common/Breadcrumb";
-import Image from "next/image";
-import { usePreviewSlider } from "@/app/context/PreviewSliderContext";
-import { useDispatch } from "react-redux";
-import { updateproductDetails } from "@/redux/features/product-details";
+'use client'
+import React, { useEffect, useState } from 'react'
+import Breadcrumb from '../Common/Breadcrumb'
+import Image from 'next/image'
+import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
+import { useDispatch } from 'react-redux'
+import { updateproductDetails } from '@/redux/features/product-details'
 
 const ShopDetails = ({ product }) => {
-  const { openPreviewModal } = usePreviewSlider();
-  const [previewImg, setPreviewImg] = useState(0);
-  const [activePreview, setActivePreview] = useState(0);
-  const dispatch = useDispatch();
+  const { openPreviewModal } = usePreviewSlider()
+  const [previewImg, setPreviewImg] = useState(0)
+  const [activePreview, setActivePreview] = useState(0)
+  const dispatch = useDispatch()
 
   const tabs = [
     {
-      id: "tabOne",
-      title: "Mô tả sản phẩm",
+      id: 'tabOne',
+      title: 'Mô tả sản phẩm',
     },
     {
-      id: "tabTwo",
-      title: "Thông tin chi tiết",
+      id: 'tabTwo',
+      title: 'Thông tin chi tiết',
     },
-  ];
-  const [activeTab, setActiveTab] = useState("tabOne");
-
+  ]
+  const [activeTab, setActiveTab] = useState('tabOne')
 
   // Đồng bộ activePreview với previewImg
   useEffect(() => {
-    setActivePreview(previewImg);
-  }, [previewImg]);
+    setActivePreview(previewImg)
+  }, [previewImg])
 
   const handlePreviewSlider = () => {
     const productToPreview = {
       ...product,
       initialSlideIndex: activePreview,
-    };
-    dispatch(updateproductDetails(productToPreview));
-    openPreviewModal();
-  };
+    }
+    dispatch(updateproductDetails(productToPreview))
+    openPreviewModal()
+  }
 
-  console.log(product);
+  console.log(product)
 
   if (!product || Object.keys(product).length === 0) {
     return (
       <>
-        <Breadcrumb title={"Shop Details"} pages={["shop details"]} />
+        <Breadcrumb title={'Shop Details'} pages={['shop details']} />
         <section className="relative pt-5 pb-20 overflow-hidden lg:pt-20 xl:pt-28">
           <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
             <div className="flex items-center justify-center py-20">
@@ -55,12 +54,12 @@ const ShopDetails = ({ product }) => {
           </div>
         </section>
       </>
-    );
+    )
   }
 
   return (
     <>
-      <Breadcrumb title={"Shop Details"} pages={["shop details"]} />
+      <Breadcrumb title={'Shop Details'} pages={['shop details']} />
       <section className="relative pt-5 pb-20 overflow-hidden lg:pt-20 xl:pt-28">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-17.5">
@@ -70,15 +69,16 @@ const ShopDetails = ({ product }) => {
                   {(product.images || []).map((img, key) => (
                     <button
                       onClick={() => {
-                        setPreviewImg(key);
-                        setActivePreview(key);
+                        setPreviewImg(key)
+                        setActivePreview(key)
                       }}
                       key={key}
-                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-2 ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && "border-2 border-blue"
-                        }`}
+                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-2 ease-out duration-200 hover:border-2 hover:border-blue ${
+                        activePreview === key && 'border-2 border-blue'
+                      }`}
                     >
                       <Image
-                        src={img || "/placeholder.jpg"}
+                        src={img || '/placeholder.jpg'}
                         alt="thumbnail"
                         width={61}
                         height={61}
@@ -113,7 +113,11 @@ const ShopDetails = ({ product }) => {
                     </button>
 
                     <Image
-                      src={product.images?.[activePreview] || product.images?.[0] || "/placeholder.jpg"}
+                      src={
+                        product.images?.[activePreview] ||
+                        product.images?.[0] ||
+                        '/placeholder.jpg'
+                      }
                       alt="product-preview"
                       width={400}
                       height={400}
@@ -126,7 +130,9 @@ const ShopDetails = ({ product }) => {
               {/* Videos section */}
               {product.videos && product.videos.length > 0 && (
                 <div className="mt-6">
-                  <h4 className="mb-4 font-medium text-dark">Videos sản phẩm:</h4>
+                  <h4 className="mb-4 font-medium text-dark">
+                    Videos sản phẩm:
+                  </h4>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     {product.videos.map((video, index) => (
                       <div key={index} className="relative">
@@ -150,7 +156,7 @@ const ShopDetails = ({ product }) => {
               {/* Tiêu đề và badge giảm giá */}
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold leading-tight sm:text-3xl xl:text-4xl text-dark">
-                  {product.name || "Tên sản phẩm"}
+                  {product.name || 'Tên sản phẩm'}
                 </h2>
                 {product.discountPercent > 0 && (
                   <div className="inline-flex px-4 py-2 text-base font-semibold text-white rounded-lg shadow-lg bg-red-light">
@@ -162,16 +168,20 @@ const ShopDetails = ({ product }) => {
               {/* Thông tin cơ bản */}
               <div className="flex flex-col gap-4 p-6 mb-8 bg-gray-1 rounded-xl">
                 <div className="flex items-center gap-3">
-                  <span className="text-base font-medium text-body">Tình trạng:</span>
+                  <span className="text-base font-medium text-body">
+                    Tình trạng:
+                  </span>
                   <span className="px-3 py-1 text-base font-semibold rounded-full text-blue bg-blue-light-5">
-                    {product.currentCondition || "Không xác định"}
+                    {product.currentCondition || 'Không xác định'}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-base font-medium text-body">Danh mục:</span>
+                  <span className="text-base font-medium text-body">
+                    Danh mục:
+                  </span>
                   <span className="px-3 py-1 text-base font-semibold rounded-full text-green bg-green-light-6">
-                    {product.categoryName || "Chưa phân loại"}
+                    {product.categoryName || 'Chưa phân loại'}
                   </span>
                 </div>
 
@@ -195,9 +205,11 @@ const ShopDetails = ({ product }) => {
                       fill="currentColor"
                     />
                   </svg>
-                  <span className="text-base font-medium text-body">Trạng thái:</span>
+                  <span className="text-base font-medium text-body">
+                    Trạng thái:
+                  </span>
                   <span className="text-base font-semibold text-green">
-                    {product.statusDisplayName || "Không xác định"}
+                    {product.statusDisplayName || 'Không xác định'}
                   </span>
                 </div>
               </div>
@@ -211,7 +223,10 @@ const ShopDetails = ({ product }) => {
                   <div className="space-y-3">
                     {product.attributes && product.attributes.length > 0 ? (
                       product.attributes.map((attr, index) => (
-                        <div key={attr.id || index} className="flex items-center justify-between py-2 border-b border-gray-3">
+                        <div
+                          key={attr.id || index}
+                          className="flex items-center justify-between py-2 border-b border-gray-3"
+                        >
                           <span className="text-base font-medium text-dark">
                             {attr.name}:
                           </span>
@@ -221,11 +236,12 @@ const ShopDetails = ({ product }) => {
                         </div>
                       ))
                     ) : (
-                      <span className="text-base text-meta-4">Chưa có thông số kỹ thuật</span>
+                      <span className="text-base text-meta-4">
+                        Chưa có thông số kỹ thuật
+                      </span>
                     )}
                   </div>
                 </div>
-
                 {/* Phần giá */}
                 <div className="mb-8">
                   <h4 className="mb-4 text-lg font-semibold text-dark">
@@ -235,7 +251,10 @@ const ShopDetails = ({ product }) => {
                   {/* Giá chính */}
                   <div className="flex items-baseline gap-3 mb-3">
                     <span className="text-3xl font-bold text-red">
-                      {product.finalPrice?.toLocaleString('vi-VN') || product.sellingPrice?.toLocaleString('vi-VN') || 0} ₫
+                      {product.finalPrice?.toLocaleString('vi-VN') ||
+                        product.sellingPrice?.toLocaleString('vi-VN') ||
+                        0}{' '}
+                      ₫
                     </span>
                     {product.discountPercent > 0 && (
                       <span className="text-lg font-medium line-through text-meta-4">
@@ -247,10 +266,15 @@ const ShopDetails = ({ product }) => {
                   {/* Tiết kiệm */}
                   {product.discountPercent > 0 && (
                     <div className="inline-flex items-center px-3 py-1 text-sm font-medium rounded bg-green-light-6 text-green">
-                      Tiết kiệm {((product.sellingPrice || 0) - (product.finalPrice || 0)).toLocaleString('vi-VN')} ₫
+                      Tiết kiệm{' '}
+                      {(
+                        (product.sellingPrice || 0) - (product.finalPrice || 0)
+                      ).toLocaleString('vi-VN')}{' '}
+                      ₫
                     </div>
                   )}
-                </div>                {/* Nút hành động */}
+                </div>{' '}
+                {/* Nút hành động */}
                 <div className="flex flex-wrap items-center gap-4">
                   <a
                     href="#"
@@ -279,10 +303,11 @@ const ShopDetails = ({ product }) => {
               <button
                 key={key}
                 onClick={() => setActiveTab(item.id)}
-                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
-                  ? "text-blue before:w-full"
-                  : "text-dark before:w-0"
-                  }`}
+                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${
+                  activeTab === item.id
+                    ? 'text-blue before:w-full'
+                    : 'text-dark before:w-0'
+                }`}
               >
                 {item.title}
               </button>
@@ -294,8 +319,9 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === "tabOne" ? "flex" : "hidden"
-                }`}
+              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${
+                activeTab === 'tabOne' ? 'flex' : 'hidden'
+              }`}
             >
               <div className="max-w-[670px] w-full">
                 <h2 className="text-2xl font-medium text-dark mb-7">
@@ -317,15 +343,15 @@ const ShopDetails = ({ product }) => {
                 {/* Có api sẽ call sau */}
                 <p className="mb-6">
                   Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the
-                  industry&apos;s standard dummy text ever since the 1500s,
-                  when an unknown printer took a galley of type and
-                  scrambled it to make a type specimen book.
+                  typesetting industry. Lorem Ipsum has been the industry&apos;s
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book.
                 </p>
                 <p>
                   It has survived not only five centuries, but also the leap
-                  into electronic typesetting, remaining essentially
-                  unchanged. It was popularised in the 1960s.
+                  into electronic typesetting, remaining essentially unchanged.
+                  It was popularised in the 1960s.
                 </p>
               </div>
             </div>
@@ -335,8 +361,9 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content two start --> */}
           <div>
             <div
-              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === "tabTwo" ? "block" : "hidden"
-                }`}
+              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${
+                activeTab === 'tabTwo' ? 'block' : 'hidden'
+              }`}
             >
               {/* Call Api sau giờ chưa có  */}
               {/* <!-- info item --> */}
@@ -364,28 +391,22 @@ const ShopDetails = ({ product }) => {
               {/* <!-- info item --> */}
               <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
                 <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Display Size
-                  </p>
+                  <p className="text-sm sm:text-base text-dark">Display Size</p>
                 </div>
                 <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    6.7 inches
-                  </p>
+                  <p className="text-sm sm:text-base text-dark">6.7 inches</p>
                 </div>
               </div>
 
               {/* <!-- info item --> */}
               <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
                 <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Display Type
-                  </p>
+                  <p className="text-sm sm:text-base text-dark">Display Type</p>
                 </div>
                 <div className="w-full">
                   <p className="text-sm sm:text-base text-dark">
-                    Super Retina XDR OLED, HDR10, Dolby Vision, 800 nits
-                    (HBM), 1200 nits (peak)
+                    Super Retina XDR OLED, HDR10, Dolby Vision, 800 nits (HBM),
+                    1200 nits (peak)
                   </p>
                 </div>
               </div>
@@ -431,9 +452,7 @@ const ShopDetails = ({ product }) => {
               {/* <!-- info item --> */}
               <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
                 <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Main Camera
-                  </p>
+                  <p className="text-sm sm:text-base text-dark">Main Camera</p>
                 </div>
                 <div className="w-full">
                   <p className="text-sm sm:text-base text-dark">
@@ -451,8 +470,7 @@ const ShopDetails = ({ product }) => {
                 </div>
                 <div className="w-full">
                   <p className="text-sm sm:text-base text-dark">
-                    12 MP | 4K@24/25/30/60fps, 1080p@25/30/60/120fps,
-                    gyro-EIS
+                    12 MP | 4K@24/25/30/60fps, 1080p@25/30/60/120fps, gyro-EIS
                   </p>
                 </div>
               </div>
@@ -460,9 +478,7 @@ const ShopDetails = ({ product }) => {
               {/* <!-- info item --> */}
               <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
                 <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Battery Info
-                  </p>
+                  <p className="text-sm sm:text-base text-dark">Battery Info</p>
                 </div>
                 <div className="w-full">
                   <p className="text-sm sm:text-base text-dark">
@@ -474,13 +490,10 @@ const ShopDetails = ({ product }) => {
             </div>
           </div>
           {/* <!-- tab content two end --> */}
-
         </div>
       </section>
-
-
     </>
-  );
-};
+  )
+}
 
-export default ShopDetails;
+export default ShopDetails

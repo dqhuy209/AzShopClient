@@ -1,6 +1,6 @@
 export const defaultValues = {
-  review: "",
-  authorName: "",
-  authorRole: "",
-  authorImg: "",
-};
+  review: '',
+  authorName: '',
+  authorRole: '',
+  authorImg: '',
+}

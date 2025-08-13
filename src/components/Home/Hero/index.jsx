@@ -1,7 +1,7 @@
-import React from "react";
-import HeroCarousel from "./HeroCarousel";
-import HeroFeature from "./HeroFeature";
-import Image from "next/image";
+import React from 'react'
+import HeroCarousel from './HeroCarousel'
+import HeroFeature from './HeroFeature'
+import Image from 'next/image'
 
 const Hero = () => {
   return (
@@ -89,8 +89,6 @@ const Hero = () => {
                   </div>
                 </div>
               </div>
-
-
             </div>
           </div>
         </div>
@@ -99,7 +97,7 @@ const Hero = () => {
       {/* <!-- Hero features --> */}
       <HeroFeature />
     </section>
-  );
-};
+  )
+}
 
-export default Hero;
+export default Hero

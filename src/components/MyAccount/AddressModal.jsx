@@ -1,27 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react'
 
 const AddressModal = ({ isOpen, closeModal }) => {
   useEffect(() => {
     // closing modal while clicking outside
     function handleClickOutside(event) {
-      if (!event.target.closest(".modal-content")) {
-        closeModal();
+      if (!event.target.closest('.modal-content')) {
+        closeModal()
       }
     }
 
     if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen, closeModal]);
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isOpen, closeModal])
 
   return (
     <div
       className={`fixed top-0 left-0 overflow-y-auto no-scrollbar w-full h-screen sm:py-20 xl:py-25 2xl:py-[230px] bg-dark/70 sm:px-8 px-4 py-5 ${
-        isOpen ? "block z-99999" : "hidden"
+        isOpen ? 'block z-99999' : 'hidden'
       }`}
     >
       <div className="flex items-center justify-center ">
@@ -120,7 +120,7 @@ const AddressModal = ({ isOpen, closeModal }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddressModal;
+export default AddressModal

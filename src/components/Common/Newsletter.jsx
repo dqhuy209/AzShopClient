@@ -1,5 +1,5 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react'
+import Image from 'next/image'
 
 const Newsletter = () => {
   return (
@@ -50,7 +50,7 @@ const Newsletter = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Newsletter;
+export default Newsletter

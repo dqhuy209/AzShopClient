@@ -1,8 +1,8 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react'
+import Image from 'next/image'
 
 const Footer = () => {
-  const year = new Date().getFullYear();
+  const year = new Date().getFullYear()
 
   return (
     <footer className="mt-10 overflow-hidden border-t-2 border-gray-2 ">
@@ -392,7 +392,7 @@ const Footer = () => {
       </div> */}
       {/* <!-- footer bottom end --> */}
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

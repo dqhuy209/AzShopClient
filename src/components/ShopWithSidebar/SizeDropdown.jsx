@@ -1,14 +1,14 @@
-"use client";
-import React, { useState } from "react";
+'use client'
+import React, { useState } from 'react'
 
 const SizeDropdown = () => {
-  const [toggleDropdown, setToggleDropdown] = useState(true);
+  const [toggleDropdown, setToggleDropdown] = useState(true)
   return (
     <div className="bg-white shadow-1 rounded-lg">
       <div
         onClick={() => setToggleDropdown(!toggleDropdown)}
         className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${
-          toggleDropdown && "shadow-filter"
+          toggleDropdown && 'shadow-filter'
         }`}
       >
         <p className="text-dark">Size</p>
@@ -16,7 +16,7 @@ const SizeDropdown = () => {
           onClick={() => setToggleDropdown(!toggleDropdown)}
           aria-label="button for size dropdown"
           className={`text-dark ease-out duration-200 ${
-            toggleDropdown && "rotate-180"
+            toggleDropdown && 'rotate-180'
           }`}
         >
           <svg
@@ -40,7 +40,7 @@ const SizeDropdown = () => {
       {/* // <!-- dropdown menu --> */}
       <div
         className={`flex-wrap gap-2.5 p-6 ${
-          toggleDropdown ? "flex" : "hidden"
+          toggleDropdown ? 'flex' : 'hidden'
         }`}
       >
         <label
@@ -92,7 +92,7 @@ const SizeDropdown = () => {
         </label>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SizeDropdown;
+export default SizeDropdown

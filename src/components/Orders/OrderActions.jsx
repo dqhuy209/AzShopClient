@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const OrderActions = ({ toggleEdit, toggleDetails }) => {
   return (
@@ -45,7 +45,7 @@ const OrderActions = ({ toggleEdit, toggleDetails }) => {
         </svg>
       </button>
     </>
-  );
-};
+  )
+}
 
-export default OrderActions;
+export default OrderActions

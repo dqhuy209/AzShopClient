@@ -1,19 +1,24 @@
-import React from "react";
-import { useDispatch } from "react-redux";
-import Image from "next/image";
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import Image from 'next/image'
 
 const SingleItem = ({ item, removeItemFromCart }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleRemoveFromCart = () => {
-    dispatch(removeItemFromCart(item.id));
-  };
+    dispatch(removeItemFromCart(item.id))
+  }
 
   return (
     <div className="flex items-center justify-between gap-5">
       <div className="w-full flex items-center gap-6">
         <div className="flex items-center justify-center rounded-[10px] bg-gray-3 max-w-[90px] w-full h-22.5">
-          <Image src={item.imgs?.thumbnails[0]} alt="product" width={100} height={100} />
+          <Image
+            src={item.imgs?.thumbnails[0]}
+            alt="product"
+            width={100}
+            height={100}
+          />
         </div>
 
         <div>
@@ -58,7 +63,7 @@ const SingleItem = ({ item, removeItemFromCart }) => {
         </svg>
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default SingleItem;
+export default SingleItem

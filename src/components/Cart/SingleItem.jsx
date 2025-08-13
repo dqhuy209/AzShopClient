@@ -1,34 +1,34 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {
   removeItemFromCart,
   updateCartItemQuantity,
-} from "@/redux/features/cart-slice";
+} from '@/redux/features/cart-slice'
 
-import Image from "next/image";
+import Image from 'next/image'
 
 const SingleItem = ({ item }) => {
-  const [quantity, setQuantity] = useState(item.quantity);
+  const [quantity, setQuantity] = useState(item.quantity)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleRemoveFromCart = () => {
-    dispatch(removeItemFromCart(item.id));
-  };
+    dispatch(removeItemFromCart(item.id))
+  }
 
   const handleIncreaseQuantity = () => {
-    setQuantity(quantity + 1);
-    dispatch(updateCartItemQuantity({ id: item.id, quantity: quantity + 1 }));
-  };
+    setQuantity(quantity + 1)
+    dispatch(updateCartItemQuantity({ id: item.id, quantity: quantity + 1 }))
+  }
 
   const handleDecreaseQuantity = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1);
-      dispatch(updateCartItemQuantity({ id: item.id, quantity: quantity - 1 }));
+      setQuantity(quantity - 1)
+      dispatch(updateCartItemQuantity({ id: item.id, quantity: quantity - 1 }))
     } else {
-      return;
+      return
     }
-  };
+  }
 
   return (
     <div className="flex items-center border-t border-gray-3 py-5 px-7.5">
@@ -36,7 +36,12 @@ const SingleItem = ({ item }) => {
         <div className="flex items-center justify-between gap-5">
           <div className="w-full flex items-center gap-5.5">
             <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5">
-              <Image width={200} height={200} src={item.imgs?.thumbnails[0]} alt="product" />
+              <Image
+                width={200}
+                height={200}
+                src={item.imgs?.thumbnails[0]}
+                alt="product"
+              />
             </div>
 
             <div>
@@ -144,7 +149,7 @@ const SingleItem = ({ item }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SingleItem;
+export default SingleItem

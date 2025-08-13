@@ -1,5 +1,5 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link'
+import React from 'react'
 
 const Breadcrumb = ({ title, pages }) => {
   return (
@@ -18,8 +18,11 @@ const Breadcrumb = ({ title, pages }) => {
 
               {pages.length > 0 &&
                 pages.map((page, key) => (
-                  <li className="text-custom-sm last:text-blue capitalize" key={key}>
-                    {page} 
+                  <li
+                    className="text-custom-sm last:text-blue capitalize"
+                    key={key}
+                  >
+                    {page}
                   </li>
                 ))}
             </ul>
@@ -27,7 +30,7 @@ const Breadcrumb = ({ title, pages }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Breadcrumb;
+export default Breadcrumb

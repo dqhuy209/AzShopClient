@@ -1,27 +1,27 @@
-"use client";
-import React, { useState } from "react";
-import Breadcrumb from "../Common/Breadcrumb";
+'use client'
+import React, { useState } from 'react'
+import Breadcrumb from '../Common/Breadcrumb'
 
-import SingleGridItem from "../Shop/SingleGridItem";
-import SingleListItem from "../Shop/SingleListItem";
-import CustomSelect from "../ShopWithSidebar/CustomSelect";
+import SingleGridItem from '../Shop/SingleGridItem'
+import SingleListItem from '../Shop/SingleListItem'
+import CustomSelect from '../ShopWithSidebar/CustomSelect'
 
-import shopData from "../Shop/shopData";
+import shopData from '../Shop/shopData'
 
 const ShopWithoutSidebar = () => {
-  const [productStyle, setProductStyle] = useState("grid");
+  const [productStyle, setProductStyle] = useState('grid')
 
   const options = [
-    { label: "Latest Products", value: "0" },
-    { label: "Best Selling", value: "1" },
-    { label: "Old Products", value: "2" },
-  ];
+    { label: 'Latest Products', value: '0' },
+    { label: 'Best Selling', value: '1' },
+    { label: 'Old Products', value: '2' },
+  ]
 
   return (
     <>
       <Breadcrumb
-        title={"Explore All Products"}
-        pages={["shop", "/", "shop without sidebar"]}
+        title={'Explore All Products'}
+        pages={['shop', '/', 'shop without sidebar']}
       />
       <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28 bg-[#f3f4f6]">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
@@ -35,7 +35,7 @@ const ShopWithoutSidebar = () => {
                     <CustomSelect options={options} />
 
                     <p>
-                      Showing <span className="text-dark">9 of 50</span>{" "}
+                      Showing <span className="text-dark">9 of 50</span>{' '}
                       Products
                     </p>
                   </div>
@@ -43,12 +43,12 @@ const ShopWithoutSidebar = () => {
                   {/* <!-- top bar right --> */}
                   <div className="flex items-center gap-2.5">
                     <button
-                      onClick={() => setProductStyle("grid")}
+                      onClick={() => setProductStyle('grid')}
                       aria-label="button for product grid tab"
                       className={`${
-                        productStyle === "grid"
-                          ? "bg-blue border-blue text-white"
-                          : "text-dark bg-gray-1 border-gray-3"
+                        productStyle === 'grid'
+                          ? 'bg-blue border-blue text-white'
+                          : 'text-dark bg-gray-1 border-gray-3'
                       } flex items-center justify-center w-10.5 h-9 rounded-[5px] border ease-out duration-200 hover:bg-blue hover:border-blue hover:text-white`}
                     >
                       <svg
@@ -87,12 +87,12 @@ const ShopWithoutSidebar = () => {
                     </button>
 
                     <button
-                      onClick={() => setProductStyle("list")}
+                      onClick={() => setProductStyle('list')}
                       aria-label="button for product list tab"
                       className={`${
-                        productStyle === "list"
-                          ? "bg-blue border-blue text-white"
-                          : "text-dark bg-gray-1 border-gray-3"
+                        productStyle === 'list'
+                          ? 'bg-blue border-blue text-white'
+                          : 'text-dark bg-gray-1 border-gray-3'
                       } flex items-center justify-center w-10.5 h-9 rounded-[5px] border ease-out duration-200 hover:bg-blue hover:border-blue hover:text-white`}
                     >
                       <svg
@@ -124,13 +124,13 @@ const ShopWithoutSidebar = () => {
               {/* <!-- Products Grid Tab Content Start --> */}
               <div
                 className={`${
-                  productStyle === "grid"
-                    ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-7.5 gap-y-9"
-                    : "flex flex-col gap-7.5"
+                  productStyle === 'grid'
+                    ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-7.5 gap-y-9'
+                    : 'flex flex-col gap-7.5'
                 }`}
               >
                 {shopData.map((item, key) =>
-                  productStyle === "grid" ? (
+                  productStyle === 'grid' ? (
                     <SingleGridItem item={item} key={key} />
                   ) : (
                     <SingleListItem item={item} key={key} />
@@ -262,7 +262,7 @@ const ShopWithoutSidebar = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default ShopWithoutSidebar;
+export default ShopWithoutSidebar

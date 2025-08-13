@@ -1,15 +1,15 @@
-"use client";
-import React from "react";
-import Breadcrumb from "../Common/Breadcrumb";
-import { useAppSelector } from "@/redux/store";
-import SingleItem from "./SingleItem";
+'use client'
+import React from 'react'
+import Breadcrumb from '../Common/Breadcrumb'
+import { useAppSelector } from '@/redux/store'
+import SingleItem from './SingleItem'
 
 export const Wishlist = () => {
-  const wishlistItems = useAppSelector((state) => state.wishlistReducer.items);
+  const wishlistItems = useAppSelector((state) => state.wishlistReducer.items)
 
   return (
     <>
-      <Breadcrumb title={"Wishlist"} pages={["Wishlist"]} />
+      <Breadcrumb title={'Wishlist'} pages={['Wishlist']} />
       <section className="overflow-hidden py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex flex-wrap items-center justify-between gap-5 mb-7.5">
@@ -50,5 +50,5 @@ export const Wishlist = () => {
         </div>
       </section>
     </>
-  );
-};
+  )
+}

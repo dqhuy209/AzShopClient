@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 const SearchForm = () => {
   return (
@@ -45,7 +45,7 @@ const SearchForm = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SearchForm;
+export default SearchForm

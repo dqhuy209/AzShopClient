@@ -1,25 +1,24 @@
-"use client";
+'use client'
 
-import React from "react";
-import Image from "next/image";
-import { useModalContext } from "@/app/context/QuickViewModalContext";
-import { updateQuickView } from "@/redux/features/quickView-slice";
-import { addItemToCart } from "@/redux/features/cart-slice";
-import { useDispatch } from "react-redux";
-import Link from "next/link";
-import { formatVNDRounded } from "@/utils/formatCurrency";
+import React from 'react'
+import Image from 'next/image'
+import { useModalContext } from '@/app/context/QuickViewModalContext'
+import { updateQuickView } from '@/redux/features/quickView-slice'
+import { addItemToCart } from '@/redux/features/cart-slice'
+import { useDispatch } from 'react-redux'
+import Link from 'next/link'
+import { formatVNDRounded } from '@/utils/formatCurrency'
 
 const ProductItem = ({ item }) => {
-  const { openModal } = useModalContext();
-  const dispatch = useDispatch();
-
+  const { openModal } = useModalContext()
+  const dispatch = useDispatch()
 
   const handleQuickViewUpdate = () => {
     // Ensure we have a valid product before updating quick view
     if (item?.id) {
-      dispatch(updateQuickView({ ...item }));
+      dispatch(updateQuickView({ ...item }))
     }
-  };
+  }
 
   const handleAddToCart = () => {
     dispatch(
@@ -27,17 +26,26 @@ const ProductItem = ({ item }) => {
         ...item,
         quantity: 1,
       })
-    );
-  };
+    )
+  }
 
   return (
     <div className="mb-3 overflow-hidden transition-all duration-300 ease-out bg-white rounded-lg group shadow-1 hover:shadow-2">
       <div className="relative overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-2 h-[280px] p-3">
         <div className="flex items-center justify-center w-full h-full">
-          <Link href={`/shop-details/${item?.id}`} className="flex items-center justify-center w-full h-full">
+          <Link
+            href={`/shop-details/${item?.id}`}
+            className="flex items-center justify-center w-full h-full"
+          >
             <Image
-              src={item?.images?.[0] ? (item.images[0].startsWith('http') ? item.images[0] : `/images/products/${item.images[0]}`) : "/images/placeholder.jpg"}
-              alt={item?.name || ""}
+              src={
+                item?.images?.[0]
+                  ? item.images[0].startsWith('http')
+                    ? item.images[0]
+                    : `/images/products/${item.images[0]}`
+                  : '/images/placeholder.jpg'
+              }
+              alt={item?.name || ''}
               width={280}
               height={280}
               className="object-cover w-full h-full transition-transform duration-300 ease-out rounded-lg cursor-pointer hover:scale-105"
@@ -48,8 +56,8 @@ const ProductItem = ({ item }) => {
         <div className="absolute bottom-0 left-0 flex items-center justify-center w-full gap-2 pb-3 duration-300 ease-linear translate-y-full group-hover:translate-y-0 bg-gradient-to-t from-black/10 to-transparent">
           <button
             onClick={() => {
-              openModal();
-              handleQuickViewUpdate();
+              openModal()
+              handleQuickViewUpdate()
             }}
             id="newOne"
             aria-label="button for quick view"
@@ -82,12 +90,21 @@ const ProductItem = ({ item }) => {
             onClick={() => handleAddToCart()}
             className="inline-flex items-center px-4 py-2 text-xs font-medium duration-300 ease-out transform bg-white rounded-lg text-dark-4 hover:bg-red hover:text-white hover:scale-105 shadow-2"
           >
-            <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h7" />
+            <svg
+              className="w-4 h-4 mr-1.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h7"
+              />
             </svg>
             Thêm vào giỏ
           </button>
-
         </div>
       </div>
 
@@ -95,7 +112,10 @@ const ProductItem = ({ item }) => {
         {/* Title với chiều cao cố định */}
         <div className="min-h-[2.4rem] flex items-start">
           <h3 className="text-sm font-semibold leading-tight transition-colors duration-300 cursor-pointer decoration-transparent text-dark-3 hover:text-red line-clamp-2">
-            <Link href={`/shop-details/${item?.id}`} className="hover:underline">
+            <Link
+              href={`/shop-details/${item?.id}`}
+              className="hover:underline"
+            >
               {item?.name || item.title}
             </Link>
           </h3>
@@ -105,8 +125,18 @@ const ProductItem = ({ item }) => {
         <div className="space-y-1 min-h-[2.5rem] flex flex-col justify-start">
           {item?.categoryName && (
             <p className="flex items-center text-xs text-meta-3">
-              <svg className="flex-shrink-0 w-3 h-3 mr-1 text-meta-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
+              <svg
+                className="flex-shrink-0 w-3 h-3 mr-1 text-meta-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                />
               </svg>
               <span className="truncate">{item.categoryName}</span>
             </p>
@@ -114,8 +144,18 @@ const ProductItem = ({ item }) => {
 
           {item?.currentCondition && (
             <p className="flex items-center text-xs text-green">
-              <svg className="flex-shrink-0 w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="flex-shrink-0 w-3 h-3 mr-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               <span className="truncate">{item.currentCondition}</span>
             </p>
@@ -128,7 +168,9 @@ const ProductItem = ({ item }) => {
             {/* Main Price Display */}
             <div className="flex items-baseline gap-2">
               <span className="text-lg font-semibold text-red">
-                {formatVNDRounded.thousands(item?.finalPrice || item?.sellingPrice)}
+                {formatVNDRounded.thousands(
+                  item?.finalPrice || item?.sellingPrice
+                )}
               </span>
               {item?.discountPercent > 0 && (
                 <span className="text-sm font-medium line-through text-meta-4">
@@ -142,7 +184,10 @@ const ProductItem = ({ item }) => {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1">
                   <span className="inline-flex items-center py-0.5 px-1.5 text-xs font-medium rounded-md bg-red-light-6 text-red">
-                    Tiết kiệm {formatVNDRounded.thousands((item?.sellingPrice) - (item?.finalPrice))}
+                    Tiết kiệm{' '}
+                    {formatVNDRounded.thousands(
+                      item?.sellingPrice - item?.finalPrice
+                    )}
                   </span>
                 </div>
                 <div className="flex items-center text-xs font-medium text-red">
@@ -154,7 +199,7 @@ const ProductItem = ({ item }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductItem;
+export default ProductItem

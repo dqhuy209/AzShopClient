@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import toast from "react-hot-toast";
+import React, { useState } from 'react'
+import toast from 'react-hot-toast'
 
 const EditOrder = ({ order, toggleModal }) => {
-  const [currentStatus, setCurrentStatus] = useState(order?.status);
+  const [currentStatus, setCurrentStatus] = useState(order?.status)
   const handleChanege = (e) => {
-    setCurrentStatus(e.target.value);
-  };
+    setCurrentStatus(e.target.value)
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!currentStatus) {
-      toast.error("Please select a status");
-      return;
+      toast.error('Please select a status')
+      return
     }
 
-    toggleModal(false);
-  };
+    toggleModal(false)
+  }
 
   return (
     <div className="w-full px-10">
@@ -43,7 +43,7 @@ const EditOrder = ({ order, toggleModal }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default EditOrder;
+export default EditOrder
