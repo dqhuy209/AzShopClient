@@ -9,11 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@babel/runtime": "^7.28.2",
     "@reduxjs/toolkit": "^2.6.1",
     "autoprefixer": "10.4.15",
     "axios": "^1.11.0",
-    "next": "15.2.3",
     "postcss": "8.4.29",
     "prettier": "^3.6.2",
     "react": "19.0.0",
@@ -26,7 +24,8 @@
   },
   "devDependencies": {
     "eslint": "8.49.0",
-    "eslint-config-next": "15.2.3"
+    "eslint-config-next": "15.2.3",
+    "next": "15.2.3"
   },
   "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677"
 }
