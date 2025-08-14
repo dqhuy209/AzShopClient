@@ -1,8 +1,8 @@
 import Contact from '@/components/Contact'
 
 export const metadata = {
-  title: 'Contact Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Contact Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   // other metadata
 }
 

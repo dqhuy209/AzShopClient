@@ -3,8 +3,8 @@ import ShopDetails from '@/components/ShopDetails'
 import productService from '@/services/productService'
 
 export const metadata = {
-  title: 'Shop Details Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Shop Details Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
 }
 
 export default async function ShopDetailsPage({ params }) {

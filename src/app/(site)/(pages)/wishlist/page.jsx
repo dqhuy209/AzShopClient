@@ -2,8 +2,8 @@ import React from 'react'
 import { Wishlist } from '@/components/Wishlist'
 
 export const metadata = {
-  title: 'Wishlist Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Wishlist Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   // other metadata
 }
 

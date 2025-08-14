@@ -2,8 +2,8 @@ import BlogDetails from '@/components/BlogDetails'
 import React from 'react'
 
 export const metadata = {
-  title: 'Blog Details Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Blog Details Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   // other metadata
 }
 
