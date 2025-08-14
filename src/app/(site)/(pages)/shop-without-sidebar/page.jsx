@@ -2,8 +2,8 @@ import React from 'react'
 import ShopWithoutSidebar from '@/components/ShopWithoutSidebar'
 
 export const metadata = {
-  title: 'Shop Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Shop Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   // other metadata
 }
 

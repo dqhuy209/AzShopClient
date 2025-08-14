@@ -2,8 +2,8 @@ import React from 'react'
 import Error from '@/components/Error'
 
 export const metadata = {
-  title: 'Error Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Error Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   // other metadata
 }
 

@@ -2,8 +2,8 @@ import React from 'react'
 import MailSuccess from '@/components/MailSuccess'
 
 export const metadata = {
-  title: 'Mail Success Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Mail Success Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   // other metadata
 }
 

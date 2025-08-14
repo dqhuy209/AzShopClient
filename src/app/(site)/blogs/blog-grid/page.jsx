@@ -2,8 +2,8 @@ import React from 'react'
 import BlogGrid from '@/components/BlogGrid'
 
 export const metadata = {
-  title: 'Blog Grid Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Blog Grid Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   // other metadata
 }
 

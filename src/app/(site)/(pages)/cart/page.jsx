@@ -2,8 +2,8 @@ import React from 'react'
 import Cart from '@/components/Cart'
 
 export const metadata = {
-  title: 'Cart Page | NextCommerce Nextjs E-commerce template',
-  description: 'This is Cart Page for NextCommerce Template',
+  title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
+  description: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   // other metadata
 }
 
