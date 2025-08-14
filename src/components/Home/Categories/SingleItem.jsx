@@ -17,7 +17,7 @@ const SingleItem = ({ item }) => {
 
       <div className="flex justify-center">
         <h3
-          className="inline-block font-medium text-center text-dark bg-gradient-to-r from-blue to-blue
+          className="inline-block font-semibold text-center text-dark bg-gradient-to-r from-blue to-blue
          bg-[length:0px_1px] bg-left-bottom bg-no-repeat transition-[background-size] duration-500
           hover:bg-[length:100%_3px] group-hover:bg-[length:100%_1px] group-hover:text-blue"
         >

@@ -47,8 +47,8 @@ const Categories = () => {
   }, [])
 
   return (
-    <section className="overflow-hidden pt-17.5">
-      <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 pb-15 border-b border-gray-3">
+    <section className="overflow-hidden">
+      <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0 mt-[80px] pt-[80px] border-t-[1px] border-b-[1px] border-gray-6 mb-[80px] pb-[80px]">
         <div className="swiper categories-carousel common-carousel">
           {/* <!-- section title --> */}
           <div className="flex items-center justify-between mb-10">

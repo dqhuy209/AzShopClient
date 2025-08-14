@@ -9,7 +9,7 @@ const config = {
   darkMode: 'class',
   theme: {
     fontFamily: {
-      bevietnam: ["'Be Vietnam Pro'", 'sans-serif'],
+      anton: ['Anton', 'sans-serif'],
     },
     container: {
       center: true,

@@ -2,6 +2,7 @@ import React from 'react'
 import SingleItem from './SingleItem'
 import Link from 'next/link'
 import productService from '@/services/productService'
+import Image from 'next/image'
 
 const limit = 6
 
@@ -18,7 +19,15 @@ export default async function BestSeller() {
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
         {/* <!-- section title --> */}
         <div className="flex items-center justify-between mb-10">
-          <div>
+          <div className={'flex items-center gap-x-[10px]'}>
+            <div>
+              <Image
+                src={'/images/icons/icon-fire.svg'}
+                alt={'icon-fire'}
+                width={35}
+                height={35}
+              />
+            </div>
             <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">
               Bán chạy nhất
             </h2>
