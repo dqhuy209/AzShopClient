@@ -43,19 +43,18 @@ const Header = () => {
       <div className="absolute z-[10] bg-[#ec6804] bg-[url(/images/logo/bg-header.jpg)] w-full h-full top-0 left-0"></div>
       <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 relative z-[20]">
         <div
-          className={`flex flex-row gap-5 items-center xl:justify-between ease-out duration-200 ${stickyMenu ? 'py-4' : 'py-6'}`}
+          className={`flex flex-row gap-5 items-center xl:justify-between ease-out duration-200 ${stickyMenu ? 'py-1 lg:py-4' : 'py-3 lg:py-6'}`}
         >
           <Link
             className="flex-shrink-0 flex gap-x-[10px] items-center"
             href="/"
           >
-            <div className={'size-[40px] lg:size-[80px]'}>
+            <div className="w-[40px] h-[40px] lg:w-[80px] lg:h-[80px] relative">
               <Image
                 src="/images/logo/logo.png"
                 alt="Logo"
-                width={80}
-                height={80}
-                className=" border border-white rounded-full p-[16px]"
+                fill
+                className="object-contain border border-white rounded-full p-[2px] lg:p-[16px]"
               />
             </div>
             <Image
@@ -75,9 +74,9 @@ const Header = () => {
                   type="search"
                   name="search"
                   id="search"
-                  placeholder="I am shopping for..."
+                  placeholder="Tìm kiếm sản phẩm..."
                   autoComplete="off"
-                  className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
+                  className="custom-search w-[200px] lg:w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
                 />
 
                 <button
@@ -144,7 +143,7 @@ const Header = () => {
             {/* <!-- divider --> */}
             <span className="hidden xl:block w-px h-7.5 bg-gray-4"></span>
 
-            <div className="flex w-full lg:w-auto justify-between items-center gap-5">
+            <div className="flex w-full lg:w-auto justify-end items-center gap-5">
               <div className="flex items-center gap-5">
                 <button
                   onClick={handleOpenCartModal}
