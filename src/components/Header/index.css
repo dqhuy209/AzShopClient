@@ -1,0 +1,13 @@
+.add-animation {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    /* nếu bạn cần tránh click khi ẩn */
+    pointer-events: none;
+}
+
+.add-animation.open {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}

@@ -1,7 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import CustomSelect from './CustomSelect'
 import { menuData, menuDataHeader } from './menuData'
 import Dropdown from './Dropdown'
 import { useAppSelector } from '@/redux/store'
@@ -9,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { selectTotalPrice } from '@/redux/features/cart-slice'
 import { useCartModalContext } from '@/app/context/CartSidebarModalContext'
 import Image from 'next/image'
+import './index.css'
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -43,7 +43,7 @@ const Header = () => {
       <div className="absolute z-[10] bg-[#ec6804] bg-[url(/images/logo/bg-header.jpg)] w-full h-full top-0 left-0"></div>
       <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 relative z-[20]">
         <div
-          className={`flex flex-row gap-5 items-center xl:justify-between ease-out duration-200 ${stickyMenu ? 'py-1 lg:py-4' : 'py-3 lg:py-6'}`}
+          className={`flex flex-row gap-5 items-center xl:justify-between ease-out duration-200 ${stickyMenu ? 'py-3 lg:py-4' : 'py-3 lg:py-6'}`}
         >
           <Link
             className="flex-shrink-0 flex gap-x-[10px] items-center"
@@ -237,8 +237,7 @@ const Header = () => {
           <div className="h-[55px] w-full">
             {/* <!--=== Main Nav Start ===--> */}
             <div
-              className={`flex w-full  xl:w-auto h-0 xl:h-auto invisible xl:visible lg:flex items-center justify-between 
-                            ${navigationOpen && `!visible bg-white shadow-lg border border-gray-3 !h-auto max-h-[400px] overflow-y-scroll rounded-md p-5`}`}
+              className={`flex w-full  xl:w-auto h-0 xl:h-auto invisible xl:visible lg:flex items-center justify-between`}
             >
               {/* <!-- Main Nav Start --> */}
               <nav className={'w-full'}>
@@ -269,6 +268,37 @@ const Header = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/*Nav Mobile*/}
+      {navigationOpen && (
+        <div
+          onClick={() => setNavigationOpen(!navigationOpen)}
+          className={
+            'w-screen h-screen fixed z-[9999] bg-black opacity-[0.4] lg:hidden'
+          }
+        ></div>
+      )}
+      <div
+        className={`lg:hidden bg-white h-screen w-[300px] fixed top-[70px] right-0 z-[999999] flex flex-col add-animation ${navigationOpen ? 'open' : ''}`}
+      >
+        {menuDataHeader.map((menuItem, i) =>
+          menuItem.submenu ? (
+            <Dropdown key={i} menuItem={menuItem} stickyMenu={stickyMenu} />
+          ) : (
+            <span
+              key={i}
+              className="text-[20px] px-[20px] py-[10px]  hover:border-l-[4px] hover:border-l-blue hover:bg-gray"
+            >
+              <Link
+                href={menuItem.path}
+                className={`hover:text-blue text-custom-lg font-medium text-dark flex`}
+              >
+                {menuItem.title}
+              </Link>
+            </span>
+          )
+        )}
       </div>
     </header>
   )
