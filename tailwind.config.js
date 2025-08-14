@@ -9,7 +9,7 @@ const config = {
   darkMode: 'class',
   theme: {
     fontFamily: {
-      'euclid-circular-a': ['Euclid Circular A'],
+      bevietnam: ["'Be Vietnam Pro'", 'sans-serif'],
     },
     container: {
       center: true,

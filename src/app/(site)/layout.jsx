@@ -15,6 +15,7 @@ import PreviewSliderModal from '@/components/Common/PreviewSlider'
 
 import ScrollToTop from '@/components/Common/ScrollToTop'
 import PreLoader from '@/components/Common/PreLoader'
+import Head from 'next/head'
 
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true)
@@ -24,7 +25,13 @@ export default function RootLayout({ children }) {
   }, [])
 
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="en" suppressHydrationWarning={true} className="font-bevietnam">
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap&subset=vietnamese"
+          rel="stylesheet"
+        />
+      </Head>
       <body>
         {loading ? (
           <PreLoader />
