@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply font-bevietnam font-normal text-base text-dark-3 relative z-1;
+    @apply font-anton font-normal text-base text-dark-3 relative z-1;
   }
 }
 

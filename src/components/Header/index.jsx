@@ -233,7 +233,7 @@ const Header = () => {
         {/* <!-- header top end --> */}
       </div>
       <div className="border-t border-gray-3 bg-[#ecebf0] z-[20] relative w-full">
-        <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 hidden lg:block">
+        <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 hidden xl:block">
           <div className="h-[55px] w-full">
             {/* <!--=== Main Nav Start ===--> */}
             <div
@@ -256,7 +256,7 @@ const Header = () => {
                       >
                         <Link
                           href={menuItem.path}
-                          className={`hover:text-blue text-custom-lg font-medium text-dark flex ${stickyMenu ? 'xl:py-4' : 'xl:py-4'}`}
+                          className={`hover:text-blue text-custom-lg font-semibold text-dark flex ${stickyMenu ? 'xl:py-4' : 'xl:py-4'}`}
                         >
                           {menuItem.title}
                         </Link>

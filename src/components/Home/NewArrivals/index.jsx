@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import ProductItem from '@/components/Common/ProductItem'
 import productService from '@/services/productService'
+import Image from 'next/image'
 
 const limit = 8
 
@@ -19,7 +20,15 @@ export default async function NewArrival() {
       <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
         {/* <!-- section title --> */}
         <div className="flex items-center justify-between mb-7">
-          <div>
+          <div className={'flex items-center gap-x-[10px]'}>
+            <div>
+              <Image
+                src={'/images/icons/icon-new.svg'}
+                alt={'icon-new'}
+                width={25}
+                height={25}
+              />
+            </div>
             <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">
               Hàng mới về
             </h2>
