@@ -58,8 +58,8 @@ const Categories = () => {
                   <Image
                     src={'/images/icons/icon-category.svg'}
                     alt={'category'}
-                    width={25}
-                    height={25}
+                    width={55}
+                    height={55}
                   />
                 </div>
                 <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">

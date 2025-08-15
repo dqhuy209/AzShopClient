@@ -24,8 +24,8 @@ export default async function BestSeller() {
               <Image
                 src={'/images/icons/icon-fire.svg'}
                 alt={'icon-fire'}
-                width={35}
-                height={35}
+                width={65}
+                height={65}
               />
             </div>
             <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">
