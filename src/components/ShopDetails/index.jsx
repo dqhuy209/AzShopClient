@@ -36,7 +36,7 @@ const ShopDetails = ({ product }) => {
       title: 'Thông tin chi tiết',
     },
   ]
-  const [activeTab, setActiveTab] = useState('tabTwo') // Đổi thành tabTwo để test
+  const [activeTab, setActiveTab] = useState('tabOne')
 
   // Đồng bộ activePreview với previewImg và khởi tạo mặc định
   useEffect(() => {
@@ -66,11 +66,6 @@ const ShopDetails = ({ product }) => {
     openPreviewModal()
   }
 
-  console.log(product)
-  // Debug specifications
-  console.log('Specifications:', product.specifications)
-  console.log('Specifications length:', product.specifications?.length)
-  console.log('Active tab:', activeTab)
 
   if (!product || Object.keys(product).length === 0) {
     return (
@@ -106,9 +101,8 @@ const ShopDetails = ({ product }) => {
                       }}
                       key={key}
                       className={`relative flex items-center justify-center w-[60px] h-[60px] lg:w-20 lg:h-20  overflow-hidden rounded-lg bg-gray-2
-                       ease-out duration-200 hover:border-2 hover:border-blue ${
-                         activePreview === key && 'border-2 border-blue'
-                       }`}
+                       ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
+                        }`}
                     >
                       {item.type === 'image' ? (
                         <Image
@@ -364,11 +358,10 @@ const ShopDetails = ({ product }) => {
               <button
                 key={key}
                 onClick={() => setActiveTab(item.id)}
-                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${
-                  activeTab === item.id
+                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
                     ? 'text-blue before:w-full'
                     : 'text-dark before:w-0'
-                }`}
+                  }`}
               >
                 {item.title}
               </button>
@@ -380,9 +373,8 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${
-                activeTab === 'tabOne' ? 'flex' : 'hidden'
-              }`}
+              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === 'tabOne' ? 'flex' : 'hidden'
+                }`}
             >
               <div className="max-w-[670px] w-full">
                 <h2 className="text-2xl font-medium text-dark mb-7">
@@ -422,9 +414,8 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content two start --> */}
           <div>
             <div
-              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${
-                activeTab === 'tabTwo' ? 'block' : 'hidden'
-              }`}
+              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === 'tabTwo' ? 'block' : 'hidden'
+                }`}
             >
               {/* Hiển thị thông tin chi tiết từ API specifications */}
               {product.specifications && product.specifications.length > 0 ? (
