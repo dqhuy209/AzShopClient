@@ -36,20 +36,12 @@ const ShopDetails = ({ product }) => {
       title: 'Thông tin chi tiết',
     },
   ]
-  const [activeTab, setActiveTab] = useState('tabOne')
+  const [activeTab, setActiveTab] = useState('tabTwo') // Đổi thành tabTwo để test
 
   // Đồng bộ activePreview với previewImg và khởi tạo mặc định
   useEffect(() => {
     setActivePreview(previewImg)
   }, [previewImg])
-
-  // Khởi tạo mặc định: nếu có video thì chọn video đầu tiên (chỉ khi cần)
-  // useEffect(() => {
-  //   if (mediaItems.length > 0 && mediaItems[0]?.type === 'video') {
-  //     setActivePreview(0)
-  //     setPreviewImg(0)
-  //   }
-  // }, [mediaItems])
 
   /**
    * Mở modal preview slider CHỈ cho ảnh
@@ -75,6 +67,10 @@ const ShopDetails = ({ product }) => {
   }
 
   console.log(product)
+  // Debug specifications
+  console.log('Specifications:', product.specifications)
+  console.log('Specifications length:', product.specifications?.length)
+  console.log('Active tab:', activeTab)
 
   if (!product || Object.keys(product).length === 0) {
     return (
@@ -411,128 +407,34 @@ const ShopDetails = ({ product }) => {
               className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === 'tabTwo' ? 'block' : 'hidden'
                 }`}
             >
-              {/* Call Api sau giờ chưa có  */}
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">Brand</p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">Apple</p>
-                </div>
-              </div>
 
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">Model</p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    iPhone 14 Plus
+              {/* Hiển thị thông tin chi tiết từ API specifications */}
+              {product.specifications && product.specifications.length > 0 ? (
+                product.specifications.map((spec, index) => (
+                  <div
+                    key={spec.id || index}
+                    className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5"
+                  >
+                    <div className="max-w-[450px] min-w-[140px] w-full">
+                      <p className="text-sm sm:text-base text-dark font-medium">
+                        {spec.specName}
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <p className="text-sm sm:text-base text-body">
+                        {spec.specValue}
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-8">
+                  <p className="text-base text-meta-4">
+                    Chưa có thông tin chi tiết cho sản phẩm này.
                   </p>
-                </div>
-              </div>
 
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">Display Size</p>
                 </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">6.7 inches</p>
-                </div>
-              </div>
-
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">Display Type</p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Super Retina XDR OLED, HDR10, Dolby Vision, 800 nits (HBM),
-                    1200 nits (peak)
-                  </p>
-                </div>
-              </div>
-
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Display Resolution
-                  </p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    1284 x 2778 pixels, 19.5:9 ratio
-                  </p>
-                </div>
-              </div>
-
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">Chipset</p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Apple A15 Bionic (5 nm)
-                  </p>
-                </div>
-              </div>
-
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">Memory</p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    128GB 6GB RAM | 256GB 6GB RAM | 512GB 6GB RAM
-                  </p>
-                </div>
-              </div>
-
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">Main Camera</p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    12MP + 12MP | 4K@24/25/30/60fps, stereo sound rec.
-                  </p>
-                </div>
-              </div>
-
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Selfie Camera
-                  </p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    12 MP | 4K@24/25/30/60fps, 1080p@25/30/60/120fps, gyro-EIS
-                  </p>
-                </div>
-              </div>
-
-              {/* <!-- info item --> */}
-              <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
-                <div className="max-w-[450px] min-w-[140px] w-full">
-                  <p className="text-sm sm:text-base text-dark">Battery Info</p>
-                </div>
-                <div className="w-full">
-                  <p className="text-sm sm:text-base text-dark">
-                    Li-Ion 4323 mAh, non-removable | 15W wireless (MagSafe),
-                    7.5W wireless (Qi)
-                  </p>
-                </div>
-              </div>
+              )}
             </div>
           </div>
           {/* <!-- tab content two end --> */}
