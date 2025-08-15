@@ -147,7 +147,7 @@ const Footer = () => {
           </div>
 
           <div className="w-full sm:w-auto">
-            <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
+            <h2 className="mb-7.5 text-custom-1 font-medium text-dark uppercase">
               Danh mục
             </h2>
 
@@ -164,7 +164,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="w-full sm:w-auto hidden xl:block">
+          <div className="w-full sm:w-auto hidden lg:block">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4418.696262665472!2d105.80201397584051!3d20.988948189143635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135acbff6de7557%3A0x4dde2e8227c6b283!2zMWEgTmcuIDEyNCBOZ3V54buFbiBYaeG7g24sIEjhuqEgxJDDrG5oLCBUaGFuaCBYdcOibiwgSMOgIE7hu5lpIDEwMDAwLCBWaeG7h3QgTmFt!5e1!3m2!1svi!2s!4v1755231339023!5m2!1svi!2s"
               width={300}
