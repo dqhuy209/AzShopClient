@@ -3,6 +3,7 @@ import Link from 'next/link'
 import ProductItem from '@/components/Common/ProductItem'
 import productService from '@/services/productService'
 import Image from 'next/image'
+import './index.css'
 
 const limit = 8
 
@@ -21,12 +22,13 @@ export default async function NewArrival() {
         {/* <!-- section title --> */}
         <div className="flex items-center justify-between mb-7">
           <div className={'flex items-center gap-x-[10px]'}>
-            <div>
+            <div className="img-blink-wrapper">
               <Image
                 src={'/images/icons/icon-new.svg'}
                 alt={'icon-new'}
-                width={25}
-                height={25}
+                width={55}
+                height={55}
+                className={'blink-icon'}
               />
             </div>
             <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">

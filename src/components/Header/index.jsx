@@ -40,7 +40,8 @@ const Header = () => {
     <header
       className={`fixed left-0 top-0 w-full z-[9999] transition-all ease-in-out duration-300  ${stickyMenu && 'shadow'}`}
     >
-      <div className="absolute z-[10] bg-[#ec6804] bg-[url(/images/logo/bg-header.jpg)] w-full h-full top-0 left-0"></div>
+      {/*bg-[#ec6804] bg-[url(/images/logo/bg-header.jpg)]*/}
+      <div className="absolute z-[10] bg-black w-full h-full top-0 left-0"></div>
       <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 relative z-[20]">
         <div
           className={`flex flex-row gap-5 items-center xl:justify-between ease-out duration-200 ${stickyMenu ? 'py-3 lg:py-4' : 'py-3 lg:py-6'}`}
