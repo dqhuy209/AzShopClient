@@ -26,6 +26,7 @@ export default async function BestSeller() {
                 alt={'icon-fire'}
                 width={65}
                 height={65}
+                className="blink-icon"
               />
             </div>
             <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">
