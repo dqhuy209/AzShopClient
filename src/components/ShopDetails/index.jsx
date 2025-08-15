@@ -54,9 +54,9 @@ const ShopDetails = ({ product }) => {
 
     // Tính index trong mảng ảnh dựa trên vị trí hiện tại trong mediaItems
     // Vì video ở đầu nên cần tính lại index
-    const imageIndex = mediaItems
-      .slice(0, activePreview + 1)
-      .filter((m) => m.type === 'image').length - 1
+    const imageIndex =
+      mediaItems.slice(0, activePreview + 1).filter((m) => m.type === 'image')
+        .length - 1
 
     const productToPreview = {
       ...product,
@@ -96,8 +96,8 @@ const ShopDetails = ({ product }) => {
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-17.5">
             <div className="lg:max-w-[570px] w-full">
-              <div className="flex gap-5">
-                <div className="flex flex-col gap-5">
+              <div className="flex flex-col lg:flex-row gap-5">
+                <div className="flex flex-row lg:flex-col gap-[8px] lg:gap-5 order-2 lg:order-1">
                   {mediaItems.map((item, key) => (
                     <button
                       onClick={() => {
@@ -105,8 +105,10 @@ const ShopDetails = ({ product }) => {
                         setActivePreview(key)
                       }}
                       key={key}
-                      className={`relative flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-2 ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
-                        }`}
+                      className={`relative flex items-center justify-center w-[60px] h-[60px] lg:w-20 lg:h-20  overflow-hidden rounded-lg bg-gray-2
+                       ease-out duration-200 hover:border-2 hover:border-blue ${
+                         activePreview === key && 'border-2 border-blue'
+                       }`}
                     >
                       {item.type === 'image' ? (
                         <Image
@@ -129,8 +131,19 @@ const ShopDetails = ({ product }) => {
                           </video>
                           {/* Icon play để phân biệt video */}
                           <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <circle cx="12" cy="12" r="10" fill="rgba(0,0,0,0.6)" />
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                fill="rgba(0,0,0,0.6)"
+                              />
                               <path d="M10 8L16 12L10 16V8Z" fill="#fff" />
                             </svg>
                           </span>
@@ -140,7 +153,7 @@ const ShopDetails = ({ product }) => {
                   ))}
                 </div>
 
-                <div className="relative z-1 overflow-hidden flex items-center justify-center w-full lg:minh-[512px] lg:min-h-[512px] bg-gray-2 rounded-lg shadow-1">
+                <div className="order-1 lg:order-2 relative z-1 overflow-hidden flex items-center justify-center w-full lg:minh-[512px] lg:min-h-[512px] bg-gray-2 rounded-lg shadow-1">
                   <div>
                     {/* Nút phóng to chỉ hiển thị khi đang ở ảnh */}
                     {mediaItems[activePreview]?.type === 'image' && (
@@ -185,7 +198,10 @@ const ShopDetails = ({ product }) => {
                         controls
                         className="object-contain max-w-full max-h-full"
                       >
-                        <source src={mediaItems[activePreview]?.url} type="video/mp4" />
+                        <source
+                          src={mediaItems[activePreview]?.url}
+                          type="video/mp4"
+                        />
                         Trình duyệt của bạn không hỗ trợ video.
                       </video>
                     )}
@@ -348,10 +364,11 @@ const ShopDetails = ({ product }) => {
               <button
                 key={key}
                 onClick={() => setActiveTab(item.id)}
-                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
-                  ? 'text-blue before:w-full'
-                  : 'text-dark before:w-0'
-                  }`}
+                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${
+                  activeTab === item.id
+                    ? 'text-blue before:w-full'
+                    : 'text-dark before:w-0'
+                }`}
               >
                 {item.title}
               </button>
@@ -363,8 +380,9 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === 'tabOne' ? 'flex' : 'hidden'
-                }`}
+              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${
+                activeTab === 'tabOne' ? 'flex' : 'hidden'
+              }`}
             >
               <div className="max-w-[670px] w-full">
                 <h2 className="text-2xl font-medium text-dark mb-7">
@@ -404,10 +422,10 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content two start --> */}
           <div>
             <div
-              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === 'tabTwo' ? 'block' : 'hidden'
-                }`}
+              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${
+                activeTab === 'tabTwo' ? 'block' : 'hidden'
+              }`}
             >
-
               {/* Hiển thị thông tin chi tiết từ API specifications */}
               {product.specifications && product.specifications.length > 0 ? (
                 product.specifications.map((spec, index) => (
@@ -432,7 +450,6 @@ const ShopDetails = ({ product }) => {
                   <p className="text-base text-meta-4">
                     Chưa có thông tin chi tiết cho sản phẩm này.
                   </p>
-
                 </div>
               )}
             </div>
