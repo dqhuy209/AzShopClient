@@ -8,6 +8,7 @@ import categoryService from '@/services/categoryService'
 import 'swiper/css/navigation'
 import 'swiper/css'
 import SingleItem from './SingleItem'
+import '/src/components/Home/NewArrivals/index.css'
 
 const Categories = () => {
   const sliderRef = useRef(null)
@@ -56,10 +57,11 @@ const Categories = () => {
               <span className="flex items-center gap-2.5 font-medium text-dark mb-1.5">
                 <div>
                   <Image
-                    src={'/images/icons/icon-category.svg'}
+                    src={'/images/icons/icon-cate.svg'}
                     alt={'category'}
                     width={55}
                     height={55}
+                    className={'blink-icon'}
                   />
                 </div>
                 <h2 className="text-xl font-semibold xl:text-heading-5 text-dark">

@@ -1,17 +1,13 @@
 @keyframes color-blink {
-    0%   { filter: hue-rotate(0deg) brightness(0.7) saturate(1) contrast(1.5); }
-    14%  { filter: hue-rotate(60deg) brightness(0.7) saturate(1) contrast(1.5); }   /* vàng rất tối */
-    28%  { filter: hue-rotate(120deg) brightness(0.7) saturate(1) contrast(1.5); }  /* xanh lá rất tối */
-    42%  { filter: hue-rotate(180deg) brightness(0.7) saturate(1) contrast(1.5); } /* xanh dương rất tối */
-    57%  { filter: hue-rotate(240deg) brightness(0.7) saturate(1) contrast(1.5); }  /* tím rất tối */
-    71%  { filter: hue-rotate(300deg) brightness(0.7) saturate(1) contrast(1.5); } /* hồng rất tối */
-    85%  { filter: hue-rotate(360deg) brightness(0.7) saturate(1) contrast(1.5); }  /* đỏ rất tối */
-    100% { filter: hue-rotate(0deg) brightness(0.7) saturate(1) contrast(1.5); }
+    0%   { filter: hue-rotate(0deg) brightness(0.6) saturate(2.5) contrast(5); }
+    14%  { filter: hue-rotate(60deg) brightness(0.6) saturate(2.5) contrast(5); }   /* vàng đậm */
+    28%  { filter: hue-rotate(120deg) brightness(0.6) saturate(2.5) contrast(5); }  /* xanh lá đậm */
+    42%  { filter: hue-rotate(180deg) brightness(0.6) saturate(2.5) contrast(5); }  /* xanh dương đậm */
+    57%  { filter: hue-rotate(240deg) brightness(0.6) saturate(2.5) contrast(5); }  /* tím đậm */
+    71%  { filter: hue-rotate(300deg) brightness(0.6) saturate(2.5) contrast(5); }  /* hồng đậm */
+    85%  { filter: hue-rotate(360deg) brightness(0.6) saturate(2.5) contrast(5); }  /* đỏ đậm */
+    100% { filter: hue-rotate(0deg) brightness(0.6) saturate(2.5) contrast(5); }
 }
-
-
-
 .blink-icon {
-    animation: color-blink 3s infinite;
-    fill: #9925be; /* Default fill color */
+    animation: color-blink 4s infinite;
 }
