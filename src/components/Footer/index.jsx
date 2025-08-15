@@ -123,7 +123,7 @@ const Footer = () => {
                 className="text-dark ease-out duration-200 hover:text-blue pl-2 flex"
               >
                 <Image
-                  src={'/images/icons/icon-group.png.png'}
+                  src={'/images/icons/icon-group.png'}
                   alt={'icon-cho-tot'}
                   width={35}
                   height={35}
