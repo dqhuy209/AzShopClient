@@ -1,7 +1,8 @@
 'use client'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Pagination } from 'swiper/modules'
+import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 import 'swiper/css/pagination'
+import 'swiper/css/navigation'
 import 'swiper/css'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,44 +11,77 @@ const HeroCarousel = ({ banners = [] }) => {
   // Kiểm tra nếu không có banner thì hiển thị loading hoặc fallback
   if (!banners || banners.length === 0) {
     return (
-      <div className="w-full h-[550px] bg-gray-200 animate-pulse flex items-center justify-center">
-        <p className="text-gray-500">Đang tải banner...</p>
+      <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px] xl:h-[600px] bg-gray-200 animate-pulse flex items-center justify-center">
+        <p className="text-gray-500 text-sm sm:text-base">Đang tải banner...</p>
       </div>
     )
   }
 
   return (
     <Swiper
-      spaceBetween={30}
+      spaceBetween={0}
       centeredSlides={true}
       autoplay={{
-        delay: 2500,
+        delay: 3000,
         disableOnInteraction: false,
       }}
       pagination={{
+        el: '.swiper-pagination',
+        type: 'bullets',
         clickable: true,
+        dynamicBullets: true,
       }}
-      modules={[Autoplay, Pagination]}
-      className="hero-carousel"
+      navigation={{
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      }}
+      modules={[Autoplay, Pagination, Navigation]}
+      className="hero-carousel relative w-full"
+      // Responsive breakpoints
+      breakpoints={{
+        320: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+        640: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+        768: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+        1024: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+        1280: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+      }}
     >
       {banners.map((banner, index) => (
-        <SwiperSlide key={banner.id || index}>
-          <div className="flex items-center flex-col-reverse sm:flex-row">
-            <div className="w-full h-[550px] lg:h-[600px] relative">
-              {/* Banner luôn clickable: có linkUrl thì navigate đến đó, không có thì navigate đến home */}
-              <Link href={banner.linkUrl && banner.linkUrl.trim() !== '' ? banner.linkUrl : '/'}>
+        <SwiperSlide key={banner.id || index} className="w-full">
+          <div className="flex items-center flex-col-reverse sm:flex-row w-full">
+            <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px] xl:h-[600px] relative">
+              <Link href={banner.linkUrl && banner.linkUrl.trim() !== '' ? banner.linkUrl : '/'} className="block w-full h-full">
                 <Image
                   src={banner.imageUrl || '/images/hero/banner.jpg'}
                   alt={`Banner ${index + 1}`}
                   fill
-                  className="object-center lg:object-cover cursor-pointer transition-transform hover:scale-105"
-                  priority={index === 0} // Ưu tiên load banner đầu tiên
+                  className="object-cover cursor-pointer transition-transform duration-300 hover:scale-105 w-full h-full"
+                  priority={index === 0}
+                  sizes="100vw"
                 />
               </Link>
             </div>
           </div>
         </SwiperSlide>
       ))}
+      {/* Phần tử pagination để Swiper gắn UI bullets (đặt ở đáy, giữa) */}
+      <div className="swiper-pagination !bottom-3 left-1/2 -translate-x-1/2" />
+
     </Swiper>
   )
 }

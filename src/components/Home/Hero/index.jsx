@@ -30,13 +30,13 @@ const Hero = async () => {
     ]
   }
 
+
   return (
     <section className="overflow-hidden pt-[71px] lg:mt-[-23px] lg:pt-30 xl:pt-51.5 bg-[#E5EAF4]">
       <div className="w-full mx-auto">
-        <div className="flex flex-wrap gap-5">
+        <div className="flex flex-wrap">
           <div className="w-full">
-            <div className="relative z-1 rounded-[10px] bg-white overflow-hidden">
-              {/* Truyền data banner đã được filter xuống HeroCarousel */}
+            <div className="relative z-1 bg-white overflow-hidden">
               <HeroCarousel banners={banners} />
             </div>
           </div>
