@@ -73,12 +73,19 @@ const HeroCarousel = ({ banners = [] }) => {
         <SwiperSlide key={banner.id || index} className="w-full">
           <div className="flex items-center flex-col-reverse sm:flex-row w-full">
             <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px] xl:h-[600px] relative">
-              <Link href={banner.linkUrl && banner.linkUrl.trim() !== '' ? banner.linkUrl : '/'} className="block w-full h-full">
+              <Link
+                href={
+                  banner.linkUrl && banner.linkUrl.trim() !== ''
+                    ? banner.linkUrl
+                    : '/'
+                }
+                className="block w-full h-full"
+              >
                 <Image
                   src={banner.imageUrl || '/images/hero/banner.jpg'}
                   alt={`Banner ${index + 1}`}
                   fill
-                  className="object-cover object-center sm:object-center md:object-center lg:object-center xl:object-center 2xl:object-center cursor-pointer transition-transform duration-300 hover:scale-105 w-full h-full"
+                  className="object-cover object-center sm:object-center md:object-center lg:object-center xl:object-center 2xl:object-center cursor-pointer transition-transform duration-300 w-full h-full"
                   priority={index === 0}
                   sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 100vw, (max-width: 1500px) 100vw, 100vw"
                 />
@@ -89,7 +96,6 @@ const HeroCarousel = ({ banners = [] }) => {
       ))}
       {/* Phần tử pagination để Swiper gắn UI bullets (đặt ở đáy, giữa) */}
       <div className="swiper-pagination !bottom-3 left-1/2 -translate-x-1/2" />
-
     </Swiper>
   )
 }
