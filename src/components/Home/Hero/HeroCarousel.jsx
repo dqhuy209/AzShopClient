@@ -59,6 +59,14 @@ const HeroCarousel = ({ banners = [] }) => {
           slidesPerView: 1,
           spaceBetween: 0,
         },
+        1500: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
+        1920: {
+          slidesPerView: 1,
+          spaceBetween: 0,
+        },
       }}
     >
       {banners.map((banner, index) => (
@@ -70,9 +78,9 @@ const HeroCarousel = ({ banners = [] }) => {
                   src={banner.imageUrl || '/images/hero/banner.jpg'}
                   alt={`Banner ${index + 1}`}
                   fill
-                  className="object-cover cursor-pointer transition-transform duration-300 hover:scale-105 w-full h-full"
+                  className="object-cover object-center sm:object-center md:object-center lg:object-center xl:object-center 2xl:object-center cursor-pointer transition-transform duration-300 hover:scale-105 w-full h-full"
                   priority={index === 0}
-                  sizes="100vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 100vw, (max-width: 1500px) 100vw, 100vw"
                 />
               </Link>
             </div>
