@@ -2,6 +2,8 @@
 import React from 'react'
 import { useModalContext } from '@/app/context/QuickViewModalContext'
 import { useDispatch } from 'react-redux'
+import { useAppSelector } from '@/redux/store'
+import toast from 'react-hot-toast'
 import { updateQuickView } from '@/redux/features/quickView-slice'
 import { addItemToCart } from '@/redux/features/cart-slice'
 import Image from 'next/image'
@@ -11,6 +13,7 @@ import { formatVNDRounded } from '@/utils/formatCurrency'
 const SingleItem = ({ item }) => {
   const { openModal } = useModalContext()
   const dispatch = useDispatch()
+  const cartItems = useAppSelector((state) => state.cartReducer.items)
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
@@ -22,6 +25,10 @@ const SingleItem = ({ item }) => {
 
   // add to cart
   const handleAddToCart = () => {
+    if (cartItems?.some((p) => p.id === item?.id)) {
+      toast.error('Sản phẩm đã có trong giỏ hàng')
+      return
+    }
     dispatch(
       addItemToCart({
         ...item,
@@ -184,8 +191,8 @@ const SingleItem = ({ item }) => {
               <span className="text-2xl font-bold text-red">
                 {formatVNDRounded?.thousands
                   ? formatVNDRounded.thousands(
-                      item?.finalPrice || item?.sellingPrice
-                    )
+                    item?.finalPrice || item?.sellingPrice
+                  )
                   : `$${item?.finalPrice || item?.sellingPrice}`}
               </span>
               {item?.discountPercent > 0 && (
@@ -205,8 +212,8 @@ const SingleItem = ({ item }) => {
                     Tiết kiệm{' '}
                     {formatVNDRounded?.thousands
                       ? formatVNDRounded.thousands(
-                          item?.sellingPrice - item?.finalPrice
-                        )
+                        item?.sellingPrice - item?.finalPrice
+                      )
                       : `$${(item?.sellingPrice - item?.finalPrice).toFixed(2)}`}
                   </span>
                 </div>

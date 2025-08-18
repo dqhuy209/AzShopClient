@@ -15,7 +15,11 @@ const SingleItem = ({ item }) => {
   const handleRemoveFromCart = () => {
     dispatch(removeItemFromCart(item.id))
   }
-
+  const imageSrc = item?.imgs?.thumbnails?.[0]
+    ? item.imgs.thumbnails[0]
+    : item?.images?.[0]
+      ? item.images[0]
+      : '/images/placeholder.jpg'
   const handleIncreaseQuantity = () => {
     setQuantity(quantity + 1)
     dispatch(updateCartItemQuantity({ id: item.id, quantity: quantity + 1 }))
@@ -39,7 +43,7 @@ const SingleItem = ({ item }) => {
               <Image
                 width={200}
                 height={200}
-                src={item.imgs?.thumbnails[0]}
+                src={imageSrc}
                 alt="product"
               />
             </div>

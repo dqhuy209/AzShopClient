@@ -1,6 +1,8 @@
 import React from 'react'
 import { AppDispatch } from '@/redux/store'
 import { useDispatch } from 'react-redux'
+import { useAppSelector } from '@/redux/store'
+import toast from 'react-hot-toast'
 
 import { removeItemFromWishlist } from '@/redux/features/wishlist-slice'
 import { addItemToCart } from '@/redux/features/cart-slice'
@@ -9,12 +11,17 @@ import Image from 'next/image'
 
 const SingleItem = ({ item }) => {
   const dispatch = useDispatch()
+  const cartItems = useAppSelector((state) => state.cartReducer.items)
 
   const handleRemoveFromWishlist = () => {
     dispatch(removeItemFromWishlist(item.id))
   }
 
   const handleAddToCart = () => {
+    if (cartItems?.some((p) => p.id === item?.id)) {
+      toast.error('Sản phẩm đã có trong giỏ hàng')
+      return
+    }
     dispatch(
       addItemToCart({
         ...item,

@@ -192,9 +192,6 @@ const Header = () => {
                     <span className="hidden lg:block text-custom-sm text-white uppercase whitespace-nowrap">
                       GIỎ HÀNG
                     </span>
-                    <p className="font-medium text-custom-lg text-white">
-                      ${totalPrice}
-                    </p>
                   </div>
                 </button>
               </div>

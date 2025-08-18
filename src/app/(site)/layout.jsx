@@ -12,6 +12,7 @@ import QuickViewModal from '@/components/Common/QuickViewModal'
 import CartSidebarModal from '@/components/Common/CartSidebarModal'
 import { PreviewSliderProvider } from '../context/PreviewSliderContext'
 import PreviewSliderModal from '@/components/Common/PreviewSlider'
+import { Toaster } from 'react-hot-toast'
 
 import ScrollToTop from '@/components/Common/ScrollToTop'
 import PreLoader from '@/components/Common/PreLoader'
@@ -47,6 +48,7 @@ export default function RootLayout({ children }) {
                     <QuickViewModal />
                     <CartSidebarModal />
                     <PreviewSliderModal />
+                    <Toaster position="top-right" />
                   </PreviewSliderProvider>
                 </ModalProvider>
               </CartModalProvider>
