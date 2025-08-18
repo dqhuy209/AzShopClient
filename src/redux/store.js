@@ -16,4 +16,16 @@ export const store = configureStore({
   },
 })
 
+// Đồng bộ giỏ hàng vào localStorage mỗi khi state thay đổi (chạy phía client)
+if (typeof window !== 'undefined') {
+  try {
+    store.subscribe(() => {
+      const items = store.getState().cartReducer.items
+      localStorage.setItem('cartItems', JSON.stringify(items))
+    })
+  } catch (e) {
+    // Bỏ qua lỗi localStorage (ví dụ: quota, privacy mode)
+  }
+}
+
 export const useAppSelector = useSelector

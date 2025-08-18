@@ -1,31 +1,43 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import Image from 'next/image'
+import Link from 'next/link'
+import formatVND from '@/utils/formatCurrency'
 
 const SingleItem = ({ item, removeItemFromCart }) => {
   const dispatch = useDispatch()
 
   const handleRemoveFromCart = () => {
+    if (!item?.id) return
     dispatch(removeItemFromCart(item.id))
   }
+
+  // lấy ảnh an toàn từ nhiều cấu trúc dữ liệu khác nhau
+  const imageSrc = item?.imgs?.thumbnails?.[0]
+    ? item.imgs.thumbnails[0]
+    : item?.images?.[0]
+      ? item.images[0]
+      : '/images/placeholder.jpg'
+
+  const title = item?.title ?? item?.name ?? 'Sản phẩm'
+  const price =
+    Number(item?.discountedPrice ?? item?.finalPrice ?? item?.price) || 0
 
   return (
     <div className="flex items-center justify-between gap-5">
       <div className="w-full flex items-center gap-6">
-        <div className="flex items-center justify-center rounded-[10px] bg-gray-3 max-w-[90px] w-full h-22.5">
-          <Image
-            src={item.imgs?.thumbnails[0]}
-            alt="product"
-            width={100}
-            height={100}
-          />
-        </div>
+        <Link
+          href={`/shop-details/${item?.id ?? ''}`}
+          className="flex items-center justify-center rounded-[10px] bg-gray-3 max-w-[90px] w-full h-22.5"
+        >
+          <Image src={imageSrc} alt="product" width={100} height={100} />
+        </Link>
 
         <div>
           <h3 className="font-medium text-dark mb-1 ease-out duration-200 hover:text-blue">
-            <a href="#"> {item.title} </a>
+            <Link href={`/shop-details/${item?.id ?? ''}`}> {title} </Link>
           </h3>
-          <p className="text-custom-sm">Price: ${item.discountedPrice}</p>
+          <p className="text-custom-sm text-red">Giá: {formatVND(price)}</p>
         </div>
       </div>
 

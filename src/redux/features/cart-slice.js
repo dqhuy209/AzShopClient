@@ -1,7 +1,22 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 
+// NOTE:
+// - Hỗ trợ khởi tạo từ localStorage để không cần đăng nhập vẫn giữ giỏ hàng
+// - Bọc trong try/catch để tránh crash khi JSON lỗi hoặc không tồn tại
 const initialState = {
-  items: [],
+  // Luôn trả về mảng hợp lệ để tránh NaN, undefined
+  items:
+    typeof window !== 'undefined'
+      ? (() => {
+          try {
+            const raw = localStorage.getItem('cartItems')
+            const parsed = raw ? JSON.parse(raw) : []
+            return Array.isArray(parsed) ? parsed : []
+          } catch (e) {
+            return []
+          }
+        })()
+      : [],
 }
 
 export const cart = createSlice({
@@ -9,20 +24,42 @@ export const cart = createSlice({
   initialState,
   reducers: {
     addItemToCart: (state, action) => {
-      const { id, title, price, quantity, discountedPrice, imgs } =
-        action.payload
+      // Chuẩn hoá dữ liệu đầu vào từ nhiều nguồn (shop, best seller, quick view, API mới)
+      const payload = action.payload || {}
+
+      // Ưu tiên trường id và các biến thể đặt tên
+      const id = payload.id
+      if (id == null) return
+
+      const title = payload.title ?? payload.name ?? ''
+
+      // Giá gốc và giá sau giảm; ép kiểu số để tránh NaN do string
+      const rawOriginalPrice =
+        payload.price ?? payload.sellingPrice ?? payload.finalPrice ?? 0
+      const rawDiscountPrice =
+        payload.discountedPrice ?? payload.finalPrice ?? payload.price ?? 0
+
+      const price = Number(rawOriginalPrice) || 0
+      const discountedPrice = Number(rawDiscountPrice) || 0
+
+      // Ảnh có thể ở `imgs.*` (data cũ) hoặc `images[]` (API mới)
+      const images = payload.images
+
+      const quantity = Number(payload.quantity) || 1
+
       const existingItem = state.items.find((item) => item.id === id)
 
       if (existingItem) {
-        existingItem.quantity += quantity
+        // Với business rule: chỉ bán 1 sản phẩm duy nhất, không tăng số lượng
+        existingItem.quantity = 1
       } else {
         state.items.push({
           id,
           title,
           price,
-          quantity,
           discountedPrice,
-          imgs,
+          quantity: 1,
+          images,
         })
       }
     },
@@ -48,8 +85,12 @@ export const cart = createSlice({
 export const selectCartItems = (state) => state.cartReducer.items
 
 export const selectTotalPrice = createSelector([selectCartItems], (items) => {
+  // Tính tổng giá an toàn: ưu tiên discountedPrice -> finalPrice -> price
   return items.reduce((total, item) => {
-    return total + item.discountedPrice * item.quantity
+    const unit =
+      Number(item?.discountedPrice ?? item?.finalPrice ?? item?.price) || 0
+    const qty = Number(item?.quantity) || 1
+    return total + unit * qty
   }, 0)
 })
 

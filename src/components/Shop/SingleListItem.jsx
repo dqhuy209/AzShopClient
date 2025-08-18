@@ -7,6 +7,8 @@ import { updateQuickView } from '@/redux/features/quickView-slice'
 import { addItemToCart } from '@/redux/features/cart-slice'
 import { addItemToWishlist } from '@/redux/features/wishlist-slice'
 import { useDispatch } from 'react-redux'
+import { useAppSelector } from '@/redux/store'
+import toast from 'react-hot-toast'
 import { AppDispatch } from '@/redux/store'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -14,6 +16,7 @@ import Image from 'next/image'
 const SingleListItem = ({ item }) => {
   const { openModal } = useModalContext()
   const dispatch = useDispatch()
+  const cartItems = useAppSelector((state) => state.cartReducer.items)
 
   // update the QuickView state
   const handleQuickViewUpdate = () => {
@@ -22,6 +25,10 @@ const SingleListItem = ({ item }) => {
 
   // add to cart
   const handleAddToCart = () => {
+    if (cartItems?.some((p) => p.id === item?.id)) {
+      toast.error('Sản phẩm đã có trong giỏ hàng')
+      return
+    }
     dispatch(
       addItemToCart({
         ...item,

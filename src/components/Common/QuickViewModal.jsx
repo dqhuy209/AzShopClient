@@ -5,6 +5,7 @@ import { useModalContext } from '@/app/context/QuickViewModalContext'
 import { useAppSelector } from '@/redux/store'
 import { addItemToCart } from '@/redux/features/cart-slice'
 import { useDispatch } from 'react-redux'
+import toast from 'react-hot-toast'
 import Image from 'next/image'
 import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
 import { updateproductDetails } from '@/redux/features/product-details'
@@ -108,8 +109,14 @@ const QuickViewModal = () => {
   }
 
   // add to cart
+  const cartItems = useAppSelector((state) => state.cartReducer.items)
+
   const handleAddToCart = () => {
     const productToAdd = productData || product
+    if (cartItems?.some((p) => p.id === productToAdd?.id)) {
+      toast.error('Sản phẩm đã có trong giỏ hàng')
+      return
+    }
     dispatch(
       addItemToCart({
         id: productToAdd.id,
