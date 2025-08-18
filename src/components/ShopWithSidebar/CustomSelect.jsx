@@ -1,8 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-const CustomSelect = ({ options }) => {
+const CustomSelect = ({ options, onChange, defaultValue }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedOption, setSelectedOption] = useState(options[0])
+  const [selectedOption, setSelectedOption] = useState(() => {
+    if (defaultValue) {
+      const found = options.find(opt => opt.value === defaultValue)
+      return found || options[0]
+    }
+    return options[0]
+  })
   const selectRef = useRef(null)
 
   // Function to close the dropdown when a click occurs outside the component
@@ -22,6 +28,16 @@ const CustomSelect = ({ options }) => {
     }
   }, [])
 
+  // Cập nhật selectedOption khi defaultValue thay đổi
+  useEffect(() => {
+    if (defaultValue) {
+      const found = options.find(opt => opt.value === defaultValue)
+      if (found) {
+        setSelectedOption(found)
+      }
+    }
+  }, [defaultValue, options])
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen)
   }
@@ -29,6 +45,11 @@ const CustomSelect = ({ options }) => {
   const handleOptionClick = (option) => {
     setSelectedOption(option)
     toggleDropdown()
+
+    // Gọi callback onChange nếu được cung cấp
+    if (onChange) {
+      onChange(option.value)
+    }
   }
 
   return (
@@ -37,9 +58,8 @@ const CustomSelect = ({ options }) => {
       ref={selectRef}
     >
       <div
-        className={`select-selected whitespace-nowrap ${
-          isOpen ? 'select-arrow-active' : ''
-        }`}
+        className={`select-selected whitespace-nowrap ${isOpen ? 'select-arrow-active' : ''
+          }`}
         onClick={toggleDropdown}
       >
         {selectedOption.label}
@@ -49,9 +69,8 @@ const CustomSelect = ({ options }) => {
           <div
             key={index}
             onClick={() => handleOptionClick(option)}
-            className={`select-item ${
-              selectedOption === option ? 'same-as-selected' : ''
-            }`}
+            className={`select-item ${selectedOption === option ? 'same-as-selected' : ''
+              }`}
           >
             {option.label}
           </div>

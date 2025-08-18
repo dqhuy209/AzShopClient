@@ -1,19 +1,15 @@
 import Axios from '@/services/Axios'
 
-const getListProductsNewArrivals = (param) => {
-  return Axios.getRequest(`/products/latest?${param}`)
-}
-
-const getListProductsBestSeller = (param) => {
-  return Axios.getRequest(`/products/latest?${param}`)
+const getListProducts = (param = {}) => {
+  const queryString = new URLSearchParams(param).toString()
+  return Axios.getRequest(`/products?${queryString}`)
 }
 
 const productDetails = (id) => {
   return Axios.getRequest(`/products/${id}`)
 }
 const productService = {
-  getListProductsNewArrivals,
-  getListProductsBestSeller,
+  getListProducts,
   productDetails,
 }
 

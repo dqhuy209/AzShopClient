@@ -9,6 +9,7 @@ import 'swiper/css/navigation'
 import 'swiper/css'
 import SingleItem from './SingleItem'
 import '/src/components/Home/NewArrivals/index.css'
+import Link from 'next/link'
 
 const Categories = () => {
   const sliderRef = useRef(null)

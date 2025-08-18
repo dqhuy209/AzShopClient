@@ -4,13 +4,17 @@ import Link from 'next/link'
 import productService from '@/services/productService'
 import Image from 'next/image'
 
-const limit = 6
+
 
 export default async function BestSeller() {
   let productDetail = []
   try {
-    const response = await productService.getListProductsBestSeller(limit)
-    productDetail = response.data.data
+    const response = await productService.getListProducts({
+      limit: 8,
+      isLatest: false,
+      isFeatured: true,
+    })
+    productDetail = response.data.data.content
   } catch (error) {
     console.error('Error fetching best seller products:', error)
   }
@@ -49,7 +53,7 @@ export default async function BestSeller() {
 
         <div className="text-center mt-12.5">
           <Link
-            href="/shop-without-sidebar"
+            href="/shop-with-sidebar?isFeatured=true"
             className="inline-flex font-medium text-custom-sm py-3 px-7 sm:px-12.5 rounded-md border-gray-3 border bg-gray-1 text-dark ease-out duration-200 hover:bg-dark hover:text-white hover:border-transparent"
           >
             Xem tất cả

@@ -1,14 +1,71 @@
-import { useState } from 'react'
+'use client'
+import { useEffect, useMemo, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import RangeSlider from 'react-range-slider-input'
 import 'react-range-slider-input/dist/style.css'
+import { formatVND } from '@/utils/formatCurrency'
+
 
 const PriceDropdown = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  // Ngưỡng giá cố định
+  const MIN_PRICE = 1000
+  const MAX_PRICE = 100000000
+  const STEP = 1000
+
   const [toggleDropdown, setToggleDropdown] = useState(true)
 
   const [selectedPrice, setSelectedPrice] = useState({
-    from: 0,
-    to: 100,
+    from: MIN_PRICE,
+    to: MAX_PRICE,
   })
+
+  // Đọc từ URL để đồng bộ slider lúc mount và khi URL đổi (back/forward)
+  useEffect(() => {
+    const urlMin = parseInt(searchParams.get('minPrice') || `${MIN_PRICE}`, 10)
+    const urlMax = parseInt(searchParams.get('maxPrice') || `${MAX_PRICE}`, 10)
+    const clampedMin = isNaN(urlMin) ? MIN_PRICE : Math.max(MIN_PRICE, Math.min(urlMin, MAX_PRICE))
+    const clampedMax = isNaN(urlMax) ? MAX_PRICE : Math.max(MIN_PRICE, Math.min(urlMax, MAX_PRICE))
+    // Đảm bảo min <= max
+    const from = Math.min(clampedMin, clampedMax)
+    const to = Math.max(clampedMin, clampedMax)
+    setSelectedPrice({ from, to })
+  }, [searchParams])
+
+  // Build text hiển thị
+  const priceLabel = useMemo(() => {
+    const from = formatVND(selectedPrice.from)
+    const to = formatVND(selectedPrice.to)
+    return `${from} - ${to}`
+  }, [selectedPrice])
+
+  // Cập nhật URL với giá trị hiện tại
+  const applyPriceFilter = () => {
+    const url = new URL(pathname, window.location.origin)
+    // Copy params hiện tại
+    searchParams.forEach((value, key) => {
+      url.searchParams.set(key, value)
+    })
+    url.searchParams.set('minPrice', String(selectedPrice.from))
+    url.searchParams.set('maxPrice', String(selectedPrice.to))
+    url.searchParams.delete('page')
+    router.push(url.pathname + url.search)
+  }
+
+  // Xóa bộ lọc giá khỏi URL
+  const clearPriceFilter = () => {
+    const url = new URL(pathname, window.location.origin)
+    searchParams.forEach((value, key) => {
+      url.searchParams.set(key, value)
+    })
+    url.searchParams.delete('minPrice')
+    url.searchParams.delete('maxPrice')
+    url.searchParams.delete('page')
+    router.push(url.pathname + url.search)
+  }
 
   return (
     <div className="bg-white shadow-1 rounded-lg">
@@ -16,14 +73,13 @@ const PriceDropdown = () => {
         onClick={() => setToggleDropdown(!toggleDropdown)}
         className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
       >
-        <p className="text-dark">Price</p>
+        <p className="text-dark">Giá</p>
         <button
           onClick={() => setToggleDropdown(!toggleDropdown)}
           id="price-dropdown-btn"
           aria-label="button for price dropdown"
-          className={`text-dark ease-out duration-200 ${
-            toggleDropdown && 'rotate-180'
-          }`}
+          className={`text-dark ease-out duration-200 ${toggleDropdown && 'rotate-180'
+            }`}
         >
           <svg
             className="fill-current"
@@ -50,33 +106,52 @@ const PriceDropdown = () => {
             <RangeSlider
               id="range-slider-gradient"
               className="margin-lg"
-              step={'any'}
-              onInput={(e) =>
-                setSelectedPrice({
-                  from: Math.floor(e[0]),
-                  to: Math.ceil(e[1]),
-                })
-              }
+              min={MIN_PRICE}
+              max={MAX_PRICE}
+              step={STEP}
+              value={[selectedPrice.from, selectedPrice.to]}
+              onInput={(e) => {
+                const from = Math.max(MIN_PRICE, Math.min(e[0], MAX_PRICE))
+                const to = Math.max(MIN_PRICE, Math.min(e[1], MAX_PRICE))
+                setSelectedPrice({ from: Math.floor(from), to: Math.ceil(to) })
+              }}
             />
 
             <div className="price-amount flex items-center justify-between pt-4">
               <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
                 <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
-                  $
+                  đ
                 </span>
                 <span id="minAmount" className="block px-3 py-1.5">
-                  {selectedPrice.from}
+                  {formatVND(selectedPrice.from)}
                 </span>
               </div>
 
               <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
                 <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
-                  $
+                  đ
                 </span>
                 <span id="maxAmount" className="block px-3 py-1.5">
-                  {selectedPrice.to}
+                  {formatVND(selectedPrice.to)}
                 </span>
               </div>
+            </div>
+
+            <div className="flex items-center gap-2 pt-4">
+              <button
+                type="button"
+                className="px-3 py-2 rounded-md bg-blue text-white text-sm hover:bg-blue-600"
+                onClick={applyPriceFilter}
+              >
+                Áp dụng
+              </button>
+              <button
+                type="button"
+                className="px-3 py-2 rounded-md border border-gray-200 text-sm hover:border-blue hover:text-blue"
+                onClick={clearPriceFilter}
+              >
+                Xóa
+              </button>
             </div>
           </div>
         </div>

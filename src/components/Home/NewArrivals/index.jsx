@@ -5,13 +5,16 @@ import productService from '@/services/productService'
 import Image from 'next/image'
 import './index.css'
 
-const limit = 8
 
 export default async function NewArrival() {
   let productDetail = []
   try {
-    const response = await productService.getListProductsNewArrivals(limit)
-    productDetail = response.data.data
+    const response = await productService.getListProducts({
+      limit: 8,
+      isLatest: true,
+      isFeatured: false,
+    })
+    productDetail = response.data.data.content
   } catch (error) {
     console.error('Error fetching product detail:', error)
   }
@@ -37,7 +40,7 @@ export default async function NewArrival() {
           </div>
 
           <Link
-            href="/shop-with-sidebar"
+            href="/shop-with-sidebar?isLatest=true"
             className="inline-flex font-medium text-custom-sm py-2.5 px-7 rounded-md border-gray-3 border bg-gray-1 text-dark ease-out duration-200 hover:bg-dark hover:text-white hover:border-transparent"
           >
             Xem tất cả
