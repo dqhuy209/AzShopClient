@@ -23,7 +23,6 @@ const ShopWithSidebar = () => {
   const [totalPages, setTotalPages] = useState(1)
   const [itemsPerPage] = useState(12)
 
-
   const handleStickyMenu = () => {
     if (window.scrollY >= 80) {
       setStickyMenu(true)
@@ -31,8 +30,6 @@ const ShopWithSidebar = () => {
       setStickyMenu(false)
     }
   }
-
-
 
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [categories, setCategories] = useState([])
@@ -54,7 +51,7 @@ const ShopWithSidebar = () => {
     },
   ]
 
-  //  categories 
+  //  categories
   const fetchCategories = async () => {
     try {
       setCategoriesLoading(true)
@@ -62,10 +59,11 @@ const ShopWithSidebar = () => {
 
       const response = await categoryService.getListCategory()
       setCategories(response.data.data || [])
-
     } catch (err) {
       console.error('Lỗi khi lấy danh sách danh mục:', err)
-      setCategoriesError('Không thể tải danh sách danh mục. Vui lòng thử lại sau.')
+      setCategoriesError(
+        'Không thể tải danh sách danh mục. Vui lòng thử lại sau.'
+      )
       setCategories([])
     } finally {
       setCategoriesLoading(false)
@@ -92,7 +90,7 @@ const ShopWithSidebar = () => {
       // Xây dựng object tham số cho API
       const params = {
         page: parseInt(page) - 1, // API sử dụng zero-based indexing
-        size: itemsPerPage
+        size: itemsPerPage,
       }
 
       // Đọc tham số sortBy/sortDir từ URL (ưu tiên) nếu có
@@ -102,13 +100,13 @@ const ShopWithSidebar = () => {
       if (sortDir) params.sortDir = sortDir
 
       if (isLatest === 'true') {
-        params.isLatest = true;
+        params.isLatest = true
         params.isFeatured = false
       }
 
       if (isFeatured === 'true') {
-        params.isFeatured = true;
-        params.isLatest = false;
+        params.isFeatured = true
+        params.isLatest = false
       }
 
       if (categoryId) {
@@ -124,7 +122,6 @@ const ShopWithSidebar = () => {
       setProducts(response.data.data.content)
       setTotalProducts(response.data.data.totalElements)
       setTotalPages(response.data.data.totalPages)
-
     } catch (err) {
       console.error('Lỗi khi lấy danh sách sản phẩm:', err)
       setError('Không thể tải danh sách sản phẩm. Vui lòng thử lại sau.')
@@ -136,7 +133,6 @@ const ShopWithSidebar = () => {
     }
   }
 
-
   // thay đổi trang
   const handlePageChange = (newPage) => {
     // tạo URL mới với tham số trang
@@ -144,35 +140,49 @@ const ShopWithSidebar = () => {
 
     // giữ nguyên các tham số hiện tại
     if (searchParams.get('isLatest')) url.searchParams.set('isLatest', 'true')
-    if (searchParams.get('isFeatured')) url.searchParams.set('isFeatured', 'true')
-    if (searchParams.get('categoryId')) url.searchParams.set('categoryId', searchParams.get('categoryId'))
-    if (searchParams.get('sortBy')) url.searchParams.set('sortBy', searchParams.get('sortBy'))
-    if (searchParams.get('sortDir')) url.searchParams.set('sortDir', searchParams.get('sortDir'))
-    if (searchParams.get('minPrice')) url.searchParams.set('minPrice', searchParams.get('minPrice'))
-    if (searchParams.get('maxPrice')) url.searchParams.set('maxPrice', searchParams.get('maxPrice'))
+    if (searchParams.get('isFeatured'))
+      url.searchParams.set('isFeatured', 'true')
+    if (searchParams.get('categoryId'))
+      url.searchParams.set('categoryId', searchParams.get('categoryId'))
+    if (searchParams.get('sortBy'))
+      url.searchParams.set('sortBy', searchParams.get('sortBy'))
+    if (searchParams.get('sortDir'))
+      url.searchParams.set('sortDir', searchParams.get('sortDir'))
+    if (searchParams.get('minPrice'))
+      url.searchParams.set('minPrice', searchParams.get('minPrice'))
+    if (searchParams.get('maxPrice'))
+      url.searchParams.set('maxPrice', searchParams.get('maxPrice'))
 
     url.searchParams.set('page', newPage.toString())
 
     router.push(url.pathname + url.search)
   }
 
-
-
   // thay đổi danh mục
   const handleCategoryChange = (category) => {
     const categoryId = category.id || category._id || category.categoryId
 
-    if (selectedCategory && (selectedCategory.id === categoryId || selectedCategory._id === categoryId || selectedCategory.categoryId === categoryId)) {
+    if (
+      selectedCategory &&
+      (selectedCategory.id === categoryId ||
+        selectedCategory._id === categoryId ||
+        selectedCategory.categoryId === categoryId)
+    ) {
       // Bỏ chọn danh mục
       setSelectedCategory(null)
       // Xóa tham số categoryId khỏi URL
       const url = new URL(pathname, window.location.origin)
       if (searchParams.get('isLatest')) url.searchParams.set('isLatest', 'true')
-      if (searchParams.get('isFeatured')) url.searchParams.set('isFeatured', 'true')
-      if (searchParams.get('sortBy')) url.searchParams.set('sortBy', searchParams.get('sortBy'))
-      if (searchParams.get('sortDir')) url.searchParams.set('sortDir', searchParams.get('sortDir'))
-      if (searchParams.get('minPrice')) url.searchParams.set('minPrice', searchParams.get('minPrice'))
-      if (searchParams.get('maxPrice')) url.searchParams.set('maxPrice', searchParams.get('maxPrice'))
+      if (searchParams.get('isFeatured'))
+        url.searchParams.set('isFeatured', 'true')
+      if (searchParams.get('sortBy'))
+        url.searchParams.set('sortBy', searchParams.get('sortBy'))
+      if (searchParams.get('sortDir'))
+        url.searchParams.set('sortDir', searchParams.get('sortDir'))
+      if (searchParams.get('minPrice'))
+        url.searchParams.set('minPrice', searchParams.get('minPrice'))
+      if (searchParams.get('maxPrice'))
+        url.searchParams.set('maxPrice', searchParams.get('maxPrice'))
       url.searchParams.delete('categoryId')
       url.searchParams.delete('page')
       router.push(url.pathname + url.search)
@@ -182,11 +192,16 @@ const ShopWithSidebar = () => {
       // Cập nhật URL với categoryId mới
       const url = new URL(pathname, window.location.origin)
       if (searchParams.get('isLatest')) url.searchParams.set('isLatest', 'true')
-      if (searchParams.get('isFeatured')) url.searchParams.set('isFeatured', 'true')
-      if (searchParams.get('sortBy')) url.searchParams.set('sortBy', searchParams.get('sortBy'))
-      if (searchParams.get('sortDir')) url.searchParams.set('sortDir', searchParams.get('sortDir'))
-      if (searchParams.get('minPrice')) url.searchParams.set('minPrice', searchParams.get('minPrice'))
-      if (searchParams.get('maxPrice')) url.searchParams.set('maxPrice', searchParams.get('maxPrice'))
+      if (searchParams.get('isFeatured'))
+        url.searchParams.set('isFeatured', 'true')
+      if (searchParams.get('sortBy'))
+        url.searchParams.set('sortBy', searchParams.get('sortBy'))
+      if (searchParams.get('sortDir'))
+        url.searchParams.set('sortDir', searchParams.get('sortDir'))
+      if (searchParams.get('minPrice'))
+        url.searchParams.set('minPrice', searchParams.get('minPrice'))
+      if (searchParams.get('maxPrice'))
+        url.searchParams.set('maxPrice', searchParams.get('maxPrice'))
       url.searchParams.set('categoryId', categoryId.toString())
       url.searchParams.delete('page')
       router.push(url.pathname + url.search)
@@ -199,12 +214,17 @@ const ShopWithSidebar = () => {
     const url = new URL(pathname, window.location.origin)
     // Giữ nguyên các tham số khác
     if (searchParams.get('isLatest')) url.searchParams.set('isLatest', 'true')
-    if (searchParams.get('isFeatured')) url.searchParams.set('isFeatured', 'true')
+    if (searchParams.get('isFeatured'))
+      url.searchParams.set('isFeatured', 'true')
     url.searchParams.delete('categoryId')
-    if (searchParams.get('sortBy')) url.searchParams.set('sortBy', searchParams.get('sortBy'))
-    if (searchParams.get('sortDir')) url.searchParams.set('sortDir', searchParams.get('sortDir'))
-    if (searchParams.get('minPrice')) url.searchParams.set('minPrice', searchParams.get('minPrice'))
-    if (searchParams.get('maxPrice')) url.searchParams.set('maxPrice', searchParams.get('maxPrice'))
+    if (searchParams.get('sortBy'))
+      url.searchParams.set('sortBy', searchParams.get('sortBy'))
+    if (searchParams.get('sortDir'))
+      url.searchParams.set('sortDir', searchParams.get('sortDir'))
+    if (searchParams.get('minPrice'))
+      url.searchParams.set('minPrice', searchParams.get('minPrice'))
+    if (searchParams.get('maxPrice'))
+      url.searchParams.set('maxPrice', searchParams.get('maxPrice'))
     url.searchParams.delete('page')
     router.push(url.pathname + url.search)
   }
@@ -219,28 +239,28 @@ const ShopWithSidebar = () => {
     if (isLatest === 'true') {
       return {
         title: 'Sản phẩm mới nhất',
-        pages: ['shop', '/', 'sản phẩm mới nhất']
+        pages: ['shop', '/', 'sản phẩm mới nhất'],
       }
     }
 
     if (isFeatured === 'true') {
       return {
         title: 'Sản phẩm bán chạy',
-        pages: ['shop', '/', 'sản phẩm bán chạy']
+        pages: ['shop', '/', 'sản phẩm bán chạy'],
       }
     }
 
     if (categoryId) {
       return {
         title: 'Danh mục sản phẩm',
-        pages: ['shop', '/', 'danh mục']
+        pages: ['shop', '/', 'danh mục'],
       }
     }
 
     // Mặc định cho tất cả sản phẩm
     return {
       title: 'Tất cả sản phẩm',
-      pages: ['shop', '/', 'tất cả sản phẩm']
+      pages: ['shop', '/', 'tất cả sản phẩm'],
     }
   }
 
@@ -258,8 +278,11 @@ const ShopWithSidebar = () => {
 
     // Cập nhật selectedCategory từ URL
     if (categoryId) {
-      const category = categories.find(cat =>
-        cat.id == categoryId || cat._id == categoryId || cat.categoryId == categoryId
+      const category = categories.find(
+        (cat) =>
+          cat.id == categoryId ||
+          cat._id == categoryId ||
+          cat.categoryId == categoryId
       )
       setSelectedCategory(category || null)
     } else {
@@ -300,7 +323,7 @@ const ShopWithSidebar = () => {
         title={getBreadcrumbInfo().title}
         pages={getBreadcrumbInfo().pages}
       />
-      <section className="overflow-hidden relative pb-20 pt-5 lg:pt-20 xl:pt-28 bg-[#f3f4f6]">
+      <section className="overflow-hidden relative pb-20 pt-5 lg:pt-10 bg-[#f3f4f6]">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex gap-7.5">
             {/* <!-- Sidebar Start --> */}
@@ -334,7 +357,9 @@ const ShopWithSidebar = () => {
               {loading ? (
                 <div className="flex justify-center items-center py-20">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue"></div>
-                  <span className="ml-3 text-gray-600">Đang tải sản phẩm...</span>
+                  <span className="ml-3 text-gray-600">
+                    Đang tải sản phẩm...
+                  </span>
                 </div>
               ) : error ? (
                 <div className="flex justify-center items-center py-20">
@@ -353,8 +378,12 @@ const ShopWithSidebar = () => {
                 <div className="flex justify-center items-center py-20">
                   <div className="text-center">
                     <div className="text-gray-400 text-6xl mb-4">📦</div>
-                    <p className="text-gray-600 text-lg mb-2">Không tìm thấy sản phẩm</p>
-                    <p className="text-gray-500 mb-4">Vui lòng thử lại với bộ lọc khác</p>
+                    <p className="text-gray-600 text-lg mb-2">
+                      Không tìm thấy sản phẩm
+                    </p>
+                    <p className="text-gray-500 mb-4">
+                      Vui lòng thử lại với bộ lọc khác
+                    </p>
                   </div>
                 </div>
               ) : (
