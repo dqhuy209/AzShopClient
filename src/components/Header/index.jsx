@@ -103,13 +103,15 @@ const Header = () => {
             </form>
           </div>
           {/* <!-- header top right --> */}
-          <div className="flex w-full lg:w-auto items-center gap-7.5">
-            <div className="hidden xl:flex items-center gap-3.5">
+          <div className="flex w-full lg:w-auto items-center lg:gap-7.5">
+            {/*hidden xl:flex*/}
+            <div className="lg:flex items-center gap-3.5">
               <svg
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
                 fill="none"
+                className={'hidden xl:block'}
                 xmlns="http://www.w3.org/2000/svg"
                 style={{ color: 'white' }}
               >
@@ -132,10 +134,10 @@ const Header = () => {
               </svg>
 
               <div>
-                <span className="block text-custom-sm text-white uppercase whitespace-nowrap">
+                <span className="text-custom-sm text-white uppercase whitespace-nowrap hidden xl:block">
                   HỖ TRỢ 24/7
                 </span>
-                <p className="font-medium text-custom-lg text-white whitespace-nowrap">
+                <p className="font-medium text-custom-sm lg:text-custom-lg text-white whitespace-nowrap">
                   0855.38.2525
                 </p>
               </div>
@@ -148,7 +150,7 @@ const Header = () => {
               <div className="flex items-center gap-5">
                 <button
                   onClick={handleOpenCartModal}
-                  className="flex items-end gap-2.5"
+                  className="flex items-end lg:gap-2.5"
                 >
                   <span className="inline-block relative">
                     <svg
