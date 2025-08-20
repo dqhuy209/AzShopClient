@@ -1,5 +1,36 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit'
 
+/**
+ * Làm sạch dữ liệu giỏ hàng từ nhiều nguồn (localStorage/phiên cũ):
+ * - Bỏ phần tử không có id
+ * - Loại trùng theo id (giữ mục đầu tiên)
+ * - Chuẩn hoá field và ÉP quantity = 1 theo business rule: sản phẩm là duy nhất
+ */
+export const sanitizeCartItems = (rawItems = []) => {
+  const itemsArray = Array.isArray(rawItems) ? rawItems : []
+  const mapById = new Map()
+
+  for (const raw of itemsArray) {
+    if (raw?.id == null) continue
+    if (mapById.has(raw.id)) continue
+
+    // Chuẩn hoá giá trị để tránh NaN
+    const normalized = {
+      id: raw.id,
+      title: raw.title ?? raw.name ?? '',
+      price: Number(raw.price ?? raw.sellingPrice ?? raw.finalPrice ?? 0) || 0,
+      discountedPrice:
+        Number(raw.discountedPrice ?? raw.finalPrice ?? raw.price ?? 0) || 0,
+      quantity: 1, // luôn là 1
+      images: raw.images,
+    }
+
+    mapById.set(raw.id, normalized)
+  }
+
+  return Array.from(mapById.values())
+}
+
 // NOTE:
 // - Hỗ trợ khởi tạo từ localStorage để không cần đăng nhập vẫn giữ giỏ hàng
 // - Bọc trong try/catch để tránh crash khi JSON lỗi hoặc không tồn tại
@@ -11,7 +42,7 @@ const initialState = {
           try {
             const raw = localStorage.getItem('cartItems')
             const parsed = raw ? JSON.parse(raw) : []
-            return Array.isArray(parsed) ? parsed : []
+            return sanitizeCartItems(parsed)
           } catch (e) {
             return []
           }
@@ -68,11 +99,12 @@ export const cart = createSlice({
       state.items = state.items.filter((item) => item.id !== itemId)
     },
     updateCartItemQuantity: (state, action) => {
-      const { id, quantity } = action.payload
+      const { id } = action.payload
       const existingItem = state.items.find((item) => item.id === id)
 
       if (existingItem) {
-        existingItem.quantity = quantity
+        // Business rule: sản phẩm là duy nhất → quantity luôn là 1
+        existingItem.quantity = 1
       }
     },
 

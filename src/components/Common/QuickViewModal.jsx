@@ -128,6 +128,9 @@ const QuickViewModal = () => {
       })
     )
 
+    // Thông báo thành công khi thêm vào giỏ hàng từ QuickView
+    toast.success('Đã thêm vào giỏ hàng')
+
     handleCloseModal()
   }
 

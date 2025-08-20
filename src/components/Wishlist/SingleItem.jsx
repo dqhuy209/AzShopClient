@@ -28,11 +28,15 @@ const SingleItem = ({ item }) => {
         quantity: 1,
       })
     )
+
+    // Thông báo thành công khi thêm vào giỏ hàng từ wishlist
+    toast.success('Đã thêm vào giỏ hàng')
   }
 
   return (
-    <div className="flex items-center border-t border-gray-3 py-5 px-10">
-      <div className="min-w-[83px]">
+    // Responsive: gom cột theo hàng trên mobile, giảm kích thước ảnh để tránh tràn
+    <div className="flex flex-wrap items-start gap-3 border-t border-gray-3 py-5 px-4 sm:px-10">
+      <div className="min-w-[64px]">
         <button
           onClick={() => handleRemoveFromWishlist()}
           aria-label="button for remove product from wishlist"
@@ -60,20 +64,22 @@ const SingleItem = ({ item }) => {
         </button>
       </div>
 
-      <div className="min-w-[387px]">
-        <div className="flex items-center justify-between gap-5">
-          <div className="w-full flex items-center gap-5.5">
-            <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[80px] w-full h-17.5">
+      <div className="flex-1 min-w-[220px] sm:min-w-[387px]">
+        <div className="flex items-center justify-between gap-4">
+          <div className="w-full flex items-center gap-4 sm:gap-5.5">
+            <div className="flex items-center justify-center rounded-[5px] bg-gray-2 max-w-[64px] w-[64px] h-16 sm:max-w-[80px] sm:w-[80px] sm:h-17.5">
               <Image
                 src={item.imgs?.thumbnails[0]}
                 alt="product"
                 width={200}
                 height={200}
+                className="w-full h-full object-cover rounded-[5px]"
+                sizes="(max-width: 640px) 64px, 80px"
               />
             </div>
 
             <div>
-              <h3 className="text-dark ease-out duration-200 hover:text-blue">
+              <h3 className="text-sm sm:text-base text-dark ease-out duration-200 hover:text-blue">
                 <a href="#"> {item.title} </a>
               </h3>
             </div>
@@ -81,11 +87,11 @@ const SingleItem = ({ item }) => {
         </div>
       </div>
 
-      <div className="min-w-[205px]">
+      <div className="min-w-[120px] sm:min-w-[205px]">
         <p className="text-dark">${item.discountedPrice}</p>
       </div>
 
-      <div className="min-w-[265px]">
+      <div className="min-w-[150px] sm:min-w-[265px]">
         <div className="flex items-center gap-1.5">
           <svg
             width="20"
@@ -114,7 +120,7 @@ const SingleItem = ({ item }) => {
         </div>
       </div>
 
-      <div className="min-w-[150px] flex justify-end">
+      <div className="min-w-[140px] flex justify-end mt-2 sm:mt-0">
         <button
           onClick={() => handleAddToCart()}
           className="inline-flex text-dark hover:text-white bg-gray-1 border border-gray-3 py-2.5 px-6 rounded-md ease-out duration-200 hover:bg-blue hover:border-gray-3"

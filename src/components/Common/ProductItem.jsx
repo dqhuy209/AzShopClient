@@ -35,6 +35,7 @@ const ProductItem = ({ item }) => {
         quantity: 1,
       })
     )
+    toast.success('Thêm sản phẩm vào giỏ hàng thành công')
   }
 
   return (
@@ -60,8 +61,8 @@ const ProductItem = ({ item }) => {
             />
           </Link>
         </div>
-
-        <div className="absolute bottom-0 left-0 flex items-center justify-center w-full gap-2 pb-3 duration-300 ease-linear translate-y-full group-hover:translate-y-0 bg-gradient-to-t from-black/10 to-transparent">
+        {/* Quick View và Add to Cart */}
+        <div className="absolute bottom-0 left-0 items-center justify-center hidden w-full gap-2 pb-3 duration-300 ease-linear translate-y-full md:flex group-hover:translate-y-0 bg-gradient-to-t from-black/10 to-transparent">
           <button
             onClick={() => {
               openModal()
@@ -93,7 +94,6 @@ const ProductItem = ({ item }) => {
               />
             </svg>
           </button>
-
           <button
             onClick={() => handleAddToCart()}
             className="inline-flex items-center px-4 py-2 text-xs font-medium duration-300 ease-out transform bg-white rounded-lg text-dark-4 hover:bg-red hover:text-white hover:scale-105 shadow-2"

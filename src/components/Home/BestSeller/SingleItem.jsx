@@ -35,6 +35,9 @@ const SingleItem = ({ item }) => {
         quantity: 1,
       })
     )
+
+    // Thông báo thành công khi thêm vào giỏ hàng ở Best Seller
+    toast.success('Thêm sản phẩm vào giỏ hàng thành công')
   }
 
   return (

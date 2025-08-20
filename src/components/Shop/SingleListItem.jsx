@@ -35,6 +35,9 @@ const SingleListItem = ({ item }) => {
         quantity: 1,
       })
     )
+
+    // Thông báo thành công khi thêm vào giỏ hàng
+    toast.success('Thêm sản phẩm vào giỏ hàng thành công')
   }
 
   const handleItemToWishList = () => {
@@ -48,7 +51,7 @@ const SingleListItem = ({ item }) => {
   }
 
   return (
-    <div className="group rounded-lg bg-white shadow-1">
+    <div className="bg-white rounded-lg group shadow-1">
       <div className="flex">
         <div className="shadow-list relative overflow-hidden flex items-center justify-center max-w-[270px] w-full sm:min-h-[270px] p-4">
           <Image src={item.imgs.previews[0]} alt="" width={250} height={250} />
@@ -122,9 +125,9 @@ const SingleListItem = ({ item }) => {
               <Link href="/shop-details"> {item.title} </Link>
             </h3>
 
-            <span className="flex items-center gap-2 font-medium text-lg">
+            <span className="flex items-center gap-2 text-lg font-medium">
               <span className="text-dark">${item.discountedPrice}</span>
-              <span className="text-dark-4 line-through">${item.price}</span>
+              <span className="line-through text-dark-4">${item.price}</span>
             </span>
           </div>
 

@@ -35,6 +35,9 @@ const SingleGridItem = ({ item }) => {
         quantity: 1,
       })
     )
+
+    // Thông báo thành công khi thêm vào giỏ hàng
+    toast.success('Thêm sản phẩm vào giỏ hàng thành công')
   }
 
   const handleItemToWishList = () => {
