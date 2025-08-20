@@ -21,6 +21,7 @@ import PriceDropdown from './PriceDropdown'
  * @param {Array} props.genders - Danh sách giới tính
  * @param {Function} props.clearAllFilters - Hàm xóa tất cả bộ lọc
  */
+
 const Sidebar = ({
   productSidebar,
   stickyMenu,
@@ -32,23 +33,25 @@ const Sidebar = ({
   handleCategoryChange,
   fetchCategories,
   genders,
-  clearAllFilters
+  clearAllFilters,
 }) => {
   return (
     <div
-      className={`sidebar-content fixed xl:z-1 z-9999 left-0 top-0 xl:translate-x-0 xl:static max-w-[310px] xl:max-w-[270px] w-full ease-out duration-200 ${productSidebar
-        ? 'translate-x-0 bg-white p-5 h-screen overflow-y-auto'
-        : '-translate-x-full'
-        }`}
+      className={`sidebar-content fixed xl:z-1 z-9999 left-0 top-0 xl:translate-x-0 xl:static max-w-[310px] xl:max-w-[270px] w-full ease-out duration-200 ${
+        productSidebar
+          ? 'translate-x-0 bg-white p-5 h-screen overflow-y-auto'
+          : '-translate-x-full'
+      }`}
     >
       {/* Nút toggle sidebar cho mobile */}
       <button
         onClick={() => setProductSidebar(!productSidebar)}
         aria-label="button for product sidebar toggle"
-        className={`xl:hidden absolute -right-12.5 sm:-right-8 flex items-center justify-center w-8 h-8 rounded-md bg-white shadow-1 ${stickyMenu
-          ? 'lg:top-20 sm:top-34.5 top-35'
-          : 'lg:top-24 sm:top-39 top-37'
-          }`}
+        className={`hidden absolute -right-12.5 sm:-right-8 flex items-center justify-center w-8 h-8 rounded-md bg-white shadow-1 ${
+          stickyMenu
+            ? 'lg:top-20 sm:top-34.5 top-35'
+            : 'lg:top-24 sm:top-39 top-37'
+        }`}
       >
         <svg
           className="fill-current"

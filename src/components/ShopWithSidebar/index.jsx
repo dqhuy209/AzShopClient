@@ -344,11 +344,14 @@ const ShopWithSidebar = () => {
 
             {/* // <!-- Content Start --> */}
             <div className="xl:max-w-[870px] w-full">
-              <div className="rounded-lg  pl-3 pr-2.5 py-2.5 mb-6">
+              <div className="rounded-lg  lg:pl-3 lg:pr-2.5 lg:py-2.5 mb-6">
                 <div className="flex items-center justify-between">
                   {/* <!-- top bar left --> */}
                   <div className="flex flex-wrap ml-auto items-center gap-4">
-                    <SortButtons />
+                    <SortButtons
+                      productSidebar={productSidebar}
+                      setProductSidebar={setProductSidebar}
+                    />
                   </div>
                 </div>
               </div>
