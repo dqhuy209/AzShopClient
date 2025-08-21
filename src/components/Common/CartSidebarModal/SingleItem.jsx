@@ -24,8 +24,8 @@ const SingleItem = ({ item, removeItemFromCart }) => {
     Number(item?.discountedPrice ?? item?.finalPrice ?? item?.price) || 0
 
   return (
-    <div className="flex items-center justify-between gap-5">
-      <div className="w-full flex items-center gap-6">
+    <div className="flex items-center justify-between gap-5 pb-6 border-b border-gray-500">
+      <div className="flex items-center w-full gap-6">
         <Link
           href={`/shop-details/${item?.id ?? ''}`}
           className="flex items-center justify-center rounded-[10px] bg-gray-3 max-w-[90px] w-full h-22.5"
@@ -34,7 +34,7 @@ const SingleItem = ({ item, removeItemFromCart }) => {
         </Link>
 
         <div>
-          <h3 className="font-medium text-dark mb-1 ease-out duration-200 hover:text-blue">
+          <h3 className="mb-1 font-medium duration-200 ease-out text-dark hover:text-blue">
             <Link href={`/shop-details/${item?.id ?? ''}`}> {title} </Link>
           </h3>
           <p className="text-custom-sm text-red">Giá: {formatVND(price)}</p>

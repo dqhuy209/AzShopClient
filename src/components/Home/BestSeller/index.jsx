@@ -1,5 +1,4 @@
 import React from 'react'
-import SingleItem from './SingleItem'
 import Link from 'next/link'
 import productService from '@/services/productService'
 import Image from 'next/image'
