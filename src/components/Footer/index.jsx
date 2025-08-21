@@ -7,15 +7,15 @@ const Footer = () => {
   const year = new Date().getFullYear()
 
   return (
-    <footer className="mt-10 overflow-hidden border-t-2 border-gray-2 ">
+    <footer className="mt-10 overflow-hidden border-t-2 border-gray-2 bg-[#000] lg:bg-[#fff] ">
       <div className="max-w-[1170px] mx-auto px-4 sm:px-8 xl:px-0 ">
-        <div className="flex flex-wrap xl:flex-nowrap gap-10 xl:gap-19 xl:justify-between  xl:pt-12 pb-10 xl:pb-15 pt-17.5 ">
+        <div className="flex flex-wrap xl:flex-nowrap gap-10 xl:gap-19 xl:justify-between  xl:pt-12 pb-6 xl:pb-15 pt-12.5 ">
           <div className="max-w-[330px] w-full">
-            <h2 className="mb-7.5 text-custom-1 font-medium text-dark">
+            <h2 className="mb-[20px] text-blue lg:text-dark text-custom-xl lg:text-custom-1 font-medium ">
               LIÊN HỆ HỖ TRỢ
             </h2>
 
-            <ul className="flex flex-col gap-3">
+            <ul className="flex flex-col gap-3 text-white lg:text-black">
               <li className="flex gap-4.5">
                 <Link
                   target={'_blank'}
@@ -147,11 +147,11 @@ const Footer = () => {
           </div>
 
           <div className="w-full sm:w-auto">
-            <h2 className="mb-7.5 text-custom-1 font-medium text-dark uppercase">
+            <h2 className="mb-[20px] text-custom-xl lg:text-custom-1 font-medium text-blue lg:text-dark  uppercase">
               Danh mục
             </h2>
 
-            <div className="flex flex-col gap-y-[10px]">
+            <div className="flex flex-col gap-y-[5px] text-white lg:text-black">
               {menuDataHeader.map((menu, index) => (
                 <Link
                   key={index}
