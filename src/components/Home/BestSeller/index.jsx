@@ -3,8 +3,7 @@ import SingleItem from './SingleItem'
 import Link from 'next/link'
 import productService from '@/services/productService'
 import Image from 'next/image'
-
-
+import ProductItem from '@/components/Common/ProductItem'
 
 export default async function BestSeller() {
   let productDetail = []
@@ -39,10 +38,10 @@ export default async function BestSeller() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7.5">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-[10px] lg:gap-7.5">
           {productDetail && productDetail.length > 0 ? (
             productDetail.map((product, id) => (
-              <SingleItem item={product} key={product.id || id} />
+              <ProductItem item={product} key={product.id || id} />
             ))
           ) : (
             <div className="py-8 text-center col-span-full">

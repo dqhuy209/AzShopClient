@@ -87,7 +87,7 @@ const SortButtons = ({ productSidebar, setProductSidebar }) => {
       onClick={onClick}
       className={`px-[4px] rounded-[4px] py-[6px] lg:px-[12px] lg:py-[10px] text-sm transition-colors flex items-center gap-x-[4px] group ${
         active
-          ? 'bg-blue text-white border-gray-200  '
+          ? 'bg-blue text-white border-gray-200'
           : 'hover:text-blue bg-white '
       }`}
     >
@@ -96,7 +96,7 @@ const SortButtons = ({ productSidebar, setProductSidebar }) => {
   )
 
   return (
-    <div className="flex items-start gap-x-[20px]">
+    <div className="flex items-start md:items-center justify-between gap-x-[20px] w-full">
       <div className="flex flex-wrap items-center gap-2.5">
         <Button active={isAllActive} onClick={handleAll}>
           <div className="w-[20px] h-[20px]">
@@ -208,15 +208,17 @@ const SortButtons = ({ productSidebar, setProductSidebar }) => {
         </Button>
       </div>
       <div
-        className="lg:hidden"
+        className="xl:hidden w-fit"
         onClick={() => setProductSidebar(!productSidebar)}
       >
-        <Image
-          src={'/images/icons/icon-filter.svg'}
-          alt={'filter'}
-          width={50}
-          height={50}
-        />
+        <div className="!w-[25px] !h-[25px] lg:w-[30px] lg:h-[30px] overflow-hidden relative">
+          <Image
+            src={'/images/icons/icon-filter.svg'}
+            alt={'filter'}
+            fill
+            className="object-cover"
+          />
+        </div>
       </div>
     </div>
   )

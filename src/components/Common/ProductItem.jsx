@@ -174,35 +174,37 @@ const ProductItem = ({ item }) => {
         <div className="pt-2 mt-auto border-t border-gray-3">
           <div className="space-y-1.5">
             {/* Main Price Display */}
-            <div className="flex items-baseline gap-2">
+            <div className="flex flex-col items-baseline gap-1 lg:gap-2">
               <span className="text-lg font-semibold text-red">
                 {formatVNDRounded.thousands(
                   item?.finalPrice || item?.sellingPrice
                 )}
               </span>
               {item?.discountPercent > 0 && (
-                <span className="text-sm font-medium line-through text-meta-4">
-                  {formatVNDRounded.thousands(item?.sellingPrice)}
-                </span>
+                <div className="flex items-center gap-x-[5px] lg:gap-x-[10px]">
+                  <span className="text-sm font-medium line-through text-meta-4">
+                    {formatVNDRounded.thousands(item?.sellingPrice)}
+                  </span>
+                  <div className="flex items-center text-xs font-medium text-red whitespace-nowrap bg-red-light-6 p-[5px] rounded-[4px]">
+                    - {item.discountPercent}%
+                  </div>
+                </div>
               )}
             </div>
 
             {/* Discount Badge and Savings */}
-            {item?.discountPercent > 0 && (
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <span className="inline-flex items-center py-0.5 px-1.5 text-xs font-medium rounded-md bg-red-light-6 text-red">
-                    Tiết kiệm{' '}
-                    {formatVNDRounded.thousands(
-                      item?.sellingPrice - item?.finalPrice
-                    )}
-                  </span>
-                </div>
-                <div className="flex items-center text-xs font-medium text-red">
-                  GIẢM {item.discountPercent}%
-                </div>
-              </div>
-            )}
+            {/*{item?.discountPercent > 0 && (*/}
+            {/*  <div className="flex items-center justify-between">*/}
+            {/*    <div className="flex items-center gap-1">*/}
+            {/*      <span className="inline-flex items-center py-0.5 px-1.5 text-xs font-medium rounded-md bg-red-light-6 text-red whitespace-nowrap line-clamp-1">*/}
+            {/*        Tiết kiệm{' '}*/}
+            {/*        {formatVNDRounded.thousands(*/}
+            {/*          item?.sellingPrice - item?.finalPrice*/}
+            {/*        )}*/}
+            {/*      </span>*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*)}*/}
           </div>
         </div>
       </div>
