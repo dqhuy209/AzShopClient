@@ -34,7 +34,7 @@ const BlogDetails = () => {
                 className="mb-6 break-words"
                 dangerouslySetInnerHTML={{ __html: policy.content }}
               >
-                {}
+                { }
               </p>
             </div>
           ))}

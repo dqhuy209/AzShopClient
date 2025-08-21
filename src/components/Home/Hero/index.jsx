@@ -36,7 +36,7 @@ const Hero = async () => {
       <div className="w-full mx-auto">
         <div className="flex flex-wrap">
           <div className="w-full">
-            <div className="relative z-1 bg-white overflow-hidden">
+            <div className="relative overflow-hidden bg-white z-1">
               <HeroCarousel banners={banners} />
             </div>
           </div>

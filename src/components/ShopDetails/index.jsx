@@ -5,8 +5,13 @@ import Image from 'next/image'
 import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
 import { useDispatch } from 'react-redux'
 import { updateproductDetails } from '@/redux/features/product-details'
+import { addItemToCart } from '@/redux/features/cart-slice'
+import { useAppSelector } from '@/redux/store'
+import toast from 'react-hot-toast'
 
 const ShopDetails = ({ product }) => {
+  const cartItems = useAppSelector((state) => state.cartReducer.items)
+
   const { openPreviewModal } = usePreviewSlider()
   const [previewImg, setPreviewImg] = useState(0)
   const [activePreview, setActivePreview] = useState(0)
@@ -65,6 +70,21 @@ const ShopDetails = ({ product }) => {
     dispatch(updateproductDetails(productToPreview))
     openPreviewModal()
   }
+  // Thêm vào giỏ hàng
+  const handleAddToCart = () => {
+    // Nếu sản phẩm đã có, chỉ thông báo và không dispatch (bán 1 sản phẩm duy nhất)
+    if (cartItems?.some((p) => p.id === product?.id)) {
+      toast.error('Sản phẩm đã có trong giỏ hàng')
+      return
+    }
+    dispatch(
+      addItemToCart({
+        ...product,
+        quantity: 1,
+      })
+    )
+    toast.success('Thêm sản phẩm vào giỏ hàng thành công')
+  }
 
 
   if (!product || Object.keys(product).length === 0) {
@@ -84,6 +104,7 @@ const ShopDetails = ({ product }) => {
     )
   }
 
+
   return (
     <>
       <Breadcrumb title={'Shop Details'} pages={['shop details']} />
@@ -91,7 +112,7 @@ const ShopDetails = ({ product }) => {
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-17.5">
             <div className="lg:max-w-[570px] w-full">
-              <div className="flex flex-col lg:flex-row gap-5">
+              <div className="flex flex-col gap-5 lg:flex-row">
                 <div className="flex flex-row lg:flex-col gap-[8px] lg:gap-5 order-2 lg:order-1">
                   {mediaItems.map((item, key) => (
                     <button
@@ -124,7 +145,7 @@ const ShopDetails = ({ product }) => {
                             <source src={item.url} type="video/mp4" />
                           </video>
                           {/* Icon play để phân biệt video */}
-                          <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                          <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <svg
                               width="24"
                               height="24"
@@ -337,12 +358,12 @@ const ShopDetails = ({ product }) => {
                   >
                     Mua ngay
                   </a>
-                  <a
-                    href="#"
+                  <button
+                    onClick={handleAddToCart}
                     className="inline-flex items-center justify-center px-8 py-3 font-medium duration-200 ease-out bg-white border rounded-md text-blue border-blue hover:bg-gray-1"
                   >
-                    Liên hệ
-                  </a>
+                    Thêm vào giỏ hàng
+                  </button>
                 </div>
               </form>
             </div>
@@ -359,8 +380,8 @@ const ShopDetails = ({ product }) => {
                 key={key}
                 onClick={() => setActiveTab(item.id)}
                 className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
-                    ? 'text-blue before:w-full'
-                    : 'text-dark before:w-0'
+                  ? 'text-blue before:w-full'
+                  : 'text-dark before:w-0'
                   }`}
               >
                 {item.title}
@@ -425,7 +446,7 @@ const ShopDetails = ({ product }) => {
                     className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5"
                   >
                     <div className="max-w-[450px] min-w-[140px] w-full">
-                      <p className="text-sm sm:text-base text-dark font-medium">
+                      <p className="text-sm font-medium sm:text-base text-dark">
                         {spec.specName}
                       </p>
                     </div>
@@ -437,7 +458,7 @@ const ShopDetails = ({ product }) => {
                   </div>
                 ))
               ) : (
-                <div className="text-center py-8">
+                <div className="py-8 text-center">
                   <p className="text-base text-meta-4">
                     Chưa có thông tin chi tiết cho sản phẩm này.
                   </p>

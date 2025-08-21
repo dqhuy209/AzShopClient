@@ -36,6 +36,7 @@ export default function RootLayout({ children }) {
       <body>
         {loading ? (
           <PreLoader />
+
         ) : (
           <>
             <ReduxProvider>
@@ -48,7 +49,9 @@ export default function RootLayout({ children }) {
                     <QuickViewModal />
                     <CartSidebarModal />
                     <PreviewSliderModal />
-                    <Toaster position="top-right" />
+                    <Toaster position="top-right" toastOptions={{
+                      duration: 1500,
+                    }} />
                   </PreviewSliderProvider>
                 </ModalProvider>
               </CartModalProvider>
