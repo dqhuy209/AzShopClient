@@ -347,7 +347,7 @@ const ShopWithSidebar = () => {
               <div className="rounded-lg p-[10px] lg:pl-3 lg:pr-2.5 lg:py-4.5 mb-6 bg-[#ededed]">
                 <div className="flex items-center justify-between">
                   {/* <!-- top bar left --> */}
-                  <div className="flex flex-wrap items-center gap-4 w-full">
+                  <div className="flex flex-wrap items-center w-full gap-4">
                     <SortButtons
                       productSidebar={productSidebar}
                       setProductSidebar={setProductSidebar}
@@ -358,33 +358,33 @@ const ShopWithSidebar = () => {
 
               {/* <!-- Products Grid Content Start --> */}
               {loading ? (
-                <div className="flex justify-center items-center py-20">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue"></div>
+                <div className="flex items-center justify-center py-20">
+                  <div className="w-12 h-12 border-b-2 rounded-full animate-spin border-blue"></div>
                   <span className="ml-3 text-gray-600">
                     Đang tải sản phẩm...
                   </span>
                 </div>
               ) : error ? (
-                <div className="flex justify-center items-center py-20">
+                <div className="flex items-center justify-center py-20">
                   <div className="text-center">
-                    <div className="text-red-500 text-xl mb-2">⚠️</div>
+                    <div className="mb-2 text-xl text-red-500">⚠️</div>
                     <p className="text-gray-600">{error}</p>
                     <button
                       onClick={fetchProducts}
-                      className="mt-4 px-6 py-2 bg-blue text-white rounded-md hover:bg-blue-600 transition-colors"
+                      className="px-6 py-2 mt-4 text-white transition-colors rounded-md bg-blue hover:bg-blue-600"
                     >
                       Thử lại
                     </button>
                   </div>
                 </div>
               ) : products.length === 0 ? (
-                <div className="flex justify-center items-center py-20">
+                <div className="flex items-center justify-center py-20">
                   <div className="text-center">
-                    <div className="text-gray-400 text-6xl mb-4">📦</div>
-                    <p className="text-gray-600 text-lg mb-2">
+                    <div className="mb-4 text-6xl text-gray-400">📦</div>
+                    <p className="mb-2 text-lg text-gray-600">
                       Không tìm thấy sản phẩm
                     </p>
-                    <p className="text-gray-500 mb-4">
+                    <p className="mb-4 text-gray-500">
                       Vui lòng thử lại với bộ lọc khác
                     </p>
                   </div>
@@ -407,7 +407,7 @@ const ShopWithSidebar = () => {
                   itemsPerPage={itemsPerPage}
                   onPageChange={handlePageChange}
                   showInfo={false}
-                  className="justify-center items-center"
+                  className="items-center justify-center"
                 />
               </div>
               {/* <!-- Products Pagination End --> */}

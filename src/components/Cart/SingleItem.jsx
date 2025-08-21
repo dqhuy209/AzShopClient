@@ -1,15 +1,18 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { removeItemFromCart } from '@/redux/features/cart-slice'
+import { removeItemFromCart, toggleSelectItem } from '@/redux/features/cart-slice'
 import Image from 'next/image'
 import { formatVNDRounded } from '@/utils/formatCurrency'
 
-const SingleItem = ({ item }) => {
+const SingleItem = ({ item, isSelected }) => {
 
   const dispatch = useDispatch()
 
   const handleRemoveFromCart = () => {
     dispatch(removeItemFromCart(item.id))
+  }
+  const handleToggleSelect = () => {
+    dispatch(toggleSelectItem(item.id))
   }
   const imageSrc = item?.imgs?.thumbnails?.[0]
     ? item.imgs.thumbnails[0]
@@ -21,6 +24,13 @@ const SingleItem = ({ item }) => {
       <div className="col-span-6">
         <div className="flex items-center justify-between gap-5">
           <div className="w-full flex items-center gap-5.5">
+            <input
+              type="checkbox"
+              checked={!!isSelected}
+              onChange={handleToggleSelect}
+              className="w-4 h-4 accent-blue"
+              aria-label="Chọn sản phẩm"
+            />
             <div className="flex items-center justify-center rounded-[5px] max-w-[50px] sm:max-w-[80px] bg-gray-2 w-full h-17.5">
               <Image
                 width={200}

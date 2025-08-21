@@ -48,6 +48,24 @@ const initialState = {
           }
         })()
       : [],
+  /**
+   * Danh sách id sản phẩm được chọn để thanh toán
+   * - Mặc định chọn tất cả khi khởi tạo để trải nghiệm giống hiện tại
+   */
+  selectedIds:
+    typeof window !== 'undefined'
+      ? (() => {
+          try {
+            const rawSelected = localStorage.getItem('cartSelectedIds')
+            if (rawSelected) return JSON.parse(rawSelected)
+            const rawItems = localStorage.getItem('cartItems')
+            const parsedItems = rawItems ? JSON.parse(rawItems) : []
+            return sanitizeCartItems(parsedItems).map((it) => it.id)
+          } catch (e) {
+            return []
+          }
+        })()
+      : [],
 }
 
 export const cart = createSlice({
@@ -92,11 +110,16 @@ export const cart = createSlice({
           quantity: 1,
           images,
         })
+        // Mặc định chọn luôn item mới thêm
+        if (!state.selectedIds.includes(id)) {
+          state.selectedIds.push(id)
+        }
       }
     },
     removeItemFromCart: (state, action) => {
       const itemId = action.payload
       state.items = state.items.filter((item) => item.id !== itemId)
+      state.selectedIds = state.selectedIds.filter((id) => id !== itemId)
     },
     updateCartItemQuantity: (state, action) => {
       const { id } = action.payload
@@ -110,11 +133,40 @@ export const cart = createSlice({
 
     removeAllItemsFromCart: (state) => {
       state.items = []
+      state.selectedIds = []
+    },
+
+    // Toggle chọn/bỏ chọn 1 sản phẩm theo id
+    toggleSelectItem: (state, action) => {
+      const itemId = action.payload
+      if (state.selectedIds.includes(itemId)) {
+        state.selectedIds = state.selectedIds.filter((id) => id !== itemId)
+      } else {
+        state.selectedIds.push(itemId)
+      }
+    },
+    // Chọn tất cả sản phẩm hiện có trong giỏ
+    selectAllItems: (state) => {
+      state.selectedIds = state.items.map((it) => it.id)
+    },
+    // Bỏ chọn tất cả
+    deselectAllItems: (state) => {
+      state.selectedIds = []
     },
   },
 })
 
 export const selectCartItems = (state) => state.cartReducer.items
+export const selectSelectedIds = (state) => state.cartReducer.selectedIds
+
+// Lấy danh sách item đã chọn
+export const selectSelectedItems = (state) => {
+  const selectedIds = state.cartReducer.selectedIds
+  const items = state.cartReducer.items
+  if (!Array.isArray(selectedIds) || selectedIds.length === 0) return []
+  const set = new Set(selectedIds)
+  return items.filter((it) => set.has(it.id))
+}
 
 export const selectTotalPrice = createSelector([selectCartItems], (items) => {
   // Tính tổng giá an toàn: ưu tiên discountedPrice -> finalPrice -> price
@@ -126,10 +178,26 @@ export const selectTotalPrice = createSelector([selectCartItems], (items) => {
   }, 0)
 })
 
+// Tổng tiền của các item đã chọn
+export const selectSelectedTotalPrice = createSelector(
+  [selectSelectedItems],
+  (items) => {
+    return items.reduce((total, item) => {
+      const unit =
+        Number(item?.discountedPrice ?? item?.finalPrice ?? item?.price) || 0
+      const qty = Number(item?.quantity) || 1
+      return total + unit * qty
+    }, 0)
+  }
+)
+
 export const {
   addItemToCart,
   removeItemFromCart,
   updateCartItemQuantity,
   removeAllItemsFromCart,
+  toggleSelectItem,
+  selectAllItems,
+  deselectAllItems,
 } = cart.actions
 export default cart.reducer

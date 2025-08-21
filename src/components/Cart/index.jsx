@@ -5,11 +5,30 @@ import SingleItem from './SingleItem'
 import Breadcrumb from '../Common/Breadcrumb'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
-import { removeAllItemsFromCart } from '@/redux/features/cart-slice'
+import {
+  removeAllItemsFromCart,
+  selectSelectedIds,
+  selectSelectedItems,
+  selectSelectedTotalPrice,
+  selectCartItems,
+  selectAllItems,
+  deselectAllItems,
+} from '@/redux/features/cart-slice'
+import { formatVND } from '@/utils/formatCurrency'
 
 const Cart = () => {
-  const cartItems = useAppSelector((state) => state.cartReducer.items)
+  const cartItems = useAppSelector(selectCartItems)
+  const selectedIds = useAppSelector(selectSelectedIds)
+  const selectedItems = useAppSelector(selectSelectedItems)
+  const selectedTotal = useAppSelector(selectSelectedTotalPrice)
   const dispatch = useDispatch()
+
+  // Toggle chọn tất cả / bỏ chọn tất cả
+  const allSelected = cartItems.length > 0 && selectedIds.length === cartItems.length
+  const toggleSelectAll = () => {
+    if (allSelected) dispatch(deselectAllItems())
+    else dispatch(selectAllItems())
+  }
 
   return (
     <>
@@ -38,7 +57,14 @@ const Cart = () => {
                 <div className="w-full">
                   {/* <!-- table header: dùng grid 12 cột để dàn đều --> */}
                   <div className="grid items-center grid-cols-12 gap-4 py-5.5 px-7.5">
-                    <div className="col-span-6">
+                    <div className="flex items-center col-span-6 gap-3">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 accent-blue"
+                        checked={allSelected}
+                        onChange={toggleSelectAll}
+                        aria-label="Chọn tất cả"
+                      />
                       <p className="text-xs text-dark sm:text-base">Sản phẩm</p>
                     </div>
                     <div className="col-span-3">
@@ -52,18 +78,38 @@ const Cart = () => {
                   {/* <!-- cart item --> */}
                   {cartItems.length > 0 &&
                     cartItems.map((item, key) => (
-                      <SingleItem item={item} key={key} />
+                      <SingleItem
+                        item={item}
+                        key={key}
+                        isSelected={selectedIds.includes(item.id)}
+                      />
                     ))}
                 </div>
               </div>
             </div>
 
-            <button
-              type="submit"
-              className="w-full flex justify-center font-medium text-white bg-blue py-3 px-6 rounded-md ease-out duration-200 hover:bg-blue-dark mt-7.5"
-            >
-              Tiến hành thanh toán
-            </button>
+            {/* Tổng tiền của các sản phẩm đã chọn + CTA */}
+            <div className="flex justify-between items-center mt-7.5 gap-4 flex-wrap">
+              <div className="text-dark">
+                <span className="text-base">Đã chọn: </span>
+                <span className="font-semibold">{selectedItems.length}</span>
+                <span className="ml-4 text-base">Tổng tiền: </span>
+                <span className="font-semibold text-blue">{formatVND(selectedTotal)}</span>
+              </div>
+              <Link
+                href={selectedItems.length > 0 ? '/checkout' : '#'}
+                className={`w-full sm:w-auto flex justify-center font-medium text-white py-3 px-6 rounded-md ease-out duration-200 ${selectedItems.length > 0
+                  ? 'bg-blue hover:bg-blue-dark'
+                  : 'bg-gray-3 cursor-not-allowed'
+                  }`}
+                aria-disabled={selectedItems.length === 0}
+                onClick={(e) => {
+                  if (selectedItems.length === 0) e.preventDefault()
+                }}
+              >
+                Tiến hành thanh toán
+              </Link>
+            </div>
           </div>
         </section>
       ) : (

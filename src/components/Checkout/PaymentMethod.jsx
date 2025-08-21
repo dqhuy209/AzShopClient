@@ -1,149 +1,96 @@
-import React, { useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 
+/**
+ * PaymentMethod mới:
+ * - 3 tuỳ chọn: Cọc, Không cọc, 100%
+ * - Hiển thị QR và nút upload ảnh thanh toán
+ * - Không xử lý upload thực, chỉ preview client để xác thực người dùng đã chọn ảnh
+ */
 const PaymentMethod = () => {
-  const [payment, setPayment] = useState('bank')
+  const [method, setMethod] = useState('no_deposit') // 'deposit' | 'no_deposit' | 'full'
+  const [proofImage, setProofImage] = useState(null)
+  const fileInputRef = useRef(null)
+
+  // Ảnh QR có thể cấu hình qua ENV, fallback ảnh tĩnh trong public
+  const qrImageSrc = useMemo(() => {
+    return process.env.NEXT_PUBLIC_QR_IMAGE || '/images/checkout/bank.svg'
+  }, [])
+
+  const handleUploadClick = () => {
+    try {
+      fileInputRef.current?.click()
+    } catch (e) {
+      // no-op: tránh crash trên môi trường không hỗ trợ
+    }
+  }
+
+  const handleFileChange = (e) => {
+    try {
+      const file = e.target.files?.[0]
+      if (!file) return
+      const url = URL.createObjectURL(file)
+      setProofImage(url)
+    } catch (err) {
+      // Giữ im lặng, không lộ thông tin nhạy cảm
+    }
+  }
+
   return (
     <div className="bg-white shadow-1 rounded-[10px] mt-7.5">
       <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
-        <h3 className="font-medium text-xl text-dark">Payment Method</h3>
+        <h3 className="text-xl font-semibold text-dark">Phương thức thanh toán</h3>
       </div>
 
       <div className="p-4 sm:p-8.5">
-        <div className="flex flex-col gap-3">
-          <label
-            htmlFor="bank"
-            className="flex cursor-pointer select-none items-center gap-4"
-          >
-            <div className="relative">
-              <input
-                type="checkbox"
-                name="bank"
-                id="bank"
-                className="sr-only"
-                onChange={() => setPayment('bank')}
-              />
-              <div
-                className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  payment === 'bank'
-                    ? 'border-4 border-blue'
-                    : 'border border-gray-4'
-                }`}
-              ></div>
+
+
+        {/* QR và upload minh chứng thanh toán */}
+        <div className="p-4 border rounded-md border-gray-3 sm:p-5">
+          <p className="mb-3 font-medium text-dark">Quét QR để thanh toán</p>
+          <div className="flex items-start gap-5">
+            <div className="p-3 border rounded-md bg-gray-1 border-gray-3">
+              <Image src={qrImageSrc} alt="qr" width={160} height={160} className="object-contain" />
             </div>
 
-            <div
-              className={`rounded-md border-[0.5px] py-3.5 px-5 ease-out duration-200 hover:bg-gray-2 hover:border-transparent hover:shadow-none ${
-                payment === 'bank'
-                  ? 'border-transparent bg-gray-2'
-                  : ' border-gray-4 shadow-1'
-              }`}
-            >
-              <div className="flex items-center">
-                <div className="pr-2.5">
-                  <Image
-                    src="/images/checkout/bank.svg"
-                    alt="bank"
-                    width={29}
-                    height={12}
-                  />
-                </div>
+            <div className="flex-1">
+              <p className="mb-3 text-sm text-meta-4">
+                Vui lòng tải ảnh minh chứng thanh toán (biên lai/chụp màn hình). Ảnh chỉ dùng để xác thực đơn.
+              </p>
 
-                <div className="border-l border-gray-4 pl-2.5">
-                  <p>Direct bank transfer</p>
-                </div>
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleUploadClick}
+                  className="inline-flex items-center justify-center px-4 py-2 font-medium duration-200 ease-out bg-white border rounded-md text-blue border-blue hover:bg-gray-1"
+                >
+                  Tải ảnh thanh toán
+                </button>
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
               </div>
-            </div>
-          </label>
 
-          <label
-            htmlFor="cash"
-            className="flex cursor-pointer select-none items-center gap-4"
-          >
-            <div className="relative">
-              <input
-                type="checkbox"
-                name="cash"
-                id="cash"
-                className="sr-only"
-                onChange={() => setPayment('cash')}
-              />
-              <div
-                className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  payment === 'cash'
-                    ? 'border-4 border-blue'
-                    : 'border border-gray-4'
-                }`}
-              ></div>
-            </div>
-
-            <div
-              className={`rounded-md border-[0.5px] py-3.5 px-5 ease-out duration-200 hover:bg-gray-2 hover:border-transparent hover:shadow-none min-w-[240px] ${
-                payment === 'cash'
-                  ? 'border-transparent bg-gray-2'
-                  : ' border-gray-4 shadow-1'
-              }`}
-            >
-              <div className="flex items-center">
-                <div className="pr-2.5">
-                  <Image
-                    src="/images/checkout/cash.svg"
-                    alt="cash"
-                    width={21}
-                    height={21}
-                  />
+              {proofImage && (
+                <div className="mt-4">
+                  <p className="mb-2 text-sm">Ảnh đã chọn:</p>
+                  <div className="w-[200px] h-[200px] overflow-hidden rounded border border-gray-3">
+                    <Image
+                      src={proofImage}
+                      alt="payment-proof"
+                      width={200}
+                      height={200}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
                 </div>
-
-                <div className="border-l border-gray-4 pl-2.5">
-                  <p>Cash on delivery</p>
-                </div>
-              </div>
+              )}
             </div>
-          </label>
-
-          <label
-            htmlFor="paypal"
-            className="flex cursor-pointer select-none items-center gap-4"
-          >
-            <div className="relative">
-              <input
-                type="checkbox"
-                name="paypal"
-                id="paypal"
-                className="sr-only"
-                onChange={() => setPayment('paypal')}
-              />
-              <div
-                className={`flex h-4 w-4 items-center justify-center rounded-full ${
-                  payment === 'paypal'
-                    ? 'border-4 border-blue'
-                    : 'border border-gray-4'
-                }`}
-              ></div>
-            </div>
-            <div
-              className={`rounded-md border-[0.5px] py-3.5 px-5 ease-out duration-200 hover:bg-gray-2 hover:border-transparent hover:shadow-none min-w-[240px] ${
-                payment === 'paypal'
-                  ? 'border-transparent bg-gray-2'
-                  : ' border-gray-4 shadow-1'
-              }`}
-            >
-              <div className="flex items-center">
-                <div className="pr-2.5">
-                  <Image
-                    src="/images/checkout/paypal.svg"
-                    alt="paypal"
-                    width={75}
-                    height={20}
-                  />
-                </div>
-
-                <div className="border-l border-gray-4 pl-2.5">
-                  <p>Paypal</p>
-                </div>
-              </div>
-            </div>
-          </label>
+          </div>
         </div>
       </div>
     </div>
