@@ -9,6 +9,14 @@ import { selectTotalPrice } from '@/redux/features/cart-slice'
 import { useCartModalContext } from '@/app/context/CartSidebarModalContext'
 import Image from 'next/image'
 import './index.css'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -32,6 +40,15 @@ const Header = () => {
     }
   }
 
+  const handleSearch = () => {
+    // push search query to the URL
+    if (searchQuery.trim()) {
+      const searchParams = new URLSearchParams()
+      searchParams.set('search', searchQuery.trim())
+      window.location.href = `/shop-with-sidebar?${searchParams.toString()}`
+    }
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', handleStickyMenu)
   })
@@ -50,13 +67,18 @@ const Header = () => {
             className="flex-shrink-0 flex gap-x-[10px] items-center"
             href="/"
           >
-            <div className="w-[40px] h-[40px] lg:w-[80px] lg:h-[80px] relative">
-              <Image
-                src="/images/logo/logo.png"
-                alt="Logo"
-                fill
-                className="object-contain border border-white rounded-full p-[2px] lg:p-[16px]"
-              />
+            <div className="flex items-center gap-x-[10px]">
+              <div className="w-[40px] h-[40px] lg:w-[80px] lg:h-[80px] relative">
+                <Image
+                  src="/images/logo/logo.png"
+                  alt="Logo"
+                  fill
+                  className="object-contain border border-white rounded-full p-[2px] lg:p-[16px]"
+                />
+              </div>
+              <p className="font-medium text-custom-lg  lg:hidden lg:text-custom-lg text-white whitespace-nowrap">
+                0855.38.2525
+              </p>
             </div>
             <Image
               src="/images/logo/text-logo.png"
@@ -68,7 +90,7 @@ const Header = () => {
           </Link>
           <div className="w-full">
             <form>
-              <div className="relative w-full">
+              <div className="relative w-full hidden lg:block">
                 <input
                   onChange={(e) => setSearchQuery(e.target.value)}
                   value={searchQuery}
@@ -137,7 +159,7 @@ const Header = () => {
                 <span className="text-custom-sm text-white uppercase whitespace-nowrap hidden xl:block">
                   HỖ TRỢ 24/7
                 </span>
-                <p className="font-medium text-custom-sm lg:text-custom-lg text-white whitespace-nowrap">
+                <p className="font-medium text-custom-sm hidden xl:block lg:text-custom-lg text-white whitespace-nowrap">
                   0855.38.2525
                 </p>
               </div>
@@ -148,6 +170,68 @@ const Header = () => {
 
             <div className="flex w-full lg:w-auto justify-end items-center gap-5">
               <div className="flex items-center gap-5">
+                <div className="lg:hidden">
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="w-[25px] h-[25px] relative">
+                        <Image
+                          src={'/images/icons/icon-search.svg'}
+                          alt={'search'}
+                          fill
+                        />
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent
+                      className="!top-[90px] !p-0 [&>button]:hidden"
+                      aria-label="My dialog"
+                    >
+                      <VisuallyHidden>
+                        <DialogTitle>Ẩn tiêu đề</DialogTitle>
+                      </VisuallyHidden>
+                      <DialogHeader className="space-x-0">
+                        <div className="relative w-full ">
+                          <input
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            value={searchQuery}
+                            type="search"
+                            name="search"
+                            id="search"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.preventDefault()
+                                handleSearch()
+                              }
+                            }}
+                            placeholder="Tìm kiếm sản phẩm..."
+                            autoComplete="off"
+                            className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
+                          />
+
+                          <button
+                            onClick={handleSearch}
+                            id="search-btn"
+                            aria-label="Search"
+                            className="flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 ease-in duration-200 hover:text-blue"
+                          >
+                            <svg
+                              className="fill-current"
+                              width="18"
+                              height="18"
+                              viewBox="0 0 18 18"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M17.2687 15.6656L12.6281 11.8969C14.5406 9.28123 14.3437 5.5406 11.9531 3.1781C10.6875 1.91248 8.99995 1.20935 7.19995 1.20935C5.39995 1.20935 3.71245 1.91248 2.44683 3.1781C-0.168799 5.79373 -0.168799 10.0687 2.44683 12.6844C3.71245 13.95 5.39995 14.6531 7.19995 14.6531C8.91558 14.6531 10.5187 14.0062 11.7843 12.8531L16.4812 16.65C16.5937 16.7344 16.7343 16.7906 16.875 16.7906C17.0718 16.7906 17.2406 16.7062 17.3531 16.5656C17.5781 16.2844 17.55 15.8906 17.2687 15.6656ZM7.19995 13.3875C5.73745 13.3875 4.38745 12.825 3.34683 11.7844C1.20933 9.64685 1.20933 6.18748 3.34683 4.0781C4.38745 3.03748 5.73745 2.47498 7.19995 2.47498C8.66245 2.47498 10.0125 3.03748 11.0531 4.0781C13.1906 6.2156 13.1906 9.67498 11.0531 11.7844C10.0406 12.825 8.66245 13.3875 7.19995 13.3875Z"
+                                fill=""
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
                 <button
                   onClick={handleOpenCartModal}
                   className="flex items-end lg:gap-2.5"
@@ -197,7 +281,6 @@ const Header = () => {
                   </div>
                 </button>
               </div>
-
               <button
                 id="Toggle"
                 aria-label="Toggler"
