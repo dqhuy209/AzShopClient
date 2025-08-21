@@ -5,7 +5,6 @@ import productService from '@/services/productService'
 import Image from 'next/image'
 import './index.css'
 
-
 export default async function NewArrival() {
   let productDetail = []
   try {
@@ -47,7 +46,7 @@ export default async function NewArrival() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-7.5 gap-y-9">
+        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-[10px] lg:gap-x-7.5 gap-y-9">
           {productDetail && productDetail.length > 0 ? (
             productDetail.map((product, id) => (
               <ProductItem item={product} key={product.id || id} />
