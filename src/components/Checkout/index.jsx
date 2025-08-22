@@ -4,7 +4,10 @@ import Breadcrumb from '../Common/Breadcrumb'
 import PaymentMethod from './PaymentMethod'
 import Billing from './Billing'
 import { useAppSelector } from '@/redux/store'
-import { selectSelectedItems, selectSelectedTotalPrice } from '@/redux/features/cart-slice'
+import {
+  selectSelectedItems,
+  selectSelectedTotalPrice,
+} from '@/redux/features/cart-slice'
 import { formatVND } from '@/utils/formatCurrency'
 
 const Checkout = () => {
@@ -15,13 +18,12 @@ const Checkout = () => {
   return (
     <>
       <Breadcrumb title={'Checkout'} pages={['checkout']} />
-      <section className="py-20 overflow-hidden bg-gray-2">
+      <section className="py-[10px] lg:py-20 overflow-hidden bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <form>
             <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-11">
               {/* <!-- checkout left --> */}
               <div className="lg:max-w-[670px] w-full">
-
                 {/* <!-- billing details --> */}
                 <Billing />
               </div>
@@ -53,7 +55,9 @@ const Checkout = () => {
                       cartItems.map((item) => {
                         const unit =
                           Number(
-                            item?.discountedPrice ?? item?.finalPrice ?? item?.price
+                            item?.discountedPrice ??
+                              item?.finalPrice ??
+                              item?.price
                           ) || 0
                         return (
                           <div
@@ -61,10 +65,14 @@ const Checkout = () => {
                             className="flex items-center justify-between py-5 border-b border-gray-3"
                           >
                             <div>
-                              <p className="text-dark-5 line-clamp-1">{item.title || 'Sản phẩm'}</p>
+                              <p className="text-dark-5 line-clamp-1">
+                                {item.title || 'Sản phẩm'}
+                              </p>
                             </div>
                             <div>
-                              <p className="text-right text-blue">{formatVND(unit)}</p>
+                              <p className="text-right text-blue">
+                                {formatVND(unit)}
+                              </p>
                             </div>
                           </div>
                         )
@@ -78,10 +86,14 @@ const Checkout = () => {
                     {/* <!-- total --> */}
                     <div className="flex items-center justify-between pt-5">
                       <div>
-                        <p className="text-xl font-semibold text-dark">Thành tiền</p>
+                        <p className="text-xl font-semibold text-dark">
+                          Thành tiền
+                        </p>
                       </div>
                       <div>
-                        <p className="text-lg font-medium text-right text-blue">{formatVND(totalPrice)}</p>
+                        <p className="text-lg font-medium text-right text-blue">
+                          {formatVND(totalPrice)}
+                        </p>
                       </div>
                     </div>
                   </div>

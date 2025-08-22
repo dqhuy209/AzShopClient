@@ -2,7 +2,7 @@ import React from 'react'
 
 const Billing = () => {
   return (
-    <div className="mt-9">
+    <div className="mt-5 lg:mt-9">
       <h2 className="font-semibold text-dark text-xl sm:text-2xl mb-5.5">
         Thông tin thanh toán
       </h2>
@@ -79,7 +79,6 @@ const Billing = () => {
             ></textarea>
           </div>
         </div>
-
       </div>
     </div>
   )
