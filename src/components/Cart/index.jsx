@@ -89,12 +89,12 @@ const Cart = () => {
             </div>
 
             {/* Tổng tiền của các sản phẩm đã chọn + CTA */}
-            <div className="flex justify-between items-center mt-7.5 gap-4 flex-wrap">
+            <div className="flex justify-between bg-white p-8 items-center mt-7.5 gap-4 flex-wrap">
               <div className="text-dark">
                 <span className="text-base">Đã chọn: </span>
-                <span className="font-semibold">{selectedItems.length}</span>
+                <span className="pr-4 font-semibold border-r-2">{selectedItems.length}</span>
                 <span className="ml-4 text-base">Tổng tiền: </span>
-                <span className="font-semibold text-blue">{formatVND(selectedTotal)}</span>
+                <span className="text-xl font-semibold text-blue">{formatVND(selectedTotal)}</span>
               </div>
               <Link
                 href={selectedItems.length > 0 ? '/checkout' : '#'}

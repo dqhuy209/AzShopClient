@@ -56,8 +56,8 @@ const Checkout = () => {
                         const unit =
                           Number(
                             item?.discountedPrice ??
-                              item?.finalPrice ??
-                              item?.price
+                            item?.finalPrice ??
+                            item?.price
                           ) || 0
                         return (
                           <div
@@ -70,7 +70,7 @@ const Checkout = () => {
                               </p>
                             </div>
                             <div>
-                              <p className="text-right text-blue">
+                              <p className="font-semibold text-right text-blue">
                                 {formatVND(unit)}
                               </p>
                             </div>
@@ -91,7 +91,7 @@ const Checkout = () => {
                         </p>
                       </div>
                       <div>
-                        <p className="text-lg font-medium text-right text-blue">
+                        <p className="text-xl font-semibold text-right text-blue">
                           {formatVND(totalPrice)}
                         </p>
                       </div>
