@@ -24,7 +24,8 @@ const Cart = () => {
   const dispatch = useDispatch()
 
   // Toggle chọn tất cả / bỏ chọn tất cả
-  const allSelected = cartItems.length > 0 && selectedIds.length === cartItems.length
+  const allSelected =
+    cartItems.length > 0 && selectedIds.length === cartItems.length
   const toggleSelectAll = () => {
     if (allSelected) dispatch(deselectAllItems())
     else dispatch(selectAllItems())
@@ -38,7 +39,7 @@ const Cart = () => {
       </section>
       {/* <!-- ===== Breadcrumb Section End ===== --> */}
       {cartItems.length > 0 ? (
-        <section className="py-20 overflow-hidden bg-gray-2">
+        <section className="py-10 lg:py-20 overflow-hidden bg-gray-2">
           <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
             <div className="flex flex-wrap items-center justify-between gap-5 mb-7.5">
               <h2 className="text-2xl font-medium text-dark">
@@ -71,7 +72,9 @@ const Cart = () => {
                       <p className="text-xs text-dark sm:text-base">Đơn Giá</p>
                     </div>
                     <div className="col-span-3 ">
-                      <p className="text-xs text-right text-dark sm:text-base">Hành động</p>
+                      <p className="text-xs text-right text-dark sm:text-base">
+                        Hành động
+                      </p>
                     </div>
                   </div>
 
@@ -91,17 +94,27 @@ const Cart = () => {
             {/* Tổng tiền của các sản phẩm đã chọn + CTA */}
             <div className="flex justify-between bg-white p-8 items-center mt-7.5 gap-4 flex-wrap">
               <div className="text-dark">
-                <span className="text-base">Đã chọn: </span>
-                <span className="pr-4 font-semibold border-r-2">{selectedItems.length}</span>
-                <span className="ml-4 text-base">Tổng tiền: </span>
-                <span className="text-xl font-semibold text-blue">{formatVND(selectedTotal)}</span>
+                <span className="text-[15px] lg:text-[16px] text-base">
+                  Đã chọn:{' '}
+                </span>
+                <span className="pr-4 font-semibold border-r-2">
+                  {selectedItems.length}
+                </span>
+                <span className="ml-4 text-[15px] lg:text-[16px] text-base">
+                  Tổng tiền:{' '}
+                </span>
+                <span className="text-[18px] lg:text-xl font-semibold text-blue">
+                  {formatVND(selectedTotal)}
+                </span>
               </div>
               <Link
                 href={selectedItems.length > 0 ? '/checkout' : '#'}
-                className={`w-full sm:w-auto flex justify-center font-medium text-white py-3 px-6 rounded-md ease-out duration-200 ${selectedItems.length > 0
-                  ? 'bg-blue hover:bg-blue-dark'
-                  : 'bg-gray-3 cursor-not-allowed'
-                  }`}
+                className={`text-[15px] lg:text-[16px] w-[80%] lg:w-full mr-auto sm:w-auto flex justify-center font-medium
+                 text-white py-3 px-6 rounded-md ease-out duration-200 ${
+                   selectedItems.length > 0
+                     ? 'bg-blue hover:bg-blue-dark'
+                     : 'bg-gray-3 cursor-not-allowed'
+                 }`}
                 aria-disabled={selectedItems.length === 0}
                 onClick={(e) => {
                   if (selectedItems.length === 0) e.preventDefault()
