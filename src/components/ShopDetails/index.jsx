@@ -270,7 +270,7 @@ const ShopDetails = ({ product }) => {
             <div className="max-w-[539px] w-full">
               {/* Tiêu đề và badge giảm giá */}
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold leading-tight sm:text-3xl xl:text-4xl text-dark">
+                <h2 className="text-2xl font-bold leading-tight text-[22px] xl:text-4xl text-dark">
                   {product.name || 'Tên sản phẩm'}
                 </h2>
                 {product.discountPercent > 0 && (
@@ -281,21 +281,21 @@ const ShopDetails = ({ product }) => {
               </div>
 
               {/* Thông tin cơ bản */}
-              <div className="flex flex-col gap-4 p-6 mb-8 bg-gray-1 rounded-xl">
+              <div className="flex flex-col gap-4 p-3 lg:p-6 mb-8 bg-gray-1 rounded-xl">
                 <div className="flex items-center gap-3">
-                  <span className="text-base font-medium text-body">
+                  <span className="text-[14px] lg:text-[16px] text-base font-medium text-body">
                     Tình trạng:
                   </span>
-                  <span className="px-3 py-1 text-base font-semibold rounded-full text-blue bg-blue-light-5">
+                  <span className="px-3 py-1 text-[14px] lg:text-[16px] text-base font-semibold rounded-full text-blue bg-blue-light-5">
                     {product.currentCondition || 'Không xác định'}
                   </span>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-base font-medium text-body">
+                  <span className=" text-[14px] lg:text-[16px] text-base font-medium text-body">
                     Danh mục:
                   </span>
-                  <span className="px-3 py-1 text-base font-semibold rounded-full text-green bg-green-light-6">
+                  <span className="text-[14px] lg:text-[16px] px-3 py-1 text-base font-semibold rounded-full text-green bg-green-light-6">
                     {product.categoryName || 'Chưa phân loại'}
                   </span>
                 </div>
@@ -320,10 +320,10 @@ const ShopDetails = ({ product }) => {
                       fill="currentColor"
                     />
                   </svg>
-                  <span className="text-base font-medium text-body">
+                  <span className="text-[14px] lg:text-[16px] text-base font-medium text-body">
                     Trạng thái:
                   </span>
-                  <span className="text-base font-semibold text-green">
+                  <span className="text-[14px] lg:text-[16px] text-base font-semibold text-green">
                     {product.statusDisplayName || 'Không xác định'}
                   </span>
                 </div>
@@ -332,13 +332,13 @@ const ShopDetails = ({ product }) => {
               <form onSubmit={(e) => e.preventDefault()}>
                 {/* Phần giá */}
                 <div className="mb-8">
-                  <h4 className="mb-4 text-lg font-semibold text-dark">
+                  <h4 className="text-[14px] mb-4 lg:text-lg font-semibold text-dark">
                     Thông tin giá
                   </h4>
 
                   {/* Giá chính */}
                   <div className="flex items-baseline gap-3 mb-3">
-                    <span className="text-3xl font-bold text-red">
+                    <span className="text-[22px] lg:text-3xl font-bold text-red">
                       {product.finalPrice?.toLocaleString('vi-VN') ||
                         product.sellingPrice?.toLocaleString('vi-VN') ||
                         0}{' '}
@@ -366,13 +366,14 @@ const ShopDetails = ({ product }) => {
                 <div className="flex flex-wrap items-center gap-4">
                   <a
                     href="#"
-                    className="inline-flex items-center justify-center px-8 py-3 font-medium text-white duration-200 ease-out rounded-md bg-blue hover:bg-blue-dark"
+                    className="inline-flex items-center justify-center px-4 lg:px-8 py-2 lg:py-3 font-medium
+                     text-white duration-200 ease-out rounded-md bg-blue hover:bg-blue-dark"
                   >
                     Mua ngay
                   </a>
                   <button
                     onClick={handleAddToCart}
-                    className="inline-flex items-center justify-center px-8 py-3 font-medium duration-200 ease-out bg-white border rounded-md text-blue border-blue hover:bg-gray-1"
+                    className="inline-flex items-center justify-center px-4 lg:px-8 py-2 lg:py-3 font-medium duration-200 ease-out bg-white border rounded-md text-blue border-blue hover:bg-gray-1"
                   >
                     Thêm vào giỏ hàng
                   </button>
@@ -383,7 +384,7 @@ const ShopDetails = ({ product }) => {
         </div>
       </section>
 
-      <section className="py-20 overflow-hidden bg-gray-2">
+      <section className="py-10 lg:py-20 overflow-hidden bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           {/* <!--== tab header start ==--> */}
           <div className="flex flex-wrap items-center bg-white rounded-[10px] shadow-1 gap-5 xl:gap-12.5 py-4.5 px-4 sm:px-6">
