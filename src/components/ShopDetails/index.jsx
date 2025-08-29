@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Breadcrumb from '../Common/Breadcrumb'
 import Image from 'next/image'
 import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
@@ -8,6 +8,8 @@ import { updateproductDetails } from '@/redux/features/product-details'
 import { addItemToCart } from '@/redux/features/cart-slice'
 import { useAppSelector } from '@/redux/store'
 import toast from 'react-hot-toast'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import SingleItem from '@/components/Home/Categories/SingleItem'
 
 const ShopDetails = ({ product }) => {
   const cartItems = useAppSelector((state) => state.cartReducer.items)
@@ -15,6 +17,23 @@ const ShopDetails = ({ product }) => {
   const { openPreviewModal } = usePreviewSlider()
   const [previewImg, setPreviewImg] = useState(0)
   const [activePreview, setActivePreview] = useState(0)
+
+  const sliderRef = useRef(null)
+  const handlePrev = useCallback(() => {
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slidePrev()
+  }, [])
+
+  const handleNext = useCallback(() => {
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slideNext()
+  }, [])
+
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.swiper.init()
+    }
+  }, [])
   /**
    * Xây mảng media thống nhất cho gallery (video + ảnh)
    * - Video luôn ở đầu tiên để người dùng thấy ngay
@@ -111,66 +130,83 @@ const ShopDetails = ({ product }) => {
           <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-17.5">
             <div className="lg:max-w-[570px] w-full">
               <div className="flex flex-col gap-5 lg:flex-row">
-                <div className="flex flex-row lg:flex-col gap-[8px] lg:gap-5 order-2 lg:order-1">
-                  {mediaItems.map((item, key) => (
-                    <button
-                      onClick={() => {
-                        setPreviewImg(key)
-                        setActivePreview(key)
-                      }}
-                      key={key}
-                      className={`relative flex items-center justify-center w-[60px] h-[60px] lg:w-20 lg:h-20  overflow-hidden rounded-lg bg-gray-2
+                <div className="flex flex-row lg:flex-col gap-[8px] lg:gap-5 order-2 lg:order-1 lg:w-[80px] overflow-hidden lg:overflow-visible">
+                  <Swiper
+                    className={'w-screen  lg:h-[512px]'}
+                    ref={sliderRef}
+                    spaceBetween={30}
+                    slidesPerView={5}
+                    breakpoints={{
+                      360: {
+                        direction: 'horizontal',
+                      },
+                      1024: {
+                        direction: 'vertical',
+                      },
+                    }}
+                  >
+                    {mediaItems.map((item, key) => (
+                      <SwiperSlide key={key}>
+                        <button
+                          onClick={() => {
+                            setPreviewImg(key)
+                            setActivePreview(key)
+                          }}
+                          key={key}
+                          className={`flex items-center justify-center w-[60px] h-[60px] lg:w-20 lg:h-20  overflow-hidden rounded-lg bg-gray-2
                        ease-out duration-200 hover:border-2 hover:border-blue ${
                          activePreview === key && 'border-2 border-blue'
                        }`}
-                    >
-                      {item.type === 'image' ? (
-                        <Image
-                          src={item.url || '/placeholder.jpg'}
-                          alt="thumbnail"
-                          width={61}
-                          height={61}
-                          className="object-cover aspect-square"
-                        />
-                      ) : (
-                        <>
-                          {/* Hiển thị poster frame thật của video */}
-                          <video
-                            className="object-cover w-full h-full aspect-square"
-                            muted
-                            playsInline
-                            preload="metadata"
-                          >
-                            <source src={item.url} type="video/mp4" />
-                          </video>
-                          {/* Icon play để phân biệt video */}
-                          <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <circle
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                fill="rgba(0,0,0,0.6)"
-                              />
-                              <path d="M10 8L16 12L10 16V8Z" fill="#fff" />
-                            </svg>
-                          </span>
-                        </>
-                      )}
-                    </button>
-                  ))}
+                        >
+                          {item.type === 'image' ? (
+                            <Image
+                              src={item.url || '/placeholder.jpg'}
+                              alt="thumbnail"
+                              width={61}
+                              height={61}
+                              className="object-cover aspect-square"
+                            />
+                          ) : (
+                            <>
+                              {/* Hiển thị poster frame thật của video */}
+                              <video
+                                className="object-cover w-full h-full aspect-square"
+                                muted
+                                playsInline
+                                preload="metadata"
+                              >
+                                <source src={item.url} type="video/mp4" />
+                              </video>
+                              {/* Icon play để phân biệt video */}
+                              <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    fill="rgba(0,0,0,0.6)"
+                                  />
+                                  <path d="M10 8L16 12L10 16V8Z" fill="#fff" />
+                                </svg>
+                              </span>
+                            </>
+                          )}
+                        </button>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </div>
 
                 <div
                   className="order-1 lg:order-2 relative z-1 overflow-hidden flex
-                 items-center justify-center w-full h-[400px] lg:h-auto
-                  lg:min-h-[512px] bg-gray-2 rounded-lg shadow-1"
+                 items-center justify-center w-full h-[400px]
+                  lg:!h-[512px] bg-gray-2 rounded-lg shadow-1"
                 >
                   <div>
                     {/* Nút phóng to chỉ hiển thị khi đang ở ảnh */}
