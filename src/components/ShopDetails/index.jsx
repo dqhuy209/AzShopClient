@@ -86,7 +86,6 @@ const ShopDetails = ({ product }) => {
     toast.success('Thêm sản phẩm vào giỏ hàng thành công')
   }
 
-
   if (!product || Object.keys(product).length === 0) {
     return (
       <>
@@ -104,11 +103,10 @@ const ShopDetails = ({ product }) => {
     )
   }
 
-
   return (
     <>
       <Breadcrumb title={'Shop Details'} pages={['shop details']} />
-      <section className="relative pt-5 pb-20 overflow-hidden lg:pt-20 xl:pt-28">
+      <section className="relative pt-5 pb-20 overflow-hidden lg:pt-10 xl:pt-18">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-17.5">
             <div className="lg:max-w-[570px] w-full">
@@ -122,8 +120,9 @@ const ShopDetails = ({ product }) => {
                       }}
                       key={key}
                       className={`relative flex items-center justify-center w-[60px] h-[60px] lg:w-20 lg:h-20  overflow-hidden rounded-lg bg-gray-2
-                       ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
-                        }`}
+                       ease-out duration-200 hover:border-2 hover:border-blue ${
+                         activePreview === key && 'border-2 border-blue'
+                       }`}
                     >
                       {item.type === 'image' ? (
                         <Image
@@ -168,7 +167,11 @@ const ShopDetails = ({ product }) => {
                   ))}
                 </div>
 
-                <div className="order-1 lg:order-2 relative z-1 overflow-hidden flex items-center justify-center w-full lg:minh-[512px] lg:min-h-[512px] bg-gray-2 rounded-lg shadow-1">
+                <div
+                  className="order-1 lg:order-2 relative z-1 overflow-hidden flex
+                 items-center justify-center w-full h-[400px] lg:h-auto
+                  lg:min-h-[512px] bg-gray-2 rounded-lg shadow-1"
+                >
                   <div>
                     {/* Nút phóng to chỉ hiển thị khi đang ở ảnh */}
                     {mediaItems[activePreview]?.type === 'image' && (
@@ -352,10 +355,11 @@ const ShopDetails = ({ product }) => {
               <button
                 key={key}
                 onClick={() => setActiveTab(item.id)}
-                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
-                  ? 'text-blue before:w-full'
-                  : 'text-dark before:w-0'
-                  }`}
+                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${
+                  activeTab === item.id
+                    ? 'text-blue before:w-full'
+                    : 'text-dark before:w-0'
+                }`}
               >
                 {item.title}
               </button>
@@ -367,8 +371,9 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${activeTab === 'tabOne' ? 'flex' : 'hidden'
-                }`}
+              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${
+                activeTab === 'tabOne' ? 'flex' : 'hidden'
+              }`}
             >
               <div className="w-full p-4 mt-10 bg-white rounded-lg sm:p-6">
                 <h2 className="text-2xl font-medium text-dark mb-7">
@@ -382,8 +387,6 @@ const ShopDetails = ({ product }) => {
                   </p>
                 )}
               </div>
-
-
             </div>
           </div>
           {/* <!-- tab content one end --> */}
@@ -391,11 +394,11 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content two start --> */}
           <div>
             <div
-              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === 'tabTwo' ? 'block' : 'hidden'
-                }`}
+              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${
+                activeTab === 'tabTwo' ? 'block' : 'hidden'
+              }`}
             >
               {/* Thông tin sản phẩm chi tiết */}
-
 
               <div className="space-y-0">
                 {/* Kích cỡ màn hình */}
@@ -479,13 +482,17 @@ const ShopDetails = ({ product }) => {
                 )}
 
                 {/* Hiển thị thông báo nếu không có thông tin */}
-                {!product.screenSize && !product.caseMaterial && !product.color && !product.version && !product.modelV1 && (
-                  <div className="py-8 text-center">
-                    <p className="text-base text-meta-4">
-                      Chưa có thông tin chi tiết cho sản phẩm này.
-                    </p>
-                  </div>
-                )}
+                {!product.screenSize &&
+                  !product.caseMaterial &&
+                  !product.color &&
+                  !product.version &&
+                  !product.modelV1 && (
+                    <div className="py-8 text-center">
+                      <p className="text-base text-meta-4">
+                        Chưa có thông tin chi tiết cho sản phẩm này.
+                      </p>
+                    </div>
+                  )}
               </div>
             </div>
           </div>

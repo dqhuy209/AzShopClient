@@ -117,7 +117,7 @@ const Categories = () => {
             breakpoints={{
               // when window width is >= 640px
               0: {
-                slidesPerView: 1,
+                slidesPerView: 2,
               },
               430: {
                 slidesPerView: 2,

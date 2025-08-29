@@ -4,8 +4,11 @@ import Link from 'next/link'
 
 const SingleItem = ({ item }) => {
   return (
-    <Link href={`/shop-with-sidebar?categoryId=${item.id}`} className="flex flex-col items-center group">
-      <div className="w-[200px] h-[200px] bg-[#F2F3F8]  rounded-[16px] flex items-center justify-center mb-4">
+    <Link
+      href={`/shop-with-sidebar?categoryId=${item.id}`}
+      className="flex flex-col items-center group"
+    >
+      <div className="w-[150px] h-[150px] bg-[#F2F3F8]  rounded-[16px] flex items-center justify-center mb-4">
         <div className="w-[130px] h-[130px] relative">
           <Image
             src={item.imageUrl}

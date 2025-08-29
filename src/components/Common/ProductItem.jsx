@@ -40,7 +40,7 @@ const ProductItem = ({ item }) => {
 
   return (
     <div className="mb-3 overflow-hidden transition-all duration-300 ease-out bg-white rounded-lg group shadow-1 hover:shadow-2">
-      <div className="relative overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-2 h-[280px] p-3">
+      <div className="relative overflow-hidden flex items-center justify-center rounded-t-xl bg-gray-2 h-[220px] lg:h-[280px] p-3">
         <div className="flex items-center justify-center w-full h-full">
           <Link
             href={`/shop-details/${item?.id}`}
@@ -171,18 +171,18 @@ const ProductItem = ({ item }) => {
         </div>
 
         {/* Price Section - luôn ở cuối */}
-        <div className="pt-2 mt-auto border-t border-gray-3">
+        <div className="pt-1 lg:pt-2 mt-auto border-t border-gray-3">
           <div className="space-y-1.5">
             {/* Main Price Display */}
             <div className="flex flex-col items-baseline gap-1 lg:gap-2">
-              <span className="text-lg font-semibold text-red">
+              <span className="text-[16px] lg:text-lg font-semibold text-red">
                 {formatVNDRounded.thousands(
                   item?.finalPrice || item?.sellingPrice
                 )}
               </span>
               {item?.discountPercent > 0 && (
                 <div className="flex items-center gap-x-[5px] lg:gap-x-[10px]">
-                  <span className="text-sm font-medium line-through text-meta-4">
+                  <span className=" text-xs lg:text-sm font-medium line-through text-meta-4">
                     {formatVNDRounded.thousands(item?.sellingPrice)}
                   </span>
                   <div className="flex items-center text-xs font-medium text-red whitespace-nowrap bg-red-light-6 p-[5px] rounded-[4px]">
