@@ -291,33 +291,6 @@ const ShopDetails = ({ product }) => {
               </div>
 
               <form onSubmit={(e) => e.preventDefault()}>
-                {/* Thông số kỹ thuật */}
-                <div className="mb-8">
-                  <h4 className="mb-4 text-lg font-semibold text-dark-3">
-                    Thông số kỹ thuật
-                  </h4>
-                  <div className="space-y-3">
-                    {product.attributes && product.attributes.length > 0 ? (
-                      product.attributes.map((attr, index) => (
-                        <div
-                          key={attr.id || index}
-                          className="flex items-center justify-between py-2 border-b border-gray-3"
-                        >
-                          <span className="text-base font-medium text-dark">
-                            {attr.name}:
-                          </span>
-                          <span className="text-base text-body">
-                            {attr.value}
-                          </span>
-                        </div>
-                      ))
-                    ) : (
-                      <span className="text-base text-meta-4">
-                        Chưa có thông số kỹ thuật
-                      </span>
-                    )}
-                  </div>
-                </div>
                 {/* Phần giá */}
                 <div className="mb-8">
                   <h4 className="mb-4 text-lg font-semibold text-dark">
@@ -349,7 +322,7 @@ const ShopDetails = ({ product }) => {
                       ₫
                     </div>
                   )}
-                </div>{' '}
+                </div>
                 {/* Nút hành động */}
                 <div className="flex flex-wrap items-center gap-4">
                   <a
@@ -394,10 +367,10 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5 mt-12.5 ${activeTab === 'tabOne' ? 'flex' : 'hidden'
+              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${activeTab === 'tabOne' ? 'flex' : 'hidden'
                 }`}
             >
-              <div className="max-w-[670px] w-full">
+              <div className="w-full p-4 mt-10 bg-white rounded-lg sm:p-6">
                 <h2 className="text-2xl font-medium text-dark mb-7">
                   Mô tả chi tiết:
                 </h2>
@@ -410,24 +383,7 @@ const ShopDetails = ({ product }) => {
                 )}
               </div>
 
-              <div className="max-w-[447px] w-full">
-                <h2 className="text-2xl font-medium text-dark mb-7">
-                  Chính sách bảo hành:
-                </h2>
-                {/* Có api sẽ call sau */}
-                <p className="mb-6">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry&apos;s
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book.
-                </p>
-                <p>
-                  It has survived not only five centuries, but also the leap
-                  into electronic typesetting, remaining essentially unchanged.
-                  It was popularised in the 1960s.
-                </p>
-              </div>
+
             </div>
           </div>
           {/* <!-- tab content one end --> */}
@@ -438,32 +394,99 @@ const ShopDetails = ({ product }) => {
               className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === 'tabTwo' ? 'block' : 'hidden'
                 }`}
             >
-              {/* Hiển thị thông tin chi tiết từ API specifications */}
-              {product.specifications && product.specifications.length > 0 ? (
-                product.specifications.map((spec, index) => (
-                  <div
-                    key={spec.id || index}
-                    className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5"
-                  >
+              {/* Thông tin sản phẩm chi tiết */}
+
+
+              <div className="space-y-0">
+                {/* Kích cỡ màn hình */}
+                {product.screenSize && (
+                  <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
                     <div className="max-w-[450px] min-w-[140px] w-full">
                       <p className="text-sm font-medium sm:text-base text-dark">
-                        {spec.specName}
+                        Kích cỡ màn hình:
                       </p>
                     </div>
                     <div className="w-full">
                       <p className="text-sm sm:text-base text-body">
-                        {spec.specValue}
+                        {product.screenSize}
                       </p>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="py-8 text-center">
-                  <p className="text-base text-meta-4">
-                    Chưa có thông tin chi tiết cho sản phẩm này.
-                  </p>
-                </div>
-              )}
+                )}
+
+                {/* Chất liệu vỏ */}
+                {product.caseMaterial && (
+                  <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
+                    <div className="max-w-[450px] min-w-[140px] w-full">
+                      <p className="text-sm font-medium sm:text-base text-dark">
+                        Chất liệu vỏ:
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <p className="text-sm sm:text-base text-body">
+                        {product.caseMaterial}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Màu sắc */}
+                {product.color && (
+                  <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
+                    <div className="max-w-[450px] min-w-[140px] w-full">
+                      <p className="text-sm font-medium sm:text-base text-dark">
+                        Màu sắc:
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <p className="text-sm sm:text-base text-body">
+                        {product.color}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Phiên bản */}
+                {product.version && (
+                  <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
+                    <div className="max-w-[450px] min-w-[140px] w-full">
+                      <p className="text-sm font-medium sm:text-base text-dark">
+                        Phiên bản:
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <p className="text-sm sm:text-base text-body">
+                        {product.version}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Dòng máy */}
+                {product.modelV1 && (
+                  <div className="flex px-4 py-4 rounded-md even:bg-gray-1 sm:px-5">
+                    <div className="max-w-[450px] min-w-[140px] w-full">
+                      <p className="text-sm font-medium sm:text-base text-dark">
+                        Dòng máy:
+                      </p>
+                    </div>
+                    <div className="w-full">
+                      <p className="text-sm sm:text-base text-body">
+                        {product.modelV1}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Hiển thị thông báo nếu không có thông tin */}
+                {!product.screenSize && !product.caseMaterial && !product.color && !product.version && !product.modelV1 && (
+                  <div className="py-8 text-center">
+                    <p className="text-base text-meta-4">
+                      Chưa có thông tin chi tiết cho sản phẩm này.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           {/* <!-- tab content two end --> */}

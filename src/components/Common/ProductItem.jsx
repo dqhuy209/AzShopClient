@@ -191,20 +191,6 @@ const ProductItem = ({ item }) => {
                 </div>
               )}
             </div>
-
-            {/* Discount Badge and Savings */}
-            {/*{item?.discountPercent > 0 && (*/}
-            {/*  <div className="flex items-center justify-between">*/}
-            {/*    <div className="flex items-center gap-1">*/}
-            {/*      <span className="inline-flex items-center py-0.5 px-1.5 text-xs font-medium rounded-md bg-red-light-6 text-red whitespace-nowrap line-clamp-1">*/}
-            {/*        Tiết kiệm{' '}*/}
-            {/*        {formatVNDRounded.thousands(*/}
-            {/*          item?.sellingPrice - item?.finalPrice*/}
-            {/*        )}*/}
-            {/*      </span>*/}
-            {/*    </div>*/}
-            {/*  </div>*/}
-            {/*)}*/}
           </div>
         </div>
       </div>

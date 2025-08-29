@@ -206,7 +206,7 @@ const QuickViewModal = () => {
           <div className="flex gap-12.5 h-full">
             {/* Phần ảnh bên trái - lấp đầy toàn bộ chiều cao */}
             <div className="w-[526px] flex-shrink-0 h-full">
-              <div className="flex gap-5 h-full">
+              <div className="flex h-full gap-5">
                 <div className="flex flex-col gap-5">
                   {mediaItems.map((item, key) => (
                     <button
@@ -227,7 +227,7 @@ const QuickViewModal = () => {
                             <source src={item.url} type="video/mp4" />
                           </video>
                           {/* Icon play để phân biệt video */}
-                          <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                          <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <circle cx="12" cy="12" r="10" fill="rgba(0,0,0,0.6)" />
                               <path d="M10 8L16 12L10 16V8Z" fill="#fff" />
@@ -247,7 +247,7 @@ const QuickViewModal = () => {
                   ))}
                 </div>
 
-                <div className="relative z-1 overflow-hidden flex items-center justify-center w-full bg-gray-1 rounded-lg border border-gray-3 flex-1">
+                <div className="relative flex items-center justify-center flex-1 w-full overflow-hidden border rounded-lg z-1 bg-gray-1 border-gray-3">
                   <div>
                     {/* Nút phóng to chỉ hiển thị khi đang ở ảnh */}
                     {mediaItems[activePreview]?.type === 'image' && (
@@ -365,42 +365,96 @@ const QuickViewModal = () => {
               )}
 
               {/* Specifications */}
-              {displayProduct?.attributes &&
-                displayProduct.attributes.length > 0 && (
-                  <div className="rounded-lg bg-gray-50 border-blue">
-                    <h4 className="flex items-center gap-2 mb-3 text-lg font-bold text-dark">
-                      <svg
-                        className="w-5 h-5 text-blue"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                        />
-                      </svg>
-                      Thông số kỹ thuật
-                    </h4>
-                    <div className="space-y-3">
-                      {displayProduct.attributes.map((attr) => (
-                        <div
-                          key={attr.id}
-                          className="flex items-center justify-between px-3 py-2 bg-white rounded-md"
-                        >
-                          <span className="font-medium text-dark-2">
-                            {attr.name}
-                          </span>
-                          <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
-                            {attr.value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
+              {(displayProduct?.screenSize || displayProduct?.caseMaterial || displayProduct?.color || displayProduct?.version || displayProduct?.modelV1) && (
+                <div className="rounded-lg bg-gray-50 border-blue">
+                  <h4 className="flex items-center gap-2 mb-3 text-lg font-bold text-dark">
+                    <svg
+                      className="w-5 h-5 text-blue"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
+                    </svg>
+                    Thông tin sản phẩm
+                  </h4>
+                  <div className="space-y-3">
+                    {/* Kích cỡ màn hình */}
+                    {displayProduct.screenSize && (
+                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                        <span className="font-medium text-dark-2">
+                          Kích cỡ màn hình
+                        </span>
+                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                          {displayProduct.screenSize}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Chất liệu vỏ */}
+                    {displayProduct.caseMaterial && (
+                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                        <span className="font-medium text-dark-2">
+                          Chất liệu vỏ
+                        </span>
+                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                          {displayProduct.caseMaterial}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Màu sắc */}
+                    {displayProduct.color && (
+                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                        <span className="font-medium text-dark-2">
+                          Màu sắc
+                        </span>
+                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                          {displayProduct.color}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Phiên bản */}
+                    {displayProduct.version && (
+                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                        <span className="font-medium text-dark-2">
+                          Phiên bản
+                        </span>
+                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                          {displayProduct.version}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Dòng máy */}
+                    {displayProduct.modelV1 && (
+                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                        <span className="font-medium text-dark-2">
+                          Dòng máy
+                        </span>
+                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                          {displayProduct.modelV1}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Hiển thị thông báo nếu không có thông tin */}
+                    {!displayProduct.screenSize && !displayProduct.caseMaterial && !displayProduct.color && !displayProduct.version && !displayProduct.modelV1 && (
+                      <div className="px-3 py-2 text-center">
+                        <span className="text-sm text-meta-4">
+                          Chưa có thông tin chi tiết cho sản phẩm này
+                        </span>
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
+              )}
 
               {/* Price Section */}
               <div className="space-y-2">
