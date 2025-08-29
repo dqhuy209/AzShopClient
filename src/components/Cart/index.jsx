@@ -94,22 +94,22 @@ const Cart = () => {
             {/* Tổng tiền của các sản phẩm đã chọn + CTA */}
             <div className="flex justify-between bg-white p-8 items-center mt-7.5 gap-4 flex-wrap">
               <div className="text-dark">
-                <span className="text-[14px] lg:text-[16px] text-base">
+                <span className="text-[15px] lg:text-[16px] text-base">
                   Đã chọn:{' '}
                 </span>
                 <span className="pr-4 font-semibold border-r-2">
                   {selectedItems.length}
                 </span>
-                <span className="ml-4 text-[14px] lg:text-[16px] text-base">
+                <span className="ml-4 text-[15px] lg:text-[16px] text-base">
                   Tổng tiền:{' '}
                 </span>
-                <span className="text-[17px] lg:text-xl font-semibold text-blue">
+                <span className="text-[18px] lg:text-xl font-semibold text-blue">
                   {formatVND(selectedTotal)}
                 </span>
               </div>
               <Link
                 href={selectedItems.length > 0 ? '/checkout' : '#'}
-                className={`text-[14px] lg:text-[16px] w-[80%] lg:w-full mr-auto sm:w-auto flex justify-center font-medium
+                className={`text-[15px] lg:text-[16px] w-[80%] lg:w-full mr-auto sm:w-auto flex justify-center font-medium
                  text-white py-3 px-6 rounded-md ease-out duration-200 ${
                    selectedItems.length > 0
                      ? 'bg-blue hover:bg-blue-dark'
