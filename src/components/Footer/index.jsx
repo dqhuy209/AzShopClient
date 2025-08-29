@@ -77,6 +77,7 @@ const Footer = () => {
                   <span>0855.38.2525</span>
                 </Link>
               </li>
+              {/*TODO: thay mail đúng*/}
 
               <li>
                 <Link

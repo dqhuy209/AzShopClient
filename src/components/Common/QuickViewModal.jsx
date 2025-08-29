@@ -475,6 +475,7 @@ const QuickViewModal = () => {
                 </div>
               )}
 
+              {/*TODO: cho nút bấm vào trang detail*/}
               {/* Price Section */}
               <div className="space-y-2">
                 <h4 className="text-lg font-bold text-dark">Giá bán</h4>
