@@ -96,9 +96,9 @@ const QuickViewModal = () => {
 
     // Tính index trong mảng ảnh dựa trên vị trí hiện tại trong mediaItems
     // Vì video ở đầu nên cần tính lại index
-    const imageIndex = mediaItems
-      .slice(0, activePreview + 1)
-      .filter((m) => m.type === 'image').length - 1
+    const imageIndex =
+      mediaItems.slice(0, activePreview + 1).filter((m) => m.type === 'image')
+        .length - 1
 
     const productToPreview = {
       ...(productData || product),
@@ -172,8 +172,9 @@ const QuickViewModal = () => {
 
   return (
     <div
-      className={`${isModalOpen ? 'z-50' : 'hidden'
-        } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 z-9999`}
+      className={`${
+        isModalOpen ? 'z-50' : 'hidden'
+      } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 z-9999`}
     >
       <div className="w-full max-w-[1100px] h-[600px] rounded-xl shadow-3 bg-white p-6 sm:p-8 relative modal-content">
         <button
@@ -212,8 +213,9 @@ const QuickViewModal = () => {
                     <button
                       onClick={() => setActivePreview(key)}
                       key={key}
-                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
-                        }`}
+                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${
+                        activePreview === key && 'border-2 border-blue'
+                      }`}
                     >
                       {item.type === 'video' ? (
                         <>
@@ -228,8 +230,19 @@ const QuickViewModal = () => {
                           </video>
                           {/* Icon play để phân biệt video */}
                           <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <circle cx="12" cy="12" r="10" fill="rgba(0,0,0,0.6)" />
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                fill="rgba(0,0,0,0.6)"
+                              />
                               <path d="M10 8L16 12L10 16V8Z" fill="#fff" />
                             </svg>
                           </span>
@@ -273,21 +286,21 @@ const QuickViewModal = () => {
                         </svg>
                       </button>
                     )}
-
                     {mediaItems[activePreview]?.type === 'video' ? (
                       <video
                         key={mediaItems[activePreview]?.url} // Thêm key để force re-render video
                         controls
                         className="object-contain max-w-full max-h-full"
                       >
-                        <source src={mediaItems[activePreview]?.url} type="video/mp4" />
+                        <source
+                          src={mediaItems[activePreview]?.url}
+                          type="video/mp4"
+                        />
                         Trình duyệt của bạn không hỗ trợ video.
                       </video>
                     ) : (
                       <Image
-                        src={
-                          mediaItems[activePreview]?.url || '/next.svg'
-                        }
+                        src={mediaItems[activePreview]?.url || '/next.svg'}
                         alt="product-preview"
                         width={400}
                         height={400}
@@ -365,7 +378,11 @@ const QuickViewModal = () => {
               )}
 
               {/* Specifications */}
-              {(displayProduct?.screenSize || displayProduct?.caseMaterial || displayProduct?.color || displayProduct?.version || displayProduct?.modelV1) && (
+              {(displayProduct?.screenSize ||
+                displayProduct?.caseMaterial ||
+                displayProduct?.color ||
+                displayProduct?.version ||
+                displayProduct?.modelV1) && (
                 <div className="rounded-lg bg-gray-50 border-blue">
                   <h4 className="flex items-center gap-2 mb-3 text-lg font-bold text-dark">
                     <svg
@@ -411,9 +428,7 @@ const QuickViewModal = () => {
                     {/* Màu sắc */}
                     {displayProduct.color && (
                       <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
-                        <span className="font-medium text-dark-2">
-                          Màu sắc
-                        </span>
+                        <span className="font-medium text-dark-2">Màu sắc</span>
                         <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
                           {displayProduct.color}
                         </span>
@@ -445,13 +460,17 @@ const QuickViewModal = () => {
                     )}
 
                     {/* Hiển thị thông báo nếu không có thông tin */}
-                    {!displayProduct.screenSize && !displayProduct.caseMaterial && !displayProduct.color && !displayProduct.version && !displayProduct.modelV1 && (
-                      <div className="px-3 py-2 text-center">
-                        <span className="text-sm text-meta-4">
-                          Chưa có thông tin chi tiết cho sản phẩm này
-                        </span>
-                      </div>
-                    )}
+                    {!displayProduct.screenSize &&
+                      !displayProduct.caseMaterial &&
+                      !displayProduct.color &&
+                      !displayProduct.version &&
+                      !displayProduct.modelV1 && (
+                        <div className="px-3 py-2 text-center">
+                          <span className="text-sm text-meta-4">
+                            Chưa có thông tin chi tiết cho sản phẩm này
+                          </span>
+                        </div>
+                      )}
                   </div>
                 </div>
               )}
@@ -463,8 +482,8 @@ const QuickViewModal = () => {
                   <span className="text-3xl font-bold text-red">
                     {formatVNDRounded.thousands(
                       displayProduct?.finalPrice ||
-                      displayProduct?.sellingPrice ||
-                      displayProduct.discountedPrice
+                        displayProduct?.sellingPrice ||
+                        displayProduct.discountedPrice
                     )}
                   </span>
                   {displayProduct?.discountPercent > 0 && (
