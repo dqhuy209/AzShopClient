@@ -1,14 +1,8 @@
 import React, { useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 
-/**
- * PaymentMethod mới:
- * - 3 tuỳ chọn: Cọc, Không cọc, 100%
- * - Hiển thị QR và nút upload ảnh thanh toán
- * - Không xử lý upload thực, chỉ preview client để xác thực người dùng đã chọn ảnh
- */
+
 const PaymentMethod = () => {
-  const [method, setMethod] = useState('no_deposit') // 'deposit' | 'no_deposit' | 'full'
   const [proofImage, setProofImage] = useState(null)
   const fileInputRef = useRef(null)
 

@@ -1,5 +1,6 @@
 'use client'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
 import Breadcrumb from '../Common/Breadcrumb'
 import PaymentMethod from './PaymentMethod'
 import Billing from './Billing'
@@ -9,23 +10,89 @@ import {
   selectSelectedTotalPrice,
 } from '@/redux/features/cart-slice'
 import { formatVND } from '@/utils/formatCurrency'
+import checkoutService from '@/services/checkout'
+import bannerService from '@/services/bannerService'
+
+
 
 const Checkout = () => {
-  // Lấy dữ liệu giỏ hàng từ Redux để hiển thị đúng như trang giỏ hàng
   const cartItems = useAppSelector(selectSelectedItems)
   const totalPrice = useAppSelector(selectSelectedTotalPrice)
+
+  // State quản lý form và modal
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // Sử dụng react-hook-form để quản lý form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    watch,
+  } = useForm({
+    defaultValues: {
+      customerName: '',
+      customerEmail: '',
+      customerPhone: '',
+      customerAddress: '',
+      notes: '',
+    }
+  })
+
+  const onSubmit = async (data) => {
+    // Kiểm tra giỏ hàng
+    if (!cartItems || cartItems.length === 0) {
+      toast.error('Giỏ hàng trống, vui lòng thêm sản phẩm')
+      return
+    }
+
+    const orderData = {
+      customerName: data.customerName,
+      customerEmail: data.customerEmail,
+      customerPhone: data.customerPhone,
+      customerAddress: data.customerAddress,
+      notes: data.notes,
+      // orderImage: data.orderImage,
+      items: cartItems.map(item => ({
+        productId: item.id,
+        quantity: 1
+      }))
+    }
+
+    try {
+      setIsSubmitting(true)
+      // Gọi API checkout
+      const response = await checkoutService.checkout(orderData)
+
+      if (response.success) {
+        toast.success('Đặt hàng thành công!')
+
+      } else {
+        toast.error('Có lỗi xảy ra khi đặt hàng')
+      }
+    } catch (error) {
+      console.error('Lỗi đặt hàng:', error)
+      toast.error('Có lỗi xảy ra khi đặt hàng')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
 
   return (
     <>
       <Breadcrumb title={'Checkout'} pages={['checkout']} />
       <section className="py-[10px] lg:py-20 overflow-hidden bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
-          <form>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-11">
               {/* <!-- checkout left --> */}
               <div className="lg:max-w-[670px] w-full">
                 {/* <!-- billing details --> */}
-                <Billing />
+                <Billing
+                  register={register}
+                  errors={errors}
+                />
               </div>
               {/* // <!-- checkout right --> */}
               <div className="max-w-[455px] w-full">
@@ -104,16 +171,18 @@ const Checkout = () => {
 
                 {/* <!-- checkout button --> */}
                 <button
-                  type="submit"
-                  className="flex justify-center w-full px-6 py-3 mt-7.5 font-medium text-white duration-200 ease-out rounded-md bg-blue hover:bg-blue-dark"
+                  type="button"
+                  disabled={isSubmitting || !cartItems || cartItems.length === 0}
+                  className="flex justify-center w-full px-6 py-3 mt-7.5 font-medium text-white duration-200 ease-out rounded-md bg-blue hover:bg-blue-dark disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  Thanh toán
+                  {isSubmitting ? 'Đang xử lý...' : 'Thanh toán'}
                 </button>
               </div>
             </div>
           </form>
         </div>
       </section>
+
     </>
   )
 }

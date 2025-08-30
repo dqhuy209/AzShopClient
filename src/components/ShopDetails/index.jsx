@@ -154,9 +154,8 @@ const ShopDetails = ({ product }) => {
                           }}
                           key={key}
                           className={`flex items-center justify-center w-[60px] h-[60px] lg:w-20 lg:h-20  overflow-hidden rounded-lg bg-gray-2
-                       ease-out duration-200 hover:border-2 hover:border-blue ${
-                         activePreview === key && 'border-2 border-blue'
-                       }`}
+                       ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
+                            }`}
                         >
                           {item.type === 'image' ? (
                             <Image
@@ -281,7 +280,7 @@ const ShopDetails = ({ product }) => {
               </div>
 
               {/* Thông tin cơ bản */}
-              <div className="flex flex-col gap-4 p-3 lg:p-6 mb-8 bg-gray-1 rounded-xl">
+              <div className="flex flex-col gap-4 p-3 mb-8 lg:p-6 bg-gray-1 rounded-xl">
                 <div className="flex items-center gap-3">
                   <span className="text-[14px] lg:text-[16px] text-base font-medium text-body">
                     Tình trạng:
@@ -329,62 +328,63 @@ const ShopDetails = ({ product }) => {
                 </div>
               </div>
 
-              <form onSubmit={(e) => e.preventDefault()}>
-                {/* Phần giá */}
-                <div className="mb-8">
-                  <h4 className="text-[14px] mb-4 lg:text-lg font-semibold text-dark">
-                    Thông tin giá
-                  </h4>
+              {/* Phần giá */}
+              <div className="mb-8">
+                <h4 className="text-[14px] mb-4 lg:text-lg font-semibold text-dark">
+                  Thông tin giá
+                </h4>
 
-                  {/* Giá chính */}
-                  <div className="flex items-baseline gap-3 mb-3">
-                    <span className="text-[22px] lg:text-3xl font-bold text-red">
-                      {product.finalPrice?.toLocaleString('vi-VN') ||
-                        product.sellingPrice?.toLocaleString('vi-VN') ||
-                        0}{' '}
-                      ₫
-                    </span>
-                    {product.discountPercent > 0 && (
-                      <span className="text-lg font-medium line-through text-meta-4">
-                        {product.sellingPrice?.toLocaleString('vi-VN') || 0} ₫
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Tiết kiệm */}
+                {/* Giá chính */}
+                <div className="flex items-baseline gap-3 mb-3">
+                  <span className="text-[22px] lg:text-3xl font-bold text-red">
+                    {product.finalPrice?.toLocaleString('vi-VN') ||
+                      product.sellingPrice?.toLocaleString('vi-VN') ||
+                      0}{' '}
+                    ₫
+                  </span>
                   {product.discountPercent > 0 && (
-                    <div className="inline-flex items-center px-3 py-1 text-sm font-medium rounded bg-green-light-6 text-green">
-                      Tiết kiệm{' '}
-                      {(
-                        (product.sellingPrice || 0) - (product.finalPrice || 0)
-                      ).toLocaleString('vi-VN')}{' '}
-                      ₫
-                    </div>
+                    <span className="text-lg font-medium line-through text-meta-4">
+                      {product.sellingPrice?.toLocaleString('vi-VN') || 0} ₫
+                    </span>
                   )}
                 </div>
-                {/* Nút hành động */}
-                <div className="flex flex-wrap items-center gap-4">
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center px-4 lg:px-8 py-2 lg:py-3 font-medium
-                     text-white duration-200 ease-out rounded-md bg-blue hover:bg-blue-dark"
-                  >
-                    Mua ngay
-                  </a>
-                  <button
-                    onClick={handleAddToCart}
-                    className="inline-flex items-center justify-center px-4 lg:px-8 py-2 lg:py-3 font-medium duration-200 ease-out bg-white border rounded-md text-blue border-blue hover:bg-gray-1"
-                  >
-                    Thêm vào giỏ hàng
-                  </button>
-                </div>
-              </form>
+
+                {/* Tiết kiệm */}
+                {product.discountPercent > 0 && (
+                  <div className="inline-flex items-center px-3 py-1 text-sm font-medium rounded bg-green-light-6 text-green">
+                    Tiết kiệm{' '}
+                    {(
+                      (product.sellingPrice || 0) - (product.finalPrice || 0)
+                    ).toLocaleString('vi-VN')}{' '}
+                    ₫
+                  </div>
+                )}
+              </div>
+
+              {/* Nút hành động */}
+              <div className="relative z-10 flex flex-wrap items-center gap-4">
+                <button
+                  onClick={() => {
+                    // TODO: Implement buy now functionality
+                    toast.info('Tính năng mua ngay đang được phát triển')
+                  }}
+                  className="inline-flex items-center justify-center px-4 py-2 font-medium text-white transition-colors duration-200 ease-out rounded-md cursor-pointer lg:px-8 lg:py-3 bg-blue hover:bg-blue-dark"
+                >
+                  Mua ngay
+                </button>
+                <button
+                  onClick={handleAddToCart}
+                  className="inline-flex items-center justify-center px-4 py-2 font-medium transition-colors duration-200 ease-out bg-white border rounded-md cursor-pointer lg:px-8 lg:py-3 text-blue border-blue hover:bg-gray-1"
+                >
+                  Thêm vào giỏ hàng
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="py-10 lg:py-20 overflow-hidden bg-gray-2">
+      <section className="py-10 overflow-hidden lg:py-20 bg-gray-2">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           {/* <!--== tab header start ==--> */}
           <div className="flex flex-wrap items-center bg-white rounded-[10px] shadow-1 gap-5 xl:gap-12.5 py-4.5 px-4 sm:px-6">
@@ -392,11 +392,10 @@ const ShopDetails = ({ product }) => {
               <button
                 key={key}
                 onClick={() => setActiveTab(item.id)}
-                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${
-                  activeTab === item.id
-                    ? 'text-blue before:w-full'
-                    : 'text-dark before:w-0'
-                }`}
+                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
+                  ? 'text-blue before:w-full'
+                  : 'text-dark before:w-0'
+                  }`}
               >
                 {item.title}
               </button>
@@ -408,9 +407,8 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${
-                activeTab === 'tabOne' ? 'flex' : 'hidden'
-              }`}
+              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${activeTab === 'tabOne' ? 'flex' : 'hidden'
+                }`}
             >
               <div className="w-full p-4 mt-10 bg-white rounded-lg sm:p-6">
                 <h2 className="text-2xl font-medium text-dark mb-7">
@@ -431,9 +429,8 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content two start --> */}
           <div>
             <div
-              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${
-                activeTab === 'tabTwo' ? 'block' : 'hidden'
-              }`}
+              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === 'tabTwo' ? 'block' : 'hidden'
+                }`}
             >
               {/* Thông tin sản phẩm chi tiết */}
 
