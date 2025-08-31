@@ -4,8 +4,6 @@ import { useCallback, useRef, useEffect, useState } from 'react'
 import 'swiper/css/navigation'
 import 'swiper/css'
 import Image from 'next/image'
-import Zoom from 'react-medium-image-zoom'
-import 'react-medium-image-zoom/dist/styles.css'
 
 import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
 import { useAppSelector } from '@/redux/store'
@@ -17,6 +15,17 @@ const PreviewSliderModal = () => {
   const data = useAppSelector((state) => state.productDetailsReducer.value)
 
   const sliderRef = useRef(null)
+
+  // State cho desktop zoom (giữ nguyên logic cũ)
+  const [zoomLevel, setZoomLevel] = useState(1)
+  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+
+  // State cho mobile touch events
+  const [lastTouchDistance, setLastTouchDistance] = useState(0)
+  const [lastTouchCenter, setLastTouchCenter] = useState({ x: 0, y: 0 })
+  const [isPinching, setIsPinching] = useState(false)
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return
