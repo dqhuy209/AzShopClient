@@ -21,6 +21,30 @@ const PreviewSliderModal = () => {
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
+  // Ngăn scroll trang khi modal mở
+  useEffect(() => {
+    if (isModalPreviewOpen) {
+      // Lưu trạng thái scroll hiện tại
+      const scrollY = window.scrollY
+
+      // Thêm class overflow-hidden để ngăn scroll
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.top = `-${scrollY}px`
+      document.body.style.width = '100%'
+
+      // Cleanup function để khôi phục scroll khi modal đóng
+      return () => {
+        document.body.style.overflow = ''
+        document.body.style.position = ''
+        document.body.style.top = ''
+        document.body.style.width = ''
+        // Khôi phục vị trí scroll
+        window.scrollTo(0, scrollY)
+      }
+    }
+  }, [isModalPreviewOpen])
+
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return
     sliderRef.current.swiper.slidePrev()
