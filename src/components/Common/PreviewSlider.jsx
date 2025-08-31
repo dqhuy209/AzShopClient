@@ -187,9 +187,8 @@ const PreviewSliderModal = () => {
 
   return (
     <div
-      className={`preview-slider w-full h-screen z-[99999] inset-0 flex justify-center items-center bg-black bg-opacity-90 ${
-        isModalPreviewOpen ? 'fixed' : 'hidden'
-      }`}
+      className={`preview-slider w-full h-screen z-[99999] inset-0 flex justify-center items-center bg-black bg-opacity-90 ${isModalPreviewOpen ? 'fixed' : 'hidden'
+        }`}
       onMouseDown={(e) => {
         // Ngăn background clicks khi zoom
         if (zoomLevel > 1 && !e.target.closest('.image-container')) {
@@ -221,8 +220,8 @@ const PreviewSliderModal = () => {
         </svg>
       </button>
 
-      {/* Zoom Controls */}
-      <div className="absolute z-50 flex flex-col gap-2 top-4 left-4">
+      {/* Zoom Controls - chỉ hiển thị trên desktop */}
+      <div className="absolute z-50 flex-col hidden gap-2 top-4 left-4 lg:flex">
         <button
           onClick={handleZoomIn}
           aria-label="Zoom in"
@@ -274,11 +273,11 @@ const PreviewSliderModal = () => {
         </button>
       </div>
 
-      {/* Navigation Buttons - chỉ hiện khi không zoom */}
+      {/* Navigation Buttons - chỉ hiện khi không zoom và chỉ trên desktop */}
       {zoomLevel <= 1 && (
         <>
           <button
-            className="absolute z-40 p-3 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer left-16 top-1/2 hover:bg-opacity-70"
+            className="absolute z-40 hidden p-3 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer left-16 top-1/2 hover:bg-opacity-70 lg:block"
             onClick={handlePrev}
             aria-label="Previous image"
           >
@@ -300,7 +299,7 @@ const PreviewSliderModal = () => {
           </button>
 
           <button
-            className="absolute z-40 p-3 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer right-4 top-1/2 hover:bg-opacity-70"
+            className="absolute z-40 hidden p-3 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer right-4 top-1/2 hover:bg-opacity-70 lg:block"
             onClick={handleNext}
             aria-label="Next image"
           >
@@ -378,9 +377,48 @@ const PreviewSliderModal = () => {
               </SwiperSlide>
             ))
           ) : // Fallback to legacy imgs structure if new images array is not available
-          data?.imgs?.previews && data.imgs.previews.length > 0 ? (
-            data.imgs.previews.map((image, index) => (
-              <SwiperSlide key={index}>
+            data?.imgs?.previews && data.imgs.previews.length > 0 ? (
+              data.imgs.previews.map((image, index) => (
+                <SwiperSlide key={index}>
+                  <div className="flex items-center justify-center w-full h-full overflow-hidden">
+                    <div
+                      className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
+                      style={{
+                        transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                        cursor:
+                          zoomLevel > 1
+                            ? isDragging
+                              ? 'grabbing'
+                              : 'grab'
+                            : 'default',
+                        transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
+                      }}
+                      onMouseDown={handleMouseDown}
+                      onTouchStart={(e) => {
+                        // Ngăn touch events khi zoom để tránh conflict với Swiper
+                        if (zoomLevel > 1) {
+                          e.preventDefault()
+                          e.stopPropagation()
+                        }
+                      }}
+                    >
+                      <Image
+                        src={image || '/next.svg'}
+                        alt={`${data.title || 'Product'} image ${index + 1}`}
+                        fill
+                        className="object-contain pointer-events-none"
+                        quality={100}
+                        priority={index === (data.initialSlideIndex || 0)}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                        draggable={false}
+                      />
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              // Ultimate fallback
+              <SwiperSlide>
                 <div className="flex items-center justify-center w-full h-full overflow-hidden">
                   <div
                     className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
@@ -404,57 +442,18 @@ const PreviewSliderModal = () => {
                     }}
                   >
                     <Image
-                      src={image || '/next.svg'}
-                      alt={`${data.title || 'Product'} image ${index + 1}`}
+                      src="/next.svg"
+                      alt="Product image"
                       fill
                       className="object-contain pointer-events-none"
                       quality={100}
-                      priority={index === (data.initialSlideIndex || 0)}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                       draggable={false}
                     />
                   </div>
                 </div>
               </SwiperSlide>
-            ))
-          ) : (
-            // Ultimate fallback
-            <SwiperSlide>
-              <div className="flex items-center justify-center w-full h-full overflow-hidden">
-                <div
-                  className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
-                  style={{
-                    transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
-                    cursor:
-                      zoomLevel > 1
-                        ? isDragging
-                          ? 'grabbing'
-                          : 'grab'
-                        : 'default',
-                    transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
-                  }}
-                  onMouseDown={handleMouseDown}
-                  onTouchStart={(e) => {
-                    // Ngăn touch events khi zoom để tránh conflict với Swiper
-                    if (zoomLevel > 1) {
-                      e.preventDefault()
-                      e.stopPropagation()
-                    }
-                  }}
-                >
-                  <Image
-                    src="/next.svg"
-                    alt="Product image"
-                    fill
-                    className="object-contain pointer-events-none"
-                    quality={100}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                    draggable={false}
-                  />
-                </div>
-              </div>
-            </SwiperSlide>
-          )}
+            )}
         </Swiper>
       </div>
     </div>

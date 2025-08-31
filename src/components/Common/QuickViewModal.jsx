@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo, useCallback, useRef } from 'react'
 
 import { useModalContext } from '@/app/context/QuickViewModalContext'
 import { useAppSelector } from '@/redux/store'
@@ -13,6 +13,8 @@ import { resetQuickView } from '@/redux/features/quickView-slice'
 import productService from '@/services/productService'
 import { formatVNDRounded } from '@/utils/formatCurrency'
 import Link from 'next/link'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
 
 const QuickViewModal = () => {
   const { isModalOpen, closeModal } = useModalContext()
@@ -28,6 +30,42 @@ const QuickViewModal = () => {
   const product = useAppSelector((state) => state.quickViewReducer.value)
 
   const [activePreview, setActivePreview] = useState(0)
+
+  // Thêm ref cho Swiper
+  const sliderRef = useRef(null)
+
+  // Hàm điều hướng cho thumbnail slider
+  const handlePrev = useCallback(() => {
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slidePrev()
+  }, [])
+
+  const handleNext = useCallback(() => {
+    if (!sliderRef.current) return
+    sliderRef.current.swiper.slideNext()
+  }, [])
+
+  // Khởi tạo Swiper khi component mount
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.swiper.init()
+    }
+  }, [])
+
+  // Disable scroll khi modal mở
+  useEffect(() => {
+    if (isModalOpen) {
+      // Lưu trạng thái scroll hiện tại
+      const originalStyle = window.getComputedStyle(document.body).overflow
+      // Disable scroll
+      document.body.style.overflow = 'hidden'
+
+      // Cleanup khi component unmount hoặc modal đóng
+      return () => {
+        document.body.style.overflow = originalStyle
+      }
+    }
+  }, [isModalOpen])
 
   /**
    * Xây mảng media thống nhất cho gallery (video + ảnh)
@@ -208,55 +246,94 @@ const QuickViewModal = () => {
             {/* Phần ảnh bên trái - lấp đầy toàn bộ chiều cao */}
             <div className="w-[526px] flex-shrink-0 h-full">
               <div className="flex h-full gap-5">
-                <div className="flex flex-col gap-5">
-                  {mediaItems.map((item, key) => (
-                    <button
-                      onClick={() => setActivePreview(key)}
-                      key={key}
-                      className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
-                        }`}
-                    >
-                      {item.type === 'video' ? (
-                        <>
-                          {/* Hiển thị poster frame thật của video */}
-                          <video
-                            className="object-cover w-full h-full aspect-square"
-                            muted
-                            playsInline
-                            preload="metadata"
-                          >
-                            <source src={item.url} type="video/mp4" />
-                          </video>
-                          {/* Icon play để phân biệt video */}
-                          <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                            <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <circle
-                                cx="12"
-                                cy="12"
-                                r="10"
-                                fill="rgba(0,0,0,0.6)"
-                              />
-                              <path d="M10 8L16 12L10 16V8Z" fill="#fff" />
-                            </svg>
-                          </span>
-                        </>
-                      ) : (
-                        <Image
-                          src={item.url || '/next.svg'}
-                          alt="thumbnail"
-                          width={61}
-                          height={61}
-                          className="object-cover aspect-square"
-                        />
-                      )}
-                    </button>
-                  ))}
+                <div className="relative flex flex-col gap-5 overflow-hidden">
+                  {/* Nút điều hướng cho thumbnail slider - chỉ hiển thị khi có từ 7 ảnh trở lên */}
+                  {mediaItems.length >= 7 && (
+                    <>
+                      {/* Nút prev - mũi tên lên */}
+                      <button
+                        onClick={handlePrev}
+                        className="absolute top-0 left-0 z-10 flex items-center justify-center w-20 h-5 transition-all duration-200 rounded-t-lg shadow-sm bg-white/80 hover:bg-white/90 backdrop-blur-sm"
+                        aria-label="Previous thumbnail"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M18 15L12 9L6 15" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </button>
+
+                      {/* Nút next - mũi tên xuống */}
+                      <button
+                        onClick={handleNext}
+                        className="absolute bottom-0 left-0 z-10 flex items-center justify-center w-20 h-5 transition-all duration-200 rounded-b-lg shadow-sm bg-white/80 hover:bg-white/90 backdrop-blur-sm"
+                        aria-label="Next thumbnail"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M6 9L12 15L18 9" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </button>
+                    </>
+                  )}
+
+                  {/* Swiper cho thumbnail slider */}
+                  <Swiper
+                    className="w-20"
+                    ref={sliderRef}
+                    direction="vertical"
+                    spaceBetween={20}
+                    slidesPerView={7}
+                    loop={false}
+                    style={{ height: 'auto' }}
+                  >
+                    {mediaItems.map((item, key) => (
+                      <SwiperSlide key={key}>
+                        <button
+                          onClick={() => setActivePreview(key)}
+                          className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
+                            }`}
+                        >
+                          {item.type === 'video' ? (
+                            <>
+                              {/* Hiển thị poster frame thật của video */}
+                              <video
+                                className="object-cover w-full h-full aspect-square"
+                                muted
+                                playsInline
+                                preload="metadata"
+                              >
+                                <source src={item.url} type="video/mp4" />
+                              </video>
+                              {/* Icon play để phân biệt video */}
+                              <span className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <svg
+                                  width="24"
+                                  height="24"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <circle
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    fill="rgba(0,0,0,0.6)"
+                                  />
+                                  <path d="M10 8L16 12L10 16V8Z" fill="#fff" />
+                                </svg>
+                              </span>
+                            </>
+                          ) : (
+                            <Image
+                              src={item.url || '/next.svg'}
+                              alt="thumbnail"
+                              width={61}
+                              height={61}
+                              className="object-cover aspect-square"
+                            />
+                          )}
+                        </button>
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
                 </div>
 
                 <div className="relative flex items-center justify-center flex-1 w-full overflow-hidden border rounded-lg z-1 bg-gray-1 border-gray-3">

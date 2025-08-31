@@ -146,9 +146,44 @@ const ShopDetails = ({ product }) => {
           <div className="flex flex-col lg:flex-row gap-7.5 xl:gap-17.5">
             <div className="lg:max-w-[570px] w-full">
               <div className="flex flex-col gap-5 lg:flex-row">
-                <div className="flex flex-row lg:flex-col gap-[8px] lg:gap-5 order-2 lg:order-1 lg:w-[80px] overflow-hidden lg:overflow-visible">
+                <div className="flex flex-row lg:flex-col gap-[8px] lg:gap-5 order-2 lg:order-1 lg:w-[80px] overflow-hidden lg:overflow-visible relative">
+                  {/* Nút điều hướng cho thumbnail slider - chỉ hiển thị khi có hơn 6 ảnh */}
+                  {mediaItems.length >= 6 && (
+                    <>
+                      {/* Nút prev - thay đổi hướng mũi tên theo breakpoint */}
+                      <button
+                        onClick={handlePrev}
+                        className="absolute left-0 top-0 lg:left-0 lg:top-0 z-10 flex items-center justify-center w-[15px] h-[60px] lg:w-20 lg:h-5  bg-white/80 hover:bg-white/90 transition-all duration-200 backdrop-blur-sm shadow-sm"
+                        aria-label="Previous thumbnail"
+                      >
+                        {/* Mũi tên trái cho mobile (horizontal), mũi tên lên cho desktop (vertical) */}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="lg:hidden">
+                          <path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hidden lg:block">
+                          <path d="M18 15L12 9L6 15" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </button>
+
+                      {/* Nút next - thay đổi hướng mũi tên theo breakpoint */}
+                      <button
+                        onClick={handleNext}
+                        className="absolute right-0 bottom-0 lg:right-0 lg:bottom-0 z-10 flex items-center justify-center w-[15px] h-[60px] lg:w-20 lg:h-5   bg-white/80 hover:bg-white/90 transition-all duration-200 backdrop-blur-sm shadow-sm"
+                        aria-label="Next thumbnail"
+                      >
+                        {/* Mũi tên phải cho mobile (horizontal), mũi tên xuống cho desktop (vertical) */}
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hidden lg:block">
+                          <path d="M6 9L12 15L18 9" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="lg:hidden">
+                          <path d="M9 18L15 12L9 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </button>
+                    </>
+                  )}
+
                   <Swiper
-                    className={'w-screen  lg:h-[512px]'}
+                    className={'w-screen lg:h-[512px]'}
                     ref={sliderRef}
                     spaceBetween={30}
                     slidesPerView={6}
@@ -231,8 +266,27 @@ const ShopDetails = ({ product }) => {
                         aria-label="button for zoom"
                         className="gallery__Image w-11 h-11 rounded-[5px] bg-gray-1 shadow-1 flex items-center justify-center ease-out duration-200 text-dark hover:text-blue absolute top-4 lg:top-6 right-4 lg:right-6 z-50"
                       >
+                        {/* Icon phóng to đơn giản cho mobile */}
                         <svg
-                          className="fill-current"
+                          className="fill-current lg:hidden"
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M15 3H21V9M9 21H3V15M21 3L14 10M3 21L10 14"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+
+                        {/* Icon phóng to chi tiết cho desktop */}
+                        <svg
+                          className="hidden fill-current lg:block"
                           width="22"
                           height="22"
                           viewBox="0 0 22 22"
