@@ -6,12 +6,15 @@ import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
 import { useDispatch } from 'react-redux'
 import { updateproductDetails } from '@/redux/features/product-details'
 import { addItemToCart } from '@/redux/features/cart-slice'
+import { setBuyNowProduct } from '@/redux/features/buyNow-slice'
 import { useAppSelector } from '@/redux/store'
 import toast from 'react-hot-toast'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SingleItem from '@/components/Home/Categories/SingleItem'
+import { useRouter } from 'next/navigation'
+
 
 const ShopDetails = ({ product }) => {
+  const router = useRouter()
   const cartItems = useAppSelector((state) => state.cartReducer.items)
 
   const { openPreviewModal } = usePreviewSlider()
@@ -105,6 +108,19 @@ const ShopDetails = ({ product }) => {
     toast.success('Thêm sản phẩm vào giỏ hàng thành công')
   }
 
+  // Xử lý mua ngay - chuyển thẳng đến checkout với sản phẩm này
+  const handleBuyNow = () => {
+    // Thiết lập sản phẩm để mua ngay
+    dispatch(setBuyNowProduct({
+      ...product,
+      quantity: 1,
+    }))
+
+    // Chuyển hướng đến trang checkout
+    router.push('/checkout')
+
+  }
+
   if (!product || Object.keys(product).length === 0) {
     return (
       <>
@@ -135,7 +151,7 @@ const ShopDetails = ({ product }) => {
                     className={'w-screen  lg:h-[512px]'}
                     ref={sliderRef}
                     spaceBetween={30}
-                    slidesPerView={5}
+                    slidesPerView={6}
                     breakpoints={{
                       360: {
                         direction: 'horizontal',
@@ -364,10 +380,7 @@ const ShopDetails = ({ product }) => {
               {/* Nút hành động */}
               <div className="relative z-10 flex flex-wrap items-center gap-4">
                 <button
-                  onClick={() => {
-                    // TODO: Implement buy now functionality
-                    toast.info('Tính năng mua ngay đang được phát triển')
-                  }}
+                  onClick={handleBuyNow}
                   className="inline-flex items-center justify-center px-4 py-2 font-medium text-white transition-colors duration-200 ease-out rounded-md cursor-pointer lg:px-8 lg:py-3 bg-blue hover:bg-blue-dark"
                 >
                   Mua ngay
