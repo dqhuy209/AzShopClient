@@ -19,18 +19,29 @@ const PreviewSliderModal = () => {
   const [isDragging, setIsDragging] = useState(false)
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
 
+  // State cho mobile touch events
+  const [lastTouchDistance, setLastTouchDistance] = useState(0)
+  const [lastTouchCenter, setLastTouchCenter] = useState({ x: 0, y: 0 })
+  const [isPinching, setIsPinching] = useState(false)
+
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return
     sliderRef.current.swiper.slidePrev()
-    // Reset pan khi chuyển slide
+    // Reset zoom và pan khi chuyển slide
+    setZoomLevel(1)
     setPanPosition({ x: 0, y: 0 })
+    setIsPinching(false)
+    setIsDragging(false)
   }, [])
 
   const handleNext = useCallback(() => {
     if (!sliderRef.current) return
     sliderRef.current.swiper.slideNext()
-    // Reset pan khi chuyển slide
+    // Reset zoom và pan khi chuyển slide
+    setZoomLevel(1)
     setPanPosition({ x: 0, y: 0 })
+    setIsPinching(false)
+    setIsDragging(false)
   }, [])
 
   const handleZoomIn = useCallback(() => {
@@ -53,11 +64,42 @@ const PreviewSliderModal = () => {
     setPanPosition({ x: 0, y: 0 })
   }, [])
 
+  // Double tap handler cho mobile
+  const handleDoubleTap = useCallback((e) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (zoomLevel > 1) {
+      // Nếu đang zoom thì reset về 100%
+      setZoomLevel(1)
+      setPanPosition({ x: 0, y: 0 })
+    } else {
+      // Nếu chưa zoom thì zoom lên 2x
+      setZoomLevel(2)
+    }
+  }, [zoomLevel])
+
   // Helper function để tính toán giới hạn pan dựa trên zoom level
   const calculatePanLimits = useCallback((zoom) => {
     // Khi zoom càng cao, cho phép pan xa hơn để xem được toàn bộ ảnh
     const baseLimit = 300
     return baseLimit * Math.max(0, zoom - 1)
+  }, [])
+
+  // Helper functions cho mobile touch events
+  const getTouchDistance = useCallback((touches) => {
+    if (touches.length < 2) return 0
+    const dx = touches[0].clientX - touches[1].clientX
+    const dy = touches[0].clientY - touches[1].clientY
+    return Math.sqrt(dx * dx + dy * dy)
+  }, [])
+
+  const getTouchCenter = useCallback((touches) => {
+    if (touches.length < 2) return { x: 0, y: 0 }
+    return {
+      x: (touches[0].clientX + touches[1].clientX) / 2,
+      y: (touches[0].clientY + touches[1].clientY) / 2
+    }
   }, [])
 
   // Mouse drag handlers để di chuyển trong ảnh khi zoom
@@ -82,6 +124,115 @@ const PreviewSliderModal = () => {
     },
     [zoomLevel, panPosition]
   )
+
+  // Touch event handlers cho mobile
+  const handleTouchStart = useCallback((e) => {
+    if (e.touches.length === 2) {
+      // Pinch zoom
+      e.preventDefault()
+      e.stopPropagation()
+      setIsPinching(true)
+      setLastTouchDistance(getTouchDistance(e.touches))
+      setLastTouchCenter(getTouchCenter(e.touches))
+
+      // Disable Swiper khi bắt đầu pinch
+      if (sliderRef.current) {
+        sliderRef.current.swiper.allowTouchMove = false
+        sliderRef.current.swiper.allowSlideNext = false
+        sliderRef.current.swiper.allowSlidePrev = false
+      }
+    } else if (e.touches.length === 1 && zoomLevel > 1) {
+      // Pan khi đã zoom
+      e.preventDefault()
+      e.stopPropagation()
+      setIsDragging(true)
+      setDragStart({
+        x: e.touches[0].clientX - panPosition.x,
+        y: e.touches[0].clientY - panPosition.y,
+      })
+
+      // Disable Swiper khi bắt đầu pan
+      if (sliderRef.current) {
+        sliderRef.current.swiper.allowTouchMove = false
+        sliderRef.current.swiper.allowSlideNext = false
+        sliderRef.current.swiper.allowSlidePrev = false
+      }
+    }
+  }, [zoomLevel, panPosition, getTouchDistance, getTouchCenter])
+
+  const handleTouchMove = useCallback((e) => {
+    if (e.touches.length === 2) {
+      // Pinch zoom
+      e.preventDefault()
+      e.stopPropagation()
+
+      const currentDistance = getTouchDistance(e.touches)
+      const currentCenter = getTouchCenter(e.touches)
+
+      if (lastTouchDistance > 0) {
+        const scale = currentDistance / lastTouchDistance
+        const newZoom = Math.max(0.5, Math.min(3, zoomLevel * scale))
+        setZoomLevel(newZoom)
+
+        // Điều chỉnh vị trí để giữ tâm zoom
+        if (newZoom !== zoomLevel) {
+          const scaleRatio = newZoom / zoomLevel
+          const centerX = currentCenter.x
+          const centerY = currentCenter.y
+
+          setPanPosition(prev => ({
+            x: centerX - (centerX - prev.x) * scaleRatio,
+            y: centerY - (centerY - prev.y) * scaleRatio
+          }))
+        }
+      }
+
+      setLastTouchDistance(currentDistance)
+      setLastTouchCenter(currentCenter)
+    } else if (e.touches.length === 1 && isDragging && zoomLevel > 1) {
+      // Pan
+      e.preventDefault()
+      e.stopPropagation()
+
+      const touch = e.touches[0]
+      const newX = touch.clientX - dragStart.x
+      const newY = touch.clientY - dragStart.y
+
+      // Sử dụng helper function để tính giới hạn
+      const maxPan = calculatePanLimits(zoomLevel)
+      const constrainedX = Math.max(-maxPan, Math.min(maxPan, newX))
+      const constrainedY = Math.max(-maxPan, Math.min(maxPan, newY))
+
+      setPanPosition({
+        x: constrainedX,
+        y: constrainedY,
+      })
+    }
+  }, [lastTouchDistance, lastTouchCenter, zoomLevel, isDragging, dragStart, getTouchDistance, getTouchCenter, calculatePanLimits])
+
+  const handleTouchEnd = useCallback((e) => {
+    if (isPinching || isDragging) {
+      e.preventDefault()
+      e.stopPropagation()
+
+      setIsPinching(false)
+      setIsDragging(false)
+      setLastTouchDistance(0)
+
+      // Reset pan position nếu zoom level <= 1
+      if (zoomLevel <= 1) {
+        setPanPosition({ x: 0, y: 0 })
+      }
+
+      // Re-enable Swiper chỉ khi zoom level = 1
+      if (sliderRef.current) {
+        const shouldEnableSwiper = zoomLevel <= 1
+        sliderRef.current.swiper.allowTouchMove = shouldEnableSwiper
+        sliderRef.current.swiper.allowSlideNext = shouldEnableSwiper
+        sliderRef.current.swiper.allowSlidePrev = shouldEnableSwiper
+      }
+    }
+  }, [isPinching, isDragging, zoomLevel])
 
   const handleMouseMove = useCallback(
     (e) => {
@@ -160,6 +311,9 @@ const PreviewSliderModal = () => {
       setZoomLevel(1)
       setPanPosition({ x: 0, y: 0 })
       setIsDragging(false)
+      setIsPinching(false)
+      setLastTouchDistance(0)
+      setLastTouchCenter({ x: 0, y: 0 })
     }
   }, [isModalPreviewOpen])
 
@@ -185,10 +339,60 @@ const PreviewSliderModal = () => {
     }
   }, [zoomLevel])
 
+  // Ngăn scroll toàn bộ trang khi modal mở và khi đang zoom
+  useEffect(() => {
+    if (isModalPreviewOpen) {
+      // Ngăn scroll toàn bộ trang khi modal mở
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+      document.body.style.top = `-${window.scrollY}px`
+    } else {
+      // Khôi phục scroll khi modal đóng
+      const scrollY = document.body.style.top
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.top = ''
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1)
+      }
+    }
+
+    return () => {
+      // Cleanup khi component unmount
+      const scrollY = document.body.style.top
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.top = ''
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1)
+      }
+    }
+  }, [isModalPreviewOpen])
+
+  // Ngăn scroll khi đang zoom trên mobile
+  useEffect(() => {
+    if (zoomLevel > 1) {
+      document.body.style.touchAction = 'none'
+    } else {
+      document.body.style.touchAction = ''
+    }
+
+    return () => {
+      document.body.style.touchAction = ''
+    }
+  }, [zoomLevel])
+
   return (
     <div
       className={`preview-slider w-full h-screen z-[99999] inset-0 flex justify-center items-center bg-black bg-opacity-90 ${isModalPreviewOpen ? 'fixed' : 'hidden'
         }`}
+      style={{
+        overscrollBehavior: 'none',
+        touchAction: 'none'
+      }}
       onMouseDown={(e) => {
         // Ngăn background clicks khi zoom
         if (zoomLevel > 1 && !e.target.closest('.image-container')) {
@@ -222,6 +426,13 @@ const PreviewSliderModal = () => {
 
       {/* Zoom Controls - chỉ hiển thị trên desktop */}
       <div className="absolute z-50 flex-col hidden gap-2 top-4 left-4 lg:flex">
+
+        {/* Chỉ báo zoom level cho mobile */}
+        {zoomLevel > 1 && (
+          <div className="absolute z-50 flex items-center justify-center px-3 py-2 text-sm font-medium text-white bg-black bg-opacity-50 rounded-full top-4 left-4 lg:hidden">
+            {Math.round(zoomLevel * 100)}%
+          </div>
+        )}
         <button
           onClick={handleZoomIn}
           aria-label="Zoom in"
@@ -323,7 +534,13 @@ const PreviewSliderModal = () => {
       )}
 
       {/* Main Content */}
-      <div className="flex items-center justify-center w-full h-full max-w-6xl p-4 overflow-hidden">
+      <div
+        className="flex items-center justify-center w-full h-full max-w-6xl p-4 overflow-hidden"
+        style={{
+          overscrollBehavior: 'none',
+          touchAction: 'none'
+        }}
+      >
         <Swiper
           key={`${data?.id}-${data?.initialSlideIndex}`} // Force re-render when product or slide changes
           ref={sliderRef}
@@ -331,6 +548,10 @@ const PreviewSliderModal = () => {
           spaceBetween={20}
           loop={false} // Tạm tắt loop để test
           className="w-full h-full"
+          style={{
+            overscrollBehavior: 'none',
+            touchAction: 'none'
+          }}
           allowTouchMove={zoomLevel <= 1} // Disable swipe when zoomed
           touchMoveStopPropagation={zoomLevel > 1} // Prevent touch interference when panning
           simulateTouch={zoomLevel <= 1} // Disable simulate touch when zoomed
@@ -354,13 +575,10 @@ const PreviewSliderModal = () => {
                       transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
                     }}
                     onMouseDown={handleMouseDown}
-                    onTouchStart={(e) => {
-                      // Ngăn touch events khi zoom để tránh conflict với Swiper
-                      if (zoomLevel > 1) {
-                        e.preventDefault()
-                        e.stopPropagation()
-                      }
-                    }}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    onDoubleClick={handleDoubleTap}
                   >
                     <Image
                       src={image || '/next.svg'}
@@ -394,13 +612,10 @@ const PreviewSliderModal = () => {
                         transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
                       }}
                       onMouseDown={handleMouseDown}
-                      onTouchStart={(e) => {
-                        // Ngăn touch events khi zoom để tránh conflict với Swiper
-                        if (zoomLevel > 1) {
-                          e.preventDefault()
-                          e.stopPropagation()
-                        }
-                      }}
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
+                      onDoubleClick={handleDoubleTap}
                     >
                       <Image
                         src={image || '/next.svg'}
@@ -433,13 +648,10 @@ const PreviewSliderModal = () => {
                       transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
                     }}
                     onMouseDown={handleMouseDown}
-                    onTouchStart={(e) => {
-                      // Ngăn touch events khi zoom để tránh conflict với Swiper
-                      if (zoomLevel > 1) {
-                        e.preventDefault()
-                        e.stopPropagation()
-                      }
-                    }}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    onDoubleClick={handleDoubleTap}
                   >
                     <Image
                       src="/next.svg"

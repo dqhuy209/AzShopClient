@@ -4,7 +4,7 @@ import quickViewReducer from './features/quickView-slice'
 import cartReducer from './features/cart-slice'
 import wishlistReducer from './features/wishlist-slice'
 import productDetailsReducer from './features/product-details'
-import buyNowReducer from './features/buyNow-slice'
+import checkoutReducer from './features/checkout-slice'
 
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -14,7 +14,7 @@ export const store = configureStore({
     cartReducer,
     wishlistReducer,
     productDetailsReducer,
-    buyNowReducer,
+    checkoutReducer,
   },
 })
 

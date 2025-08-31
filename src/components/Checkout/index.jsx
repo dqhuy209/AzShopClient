@@ -6,38 +6,28 @@ import PaymentMethod from './PaymentMethod'
 import Billing from './Billing'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import {
-  selectSelectedItems,
-  selectSelectedTotalPrice,
   removeItemFromCart
 } from '@/redux/features/cart-slice'
 import {
-  selectBuyNowProduct,
-  selectIsBuyNowMode,
-  clearBuyNowProduct
-} from '@/redux/features/buyNow-slice'
+  selectCheckoutItems,
+  selectCheckoutTotalPrice,
+  selectIsBuyNowCheckout,
+  clearCheckout
+} from '@/redux/features/checkout-slice'
 import { useRouter } from 'next/navigation'
 import { formatVND } from '@/utils/formatCurrency'
 import checkoutService from '@/services/checkout'
 import bannerService from '@/services/bannerService'
 import toast from 'react-hot-toast'
 
-
-
 const Checkout = () => {
   const router = useRouter()
   const dispatch = useAppDispatch()
 
   // Lấy dữ liệu từ Redux store
-  const cartItems = useAppSelector(selectSelectedItems)
-  const totalPrice = useAppSelector(selectSelectedTotalPrice)
-  const buyNowProduct = useAppSelector(selectBuyNowProduct)
-  const isBuyNowMode = useAppSelector(selectIsBuyNowMode)
-
-  // Xác định items và total price dựa trên mode
-  const currentItems = isBuyNowMode ? (buyNowProduct ? [buyNowProduct] : []) : cartItems
-  const currentTotalPrice = isBuyNowMode
-    ? (buyNowProduct ? (buyNowProduct.finalPrice || buyNowProduct.sellingPrice || buyNowProduct.price || 0) : 0)
-    : totalPrice
+  const currentItems = useAppSelector(selectCheckoutItems)
+  const currentTotalPrice = useAppSelector(selectCheckoutTotalPrice)
+  const isBuyNowCheckout = useAppSelector(selectIsBuyNowCheckout)
 
   // Kiểm tra trạng thái form để hiển thị nút thanh toán
   const isFormValid = () => {
@@ -72,23 +62,24 @@ const Checkout = () => {
 
   // Kiểm tra khi vào trang checkout
   useEffect(() => {
-    // Nếu không có items nào (cả giỏ hàng và mua ngay) thì chuyển về trang chủ
+    // Nếu không có items nào trong checkout thì chuyển về trang chủ
     if (!currentItems || currentItems.length === 0) {
       toast.error('Không có sản phẩm để thanh toán')
       router.push('/')
       return
     }
-
-  }, [currentItems, isBuyNowMode, buyNowProduct, cartItems, router])
+  }, [currentItems, router])
 
   // Xử lý khi người dùng muốn quay lại
   const handleGoBack = () => {
-    if (isBuyNowMode) {
-      // Nếu đang ở chế độ mua ngay, xóa sản phẩm và quay về trang chủ
-      dispatch(clearBuyNowProduct())
+    // Xóa tất cả sản phẩm checkout
+    dispatch(clearCheckout())
+
+    if (isBuyNowCheckout) {
+      // Nếu là mua ngay, quay về trang chủ
       router.push('/')
     } else {
-      // Nếu đang ở chế độ giỏ hàng, quay về trang giỏ hàng
+      // Nếu là giỏ hàng, quay về trang giỏ hàng
       router.push('/cart')
     }
   }
@@ -163,9 +154,11 @@ const Checkout = () => {
       // Gọi API checkout
       await checkoutService.checkout(orderData)
 
-      if (isBuyNowMode) {
-        // Nếu là mua ngay, xóa sản phẩm mua ngay
-        dispatch(clearBuyNowProduct())
+      // Xóa tất cả sản phẩm checkout
+      dispatch(clearCheckout())
+
+      if (isBuyNowCheckout) {
+        // Nếu là mua ngay, không cần xóa gì thêm (đã xóa checkout rồi)
       } else {
         // Nếu là giỏ hàng thường, xóa những sản phẩm đã được đặt hàng
         currentItems.forEach(item => {
@@ -218,7 +211,7 @@ const Checkout = () => {
                       <h3 className="text-xl font-semibold text-dark">
                         Đơn hàng của bạn
                       </h3>
-                      {isBuyNowMode && (
+                      {isBuyNowCheckout && (
                         <span className="px-3 py-1 text-sm font-medium text-white rounded-full bg-blue">
                           Mua ngay
                         </span>

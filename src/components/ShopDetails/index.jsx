@@ -6,7 +6,7 @@ import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
 import { useDispatch } from 'react-redux'
 import { updateproductDetails } from '@/redux/features/product-details'
 import { addItemToCart } from '@/redux/features/cart-slice'
-import { setBuyNowProduct } from '@/redux/features/buyNow-slice'
+import { setBuyNowCheckout } from '@/redux/features/checkout-slice'
 import { useAppSelector } from '@/redux/store'
 import toast from 'react-hot-toast'
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -110,15 +110,14 @@ const ShopDetails = ({ product }) => {
 
   // Xử lý mua ngay - chuyển thẳng đến checkout với sản phẩm này
   const handleBuyNow = () => {
-    // Thiết lập sản phẩm để mua ngay
-    dispatch(setBuyNowProduct({
+    // Thiết lập sản phẩm vào checkout
+    dispatch(setBuyNowCheckout({
       ...product,
       quantity: 1,
     }))
 
     // Chuyển hướng đến trang checkout
     router.push('/checkout')
-
   }
 
   if (!product || Object.keys(product).length === 0) {

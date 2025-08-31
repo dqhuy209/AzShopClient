@@ -5,6 +5,7 @@ import SingleItem from './SingleItem'
 import Breadcrumb from '../Common/Breadcrumb'
 import Link from 'next/link'
 import { useDispatch } from 'react-redux'
+import { useRouter } from 'next/navigation'
 import {
   removeAllItemsFromCart,
   selectSelectedIds,
@@ -14,6 +15,7 @@ import {
   selectAllItems,
   deselectAllItems,
 } from '@/redux/features/cart-slice'
+import { setCartCheckout } from '@/redux/features/checkout-slice'
 import { formatVND } from '@/utils/formatCurrency'
 
 const Cart = () => {
@@ -22,6 +24,7 @@ const Cart = () => {
   const selectedItems = useAppSelector(selectSelectedItems)
   const selectedTotal = useAppSelector(selectSelectedTotalPrice)
   const dispatch = useDispatch()
+  const router = useRouter()
 
   // Toggle chọn tất cả / bỏ chọn tất cả
   const allSelected =
@@ -107,21 +110,24 @@ const Cart = () => {
                   {formatVND(selectedTotal)}
                 </span>
               </div>
-              <Link
-                href={selectedItems.length > 0 ? '/checkout' : '#'}
-                className={`text-[15px] lg:text-[16px] w-[80%] lg:w-full mr-auto sm:w-auto flex justify-center font-medium
-                 text-white py-3 px-6 rounded-md ease-out duration-200 ${
-                   selectedItems.length > 0
-                     ? 'bg-blue hover:bg-blue-dark'
-                     : 'bg-gray-3 cursor-not-allowed'
-                 }`}
-                aria-disabled={selectedItems.length === 0}
-                onClick={(e) => {
-                  if (selectedItems.length === 0) e.preventDefault()
+              <button
+                onClick={() => {
+                  if (selectedItems.length > 0) {
+                    // Thiết lập sản phẩm từ giỏ hàng vào checkout
+                    dispatch(setCartCheckout(selectedItems))
+                    // Chuyển hướng đến trang checkout
+                    router.push('/checkout')
+                  }
                 }}
+                disabled={selectedItems.length === 0}
+                className={`text-[15px] lg:text-[16px] w-[80%] lg:w-full mr-auto sm:w-auto flex justify-center font-medium
+                 text-white py-3 px-6 rounded-md ease-out duration-200 ${selectedItems.length > 0
+                    ? 'bg-blue hover:bg-blue-dark'
+                    : 'bg-gray-3 cursor-not-allowed'
+                  }`}
               >
                 Tiến hành thanh toán
-              </Link>
+              </button>
             </div>
           </div>
         </section>
