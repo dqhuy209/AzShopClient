@@ -4,9 +4,12 @@ import { useCallback, useRef, useEffect, useState } from 'react'
 import 'swiper/css/navigation'
 import 'swiper/css'
 import Image from 'next/image'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
 import { useAppSelector } from '@/redux/store'
+import MobileImageZoom from './MobileImageZoom'
 
 const PreviewSliderModal = () => {
   const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider()
@@ -14,34 +17,15 @@ const PreviewSliderModal = () => {
   const data = useAppSelector((state) => state.productDetailsReducer.value)
 
   const sliderRef = useRef(null)
-  const [zoomLevel, setZoomLevel] = useState(1)
-  const [panPosition, setPanPosition] = useState({ x: 0, y: 0 })
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
-
-  // State cho mobile touch events
-  const [lastTouchDistance, setLastTouchDistance] = useState(0)
-  const [lastTouchCenter, setLastTouchCenter] = useState({ x: 0, y: 0 })
-  const [isPinching, setIsPinching] = useState(false)
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return
     sliderRef.current.swiper.slidePrev()
-    // Reset zoom và pan khi chuyển slide
-    setZoomLevel(1)
-    setPanPosition({ x: 0, y: 0 })
-    setIsPinching(false)
-    setIsDragging(false)
   }, [])
 
   const handleNext = useCallback(() => {
     if (!sliderRef.current) return
     sliderRef.current.swiper.slideNext()
-    // Reset zoom và pan khi chuyển slide
-    setZoomLevel(1)
-    setPanPosition({ x: 0, y: 0 })
-    setIsPinching(false)
-    setIsDragging(false)
   }, [])
 
   const handleZoomIn = useCallback(() => {
@@ -562,34 +546,46 @@ const PreviewSliderModal = () => {
             data.images.map((image, index) => (
               <SwiperSlide key={index}>
                 <div className="flex items-center justify-center w-full h-full overflow-hidden">
-                  <div
-                    className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out select-none image-container max-h-4xl"
-                    style={{
-                      transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
-                      cursor:
-                        zoomLevel > 1
-                          ? isDragging
-                            ? 'grabbing'
-                            : 'grab'
-                          : 'default',
-                      transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
-                    }}
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
-                    onDoubleClick={handleDoubleTap}
-                  >
-                    <Image
-                      src={image || '/next.svg'}
+                  {/* Mobile: Sử dụng thư viện zoom */}
+                  <div className="w-full h-full lg:hidden">
+                    <MobileImageZoom
+                      image={image}
                       alt={`${data.name || 'Product'} image ${index + 1}`}
-                      fill
-                      className="object-contain pointer-events-none"
-                      quality={100}
                       priority={index === (data.initialSlideIndex || 0)}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                      draggable={false}
                     />
+                  </div>
+
+                  {/* Desktop: Giữ nguyên logic zoom cũ */}
+                  <div className="hidden w-full h-full lg:block">
+                    <div
+                      className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out select-none image-container max-h-4xl"
+                      style={{
+                        transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                        cursor:
+                          zoomLevel > 1
+                            ? isDragging
+                              ? 'grabbing'
+                              : 'grab'
+                            : 'default',
+                        transitionDuration: isDragging ? '0ms' : '200ms',
+                      }}
+                      onMouseDown={handleMouseDown}
+                      onTouchStart={handleTouchStart}
+                      onTouchMove={handleTouchMove}
+                      onTouchEnd={handleTouchEnd}
+                      onDoubleClick={handleDoubleTap}
+                    >
+                      <Image
+                        src={image || '/next.svg'}
+                        alt={`${data.name || 'Product'} image ${index + 1}`}
+                        fill
+                        className="object-contain pointer-events-none"
+                        quality={100}
+                        priority={index === (data.initialSlideIndex || 0)}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                        draggable={false}
+                      />
+                    </div>
                   </div>
                 </div>
               </SwiperSlide>
@@ -599,6 +595,64 @@ const PreviewSliderModal = () => {
               data.imgs.previews.map((image, index) => (
                 <SwiperSlide key={index}>
                   <div className="flex items-center justify-center w-full h-full overflow-hidden">
+                    {/* Mobile: Sử dụng thư viện zoom */}
+                    <div className="w-full h-full lg:hidden">
+                      <MobileImageZoom
+                        image={image}
+                        alt={`${data.title || 'Product'} image ${index + 1}`}
+                        priority={index === (data.initialSlideIndex || 0)}
+                      />
+                    </div>
+
+                    {/* Desktop: Giữ nguyên logic zoom cũ */}
+                    <div className="hidden w-full h-full lg:block">
+                      <div
+                        className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
+                        style={{
+                          transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                          cursor:
+                            zoomLevel > 1
+                              ? isDragging
+                                ? 'grabbing'
+                                : 'grab'
+                              : 'default',
+                          transitionDuration: isDragging ? '0ms' : '200ms',
+                        }}
+                        onMouseDown={handleMouseDown}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        onDoubleClick={handleDoubleTap}
+                      >
+                        <Image
+                          src={image || '/next.svg'}
+                          alt={`${data.title || 'Product'} image ${index + 1}`}
+                          fill
+                          className="object-contain pointer-events-none"
+                          quality={100}
+                          priority={index === (data.initialSlideIndex || 0)}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              // Ultimate fallback
+              <SwiperSlide>
+                <div className="flex items-center justify-center w-full h-full overflow-hidden">
+                  {/* Mobile: Sử dụng thư viện zoom */}
+                  <div className="w-full h-full lg:hidden">
+                    <MobileImageZoom
+                      image="/next.svg"
+                      alt="Product image"
+                    />
+                  </div>
+
+                  {/* Desktop: Giữ nguyên logic zoom cũ */}
+                  <div className="hidden w-full h-full lg:block">
                     <div
                       className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
                       style={{
@@ -609,7 +663,7 @@ const PreviewSliderModal = () => {
                               ? 'grabbing'
                               : 'grab'
                             : 'default',
-                        transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
+                        transitionDuration: isDragging ? '0ms' : '200ms',
                       }}
                       onMouseDown={handleMouseDown}
                       onTouchStart={handleTouchStart}
@@ -618,50 +672,15 @@ const PreviewSliderModal = () => {
                       onDoubleClick={handleDoubleTap}
                     >
                       <Image
-                        src={image || '/next.svg'}
-                        alt={`${data.title || 'Product'} image ${index + 1}`}
+                        src="/next.svg"
+                        alt="Product image"
                         fill
                         className="object-contain pointer-events-none"
                         quality={100}
-                        priority={index === (data.initialSlideIndex || 0)}
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                         draggable={false}
                       />
                     </div>
-                  </div>
-                </SwiperSlide>
-              ))
-            ) : (
-              // Ultimate fallback
-              <SwiperSlide>
-                <div className="flex items-center justify-center w-full h-full overflow-hidden">
-                  <div
-                    className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
-                    style={{
-                      transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
-                      cursor:
-                        zoomLevel > 1
-                          ? isDragging
-                            ? 'grabbing'
-                            : 'grab'
-                          : 'default',
-                      transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
-                    }}
-                    onMouseDown={handleMouseDown}
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
-                    onDoubleClick={handleDoubleTap}
-                  >
-                    <Image
-                      src="/next.svg"
-                      alt="Product image"
-                      fill
-                      className="object-contain pointer-events-none"
-                      quality={100}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                      draggable={false}
-                    />
                   </div>
                 </div>
               </SwiperSlide>

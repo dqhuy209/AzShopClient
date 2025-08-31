@@ -1,0 +1,35 @@
+/* Mobile Zoom Dialog Styles */
+.mobile-zoom-dialog {
+  z-index: 999999 !important;
+}
+
+.mobile-zoom-dialog .rmiz-modal {
+  background-color: rgba(0, 0, 0, 0.95) !important;
+}
+
+.mobile-zoom-dialog .rmiz-modal-img {
+  object-fit: contain !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+}
+
+/* Ngăn scroll khi zoom dialog mở */
+.mobile-zoom-dialog .rmiz-modal {
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+/* Tùy chỉnh nút đóng cho mobile */
+.mobile-zoom-dialog .rmiz-modal-close {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  border-radius: 50% !important;
+  width: 48px !important;
+  height: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.mobile-zoom-dialog .rmiz-modal-close:hover {
+  background-color: rgba(0, 0, 0, 0.9) !important;
+}
