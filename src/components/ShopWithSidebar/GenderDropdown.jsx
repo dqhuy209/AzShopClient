@@ -1,71 +1,43 @@
 'use client'
 import React, { useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-const GenderItem = ({ category }) => {
-  const [selected, setSelected] = useState(false)
-  return (
-    <button
-      className={`${
-        selected && 'text-blue'
-      } group flex items-center justify-between ease-out duration-200 hover:text-blue `}
-      onClick={() => setSelected(!selected)}
-    >
-      <div className="flex items-center gap-2">
-        <div
-          className={`cursor-pointer flex items-center justify-center rounded w-4 h-4 border ${
-            selected ? 'border-blue bg-blue' : 'bg-white border-gray-3'
-          }`}
-        >
-          <svg
-            className={selected ? 'block' : 'hidden'}
-            width="10"
-            height="10"
-            viewBox="0 0 10 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M8.33317 2.5L3.74984 7.08333L1.6665 5"
-              stroke="white"
-              strokeWidth="1.94437"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
+// Dropdown kích thước màn hình - chọn 1, toggle chọn/bỏ như giao diện cũ
+const ScreenSizeDropdown = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
-        <span>{category.name}</span>
-      </div>
-
-      <span
-        className={`${
-          selected ? 'text-white bg-blue' : 'bg-gray-2'
-        } inline-flex rounded-[30px] text-custom-xs px-2 ease-out duration-200 group-hover:text-white group-hover:bg-blue`}
-      >
-        {category.products}
-      </span>
-    </button>
-  )
-}
-
-const GenderDropdown = ({ genders }) => {
   const [toggleDropdown, setToggleDropdown] = useState(true)
 
+  const sizes = ['38mm', '40mm', '41mm', '42mm', '44mm', '45mm', '46mm', '49mm']
+  const activeSize = searchParams.get('screenSize') || ''
+
+  const toggleSize = (value) => {
+    const url = new URL(pathname, window.location.origin)
+    searchParams.forEach((v, k) => url.searchParams.set(k, v))
+    if (activeSize === value) {
+      url.searchParams.delete('screenSize')
+    } else {
+      url.searchParams.set('screenSize', value)
+    }
+    url.searchParams.delete('page')
+    router.push(url.pathname + url.search)
+  }
+
   return (
-    <div className="bg-white shadow-1 rounded-lg">
+    <div className="bg-white rounded-lg shadow-1">
       <div
         onClick={() => setToggleDropdown(!toggleDropdown)}
-        className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${
-          toggleDropdown && 'shadow-filter'
-        }`}
+        className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${toggleDropdown && 'shadow-filter'
+          }`}
       >
-        <p className="text-dark">Gender</p>
+        <p className="text-dark">Kích thước màn hình</p>
         <button
           onClick={() => setToggleDropdown(!toggleDropdown)}
-          aria-label="button for gender dropdown"
-          className={`text-dark ease-out duration-200 ${
-            toggleDropdown && 'rotate-180'
-          }`}
+          aria-label="button for screen size dropdown"
+          className={`text-dark ease-out duration-200 ${toggleDropdown && 'rotate-180'
+            }`}
         >
           <svg
             className="fill-current"
@@ -87,16 +59,28 @@ const GenderDropdown = ({ genders }) => {
 
       {/* <!-- dropdown menu --> */}
       <div
-        className={`flex-col gap-3 py-6 pl-6 pr-5.5 ${
-          toggleDropdown ? 'flex' : 'hidden'
-        }`}
+        className={`flex flex-wrap gap-2.5 p-6 ${toggleDropdown ? 'flex' : 'hidden'
+          }`}
       >
-        {genders.map((gender, key) => (
-          <GenderItem key={key} category={gender} />
+        {sizes.map((size) => (
+          <label
+            key={size}
+            htmlFor={`screen-${size}`}
+            className={`cursor-pointer select-none flex items-center rounded-md ${activeSize === size ? 'bg-blue text-white' : 'hover:bg-blue hover:text-white'
+              }`}
+            onClick={() => toggleSize(size)}
+          >
+            <div className="relative">
+              <input type="radio" name="screenSize" id={`screen-${size}`} className="sr-only" />
+              <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
+                {size}
+              </div>
+            </div>
+          </label>
         ))}
       </div>
     </div>
   )
 }
 
-export default GenderDropdown
+export default ScreenSizeDropdown

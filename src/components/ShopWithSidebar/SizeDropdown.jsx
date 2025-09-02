@@ -1,23 +1,44 @@
 'use client'
 import React, { useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const SizeDropdown = () => {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
   const [toggleDropdown, setToggleDropdown] = useState(true)
+
+  // Lấy trạng thái version hiện tại từ URL
+  const activeVersion = searchParams.get('version') || ''
+
+  // Chọn/bỏ chọn version và đồng bộ URL (reset page, preserve params khác)
+  const toggleVersion = (value) => {
+    const url = new URL(pathname, window.location.origin)
+    searchParams.forEach((v, k) => url.searchParams.set(k, v))
+    if (activeVersion === value) {
+      // đang chọn lại => bỏ chọn
+      url.searchParams.delete('version')
+    } else {
+      url.searchParams.set('version', value)
+    }
+    url.searchParams.delete('page')
+    router.push(url.pathname + url.search)
+  }
+
   return (
-    <div className="bg-white shadow-1 rounded-lg">
+    <div className="bg-white rounded-lg shadow-1">
       <div
         onClick={() => setToggleDropdown(!toggleDropdown)}
-        className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${
-          toggleDropdown && 'shadow-filter'
-        }`}
+        className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${toggleDropdown && 'shadow-filter'
+          }`}
       >
-        <p className="text-dark">Size</p>
+        <p className="text-dark">Phiên bản</p>
         <button
           onClick={() => setToggleDropdown(!toggleDropdown)}
           aria-label="button for size dropdown"
-          className={`text-dark ease-out duration-200 ${
-            toggleDropdown && 'rotate-180'
-          }`}
+          className={`text-dark ease-out duration-200 ${toggleDropdown && 'rotate-180'
+            }`}
         >
           <svg
             className="fill-current"
@@ -39,54 +60,35 @@ const SizeDropdown = () => {
 
       {/* // <!-- dropdown menu --> */}
       <div
-        className={`flex-wrap gap-2.5 p-6 ${
-          toggleDropdown ? 'flex' : 'hidden'
-        }`}
+        className={`flex-wrap gap-2.5 p-6 ${toggleDropdown ? 'flex' : 'hidden'
+          }`}
       >
+        {/* eSIM */}
         <label
-          htmlFor="sizeM"
-          className="cursor-pointer select-none flex items-center rounded-md bg-blue text-white hover:bg-blue hover:text-white"
+          htmlFor="version-esim"
+          className={`cursor-pointer select-none flex items-center rounded-md ${activeVersion === 'esim' ? 'bg-blue text-white' : 'hover:bg-blue hover:text-white'
+            }`}
+          onClick={() => toggleVersion('esim')}
         >
           <div className="relative">
-            <input type="radio" name="size" id="sizeM" className="sr-only" />
+            <input type="radio" name="version" id="version-esim" className="sr-only" />
             <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
-              M
+              eSIM
             </div>
           </div>
         </label>
 
+        {/* GPS */}
         <label
-          htmlFor="sizeL"
-          className="cursor-pointer select-none flex items-center rounded-md hover:bg-blue hover:text-white"
+          htmlFor="version-gps"
+          className={`cursor-pointer select-none flex items-center rounded-md ${activeVersion === 'gps' ? 'bg-blue text-white' : 'hover:bg-blue hover:text-white'
+            }`}
+          onClick={() => toggleVersion('gps')}
         >
           <div className="relative">
-            <input type="radio" name="size" id="sizeL" className="sr-only" />
+            <input type="radio" name="version" id="version-gps" className="sr-only" />
             <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
-              L
-            </div>
-          </div>
-        </label>
-
-        <label
-          htmlFor="sizeXL"
-          className="cursor-pointer select-none flex items-center rounded-md hover:bg-blue hover:text-white"
-        >
-          <div className="relative">
-            <input type="radio" name="size" id="sizeXL" className="sr-only" />
-            <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
-              XL
-            </div>
-          </div>
-        </label>
-
-        <label
-          htmlFor="sizeXXL"
-          className="cursor-pointer select-none flex items-center rounded-md hover:bg-blue hover:text-white"
-        >
-          <div className="relative">
-            <input type="radio" name="size" id="sizeXXL" className="sr-only" />
-            <div className="text-custom-sm py-[5px] px-3.5 rounded-[5px]">
-              XXL
+              GPS
             </div>
           </div>
         </label>

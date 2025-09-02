@@ -37,21 +37,19 @@ const Sidebar = ({
 }) => {
   return (
     <div
-      className={`sidebar-content fixed xl:z-1 z-9999 left-0 top-0 xl:translate-x-0 xl:static max-w-[310px] xl:max-w-[270px] w-full ease-out duration-200 ${
-        productSidebar
-          ? 'translate-x-0 bg-white p-5 h-screen overflow-y-auto'
-          : '-translate-x-full'
-      }`}
+      className={`sidebar-content fixed xl:z-1 z-9999 left-0 top-0 xl:translate-x-0 xl:static max-w-[310px] xl:max-w-[270px] w-full ease-out duration-200 ${productSidebar
+        ? 'translate-x-0 bg-white p-5 h-screen overflow-y-auto'
+        : '-translate-x-full'
+        }`}
     >
       {/* Nút toggle sidebar cho mobile */}
       <button
         onClick={() => setProductSidebar(!productSidebar)}
         aria-label="button for product sidebar toggle"
-        className={`hidden absolute -right-12.5 sm:-right-8 flex items-center justify-center w-8 h-8 rounded-md bg-white shadow-1 ${
-          stickyMenu
-            ? 'lg:top-20 sm:top-34.5 top-35'
-            : 'lg:top-24 sm:top-39 top-37'
-        }`}
+        className={`hidden absolute -right-12.5 sm:-right-8 flex items-center justify-center w-8 h-8 rounded-md bg-white shadow-1 ${stickyMenu
+          ? 'lg:top-20 sm:top-34.5 top-35'
+          : 'lg:top-24 sm:top-39 top-37'
+          }`}
       >
         <svg
           className="fill-current"
@@ -79,34 +77,34 @@ const Sidebar = ({
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="flex flex-col gap-6">
           {/* Filter box - Header và nút Clear All */}
-          <div className="bg-white shadow-1 rounded-lg py-4 px-5">
+          <div className="px-5 py-4 bg-white rounded-lg shadow-1">
             <div className="flex items-center justify-between">
-              <p>Filters:</p>
+              <p>Bộ lọc:</p>
               <button
-                className="text-blue hover:text-blue-600 transition-colors"
+                className="transition-colors text-blue hover:text-blue-600"
                 onClick={clearAllFilters}
               >
-                Clean All
+                Xóa tất cả
               </button>
             </div>
           </div>
 
           {/* Category box - Bộ lọc danh mục */}
           {categoriesLoading ? (
-            <div className="bg-white shadow-1 rounded-lg p-6">
+            <div className="p-6 bg-white rounded-lg shadow-1">
               <div className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue"></div>
+                <div className="w-6 h-6 border-b-2 rounded-full animate-spin border-blue"></div>
                 <span className="ml-3 text-gray-600">Đang tải danh mục...</span>
               </div>
             </div>
           ) : categoriesError ? (
-            <div className="bg-white shadow-1 rounded-lg p-6">
+            <div className="p-6 bg-white rounded-lg shadow-1">
               <div className="text-center">
-                <div className="text-red-500 text-xl mb-2">⚠️</div>
-                <p className="text-gray-600 text-sm mb-3">{categoriesError}</p>
+                <div className="mb-2 text-xl text-red-500">⚠️</div>
+                <p className="mb-3 text-sm text-gray-600">{categoriesError}</p>
                 <button
                   onClick={fetchCategories}
-                  className="px-4 py-2 bg-blue text-white rounded-md hover:bg-blue-600 transition-colors text-sm"
+                  className="px-4 py-2 text-sm text-white transition-colors rounded-md bg-blue hover:bg-blue-600"
                 >
                   Thử lại
                 </button>
@@ -119,16 +117,16 @@ const Sidebar = ({
               onCategoryChange={handleCategoryChange}
             />
           ) : (
-            <div className="bg-white shadow-1 rounded-lg p-6">
+            <div className="p-6 bg-white rounded-lg shadow-1">
               <div className="text-center">
-                <div className="text-gray-400 text-4xl mb-2">📂</div>
-                <p className="text-gray-600 text-sm">Không có danh mục nào</p>
+                <div className="mb-2 text-4xl text-gray-400">📂</div>
+                <p className="text-sm text-gray-600">Không có danh mục nào</p>
               </div>
             </div>
           )}
 
-          {/* Gender box - Bộ lọc giới tính */}
-          <GenderDropdown genders={genders} />
+          {/* Screen size box - Bộ lọc kích thước màn hình */}
+          <GenderDropdown />
 
           {/* Size box - Bộ lọc kích thước */}
           <SizeDropdown />

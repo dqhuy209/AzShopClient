@@ -1,26 +1,75 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 const ColorsDropdwon = () => {
-  const [toggleDropdown, setToggleDropdown] = useState(true)
-  const [activeColor, setActiveColor] = useState('blue')
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
 
-  const colors = ['red', 'blue', 'orange', 'pink', 'purple']
+  const [toggleDropdown, setToggleDropdown] = useState(true)
+  const [colorInput, setColorInput] = useState('')
+  const [caseMaterialInput, setCaseMaterialInput] = useState('')
+
+  // Đồng bộ input với URL khi mount hoặc khi URL thay đổi
+  useEffect(() => {
+    const urlColor = searchParams.get('color') || ''
+    const urlCaseMaterial = searchParams.get('caseMaterial') || ''
+    setColorInput(urlColor)
+    setCaseMaterialInput(urlCaseMaterial)
+  }, [searchParams])
+
+  // Áp dụng bộ lọc color lên URL (giữ nguyên params khác, reset page)
+  const applyColorFilter = () => {
+    try {
+      const url = new URL(pathname, window.location.origin)
+      // Sao chép params hiện tại
+      searchParams.forEach((value, key) => {
+        url.searchParams.set(key, value)
+      })
+      const colorValue = colorInput?.trim()
+      const caseValue = caseMaterialInput?.trim()
+      // color
+      if (colorValue) url.searchParams.set('color', colorValue)
+      else url.searchParams.delete('color')
+      // caseMaterial
+      if (caseValue) url.searchParams.set('caseMaterial', caseValue)
+      else url.searchParams.delete('caseMaterial')
+      url.searchParams.delete('page')
+      router.push(url.pathname + url.search)
+    } catch (err) {
+      console.error('Lỗi áp dụng bộ lọc màu:', err)
+    }
+  }
+
+  // Xóa bộ lọc color khỏi URL (giữ nguyên params khác, reset page)
+  const clearColorFilter = () => {
+    try {
+      const url = new URL(pathname, window.location.origin)
+      searchParams.forEach((value, key) => {
+        url.searchParams.set(key, value)
+      })
+      url.searchParams.delete('color')
+      url.searchParams.delete('caseMaterial')
+      url.searchParams.delete('page')
+      router.push(url.pathname + url.search)
+    } catch (err) {
+      console.error('Lỗi xóa bộ lọc màu:', err)
+    }
+  }
 
   return (
-    <div className="bg-white shadow-1 rounded-lg">
+    <div className="bg-white rounded-lg shadow-1">
       <div
         onClick={() => setToggleDropdown(!toggleDropdown)}
-        className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${
-          toggleDropdown && 'shadow-filter'
-        }`}
+        className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${toggleDropdown && 'shadow-filter'
+          }`}
       >
-        <p className="text-dark">Colors</p>
+        <p className="text-dark">Màu sắc - Chất liệu vỏ  </p>
         <button
           aria-label="button for colors dropdown"
-          className={`text-dark ease-out duration-200 ${
-            toggleDropdown && 'rotate-180'
-          }`}
+          className={`text-dark ease-out duration-200 ${toggleDropdown && 'rotate-180'
+            }`}
         >
           <svg
             className="fill-current"
@@ -41,39 +90,53 @@ const ColorsDropdwon = () => {
       </div>
 
       {/* <!-- dropdown menu --> */}
-      <div
-        className={`flex-wrap gap-2.5 p-6 ${
-          toggleDropdown ? 'flex' : 'hidden'
-        }`}
-      >
-        {colors.map((color, key) => (
-          <label
-            key={key}
-            htmlFor={color}
-            className="cursor-pointer select-none flex items-center"
-          >
-            <div className="relative">
-              <input
-                type="radio"
-                name="color"
-                id={color}
-                className="sr-only"
-                onChange={() => setActiveColor(color)}
-              />
-              <div
-                className={`flex items-center justify-center w-5.5 h-5.5 rounded-full ${
-                  activeColor === color && 'border'
-                }`}
-                style={{ borderColor: `${color}` }}
-              >
-                <span
-                  className="block w-3 h-3 rounded-full"
-                  style={{ backgroundColor: `${color}` }}
-                ></span>
-              </div>
-            </div>
-          </label>
-        ))}
+      <div className={`p-6 ${toggleDropdown ? 'block' : 'hidden'}`}>
+        <div className="flex flex-col gap-3">
+          {/* Ô nhập màu (color) và chất liệu vỏ (caseMaterial) */}
+          <input
+            type="text"
+            value={colorInput}
+            onChange={(e) => setColorInput(e.target.value)}
+            placeholder="Màu sắc "
+            className="w-full px-3 py-2 border rounded-md outline-none border-gray-3/80 focus:border-blue"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                applyColorFilter()
+              }
+            }}
+          />
+          <input
+            type="text"
+            value={caseMaterialInput}
+            onChange={(e) => setCaseMaterialInput(e.target.value)}
+            placeholder="Chất liệu vỏ "
+            className="w-full px-3 py-2 border rounded-md outline-none border-gray-3/80 focus:border-blue"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                applyColorFilter()
+              }
+            }}
+          />
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="px-3 py-2 text-sm text-white rounded-md bg-blue hover:bg-blue-600"
+              onClick={applyColorFilter}
+            >
+              Áp dụng
+            </button>
+            <button
+              type="button"
+              className="px-3 py-2 text-sm border border-gray-200 rounded-md hover:border-blue hover:text-blue"
+              onClick={clearColorFilter}
+            >
+              Xóa
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

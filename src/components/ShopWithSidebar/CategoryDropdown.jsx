@@ -48,7 +48,7 @@ const CategoryDropdown = ({ categories, selectedCategory, onCategoryChange }) =>
   const [toggleDropdown, setToggleDropdown] = useState(true)
 
   return (
-    <div className="bg-white shadow-1 rounded-lg">
+    <div className="bg-white rounded-lg shadow-1">
       <div
         onClick={(e) => {
           e.preventDefault()
@@ -57,7 +57,7 @@ const CategoryDropdown = ({ categories, selectedCategory, onCategoryChange }) =>
         className={`cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5 ${toggleDropdown && 'shadow-filter'
           }`}
       >
-        <p className="text-dark">Category</p>
+        <p className="text-dark">Dòng máy</p>
         <button
           aria-label="button for category dropdown"
           className={`text-dark ease-out duration-200 ${toggleDropdown && 'rotate-180'

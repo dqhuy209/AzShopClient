@@ -68,7 +68,7 @@ const PriceDropdown = () => {
   }
 
   return (
-    <div className="bg-white shadow-1 rounded-lg">
+    <div className="bg-white rounded-lg shadow-1">
       <div
         onClick={() => setToggleDropdown(!toggleDropdown)}
         className="cursor-pointer flex items-center justify-between py-3 pl-6 pr-5.5"
@@ -117,20 +117,15 @@ const PriceDropdown = () => {
               }}
             />
 
-            <div className="price-amount flex items-center justify-between pt-4">
-              <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
-                <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
-                  đ
-                </span>
+            <div className="flex items-center justify-between pt-4 price-amount">
+              <div className="flex border rounded text-custom-xs text-dark-4 border-gray-3/80">
+
                 <span id="minAmount" className="block px-3 py-1.5">
                   {formatVND(selectedPrice.from)}
                 </span>
               </div>
-
-              <div className="text-custom-xs text-dark-4 flex rounded border border-gray-3/80">
-                <span className="block border-r border-gray-3/80 px-2.5 py-1.5">
-                  đ
-                </span>
+              -
+              <div className="flex border rounded text-custom-xs text-dark-4 border-gray-3/80">
                 <span id="maxAmount" className="block px-3 py-1.5">
                   {formatVND(selectedPrice.to)}
                 </span>
@@ -140,14 +135,14 @@ const PriceDropdown = () => {
             <div className="flex items-center gap-2 pt-4">
               <button
                 type="button"
-                className="px-3 py-2 rounded-md bg-blue text-white text-sm hover:bg-blue-600"
+                className="px-3 py-2 text-sm text-white rounded-md bg-blue hover:bg-blue-600"
                 onClick={applyPriceFilter}
               >
                 Áp dụng
               </button>
               <button
                 type="button"
-                className="px-3 py-2 rounded-md border border-gray-200 text-sm hover:border-blue hover:text-blue"
+                className="px-3 py-2 text-sm border border-gray-200 rounded-md hover:border-blue hover:text-blue"
                 onClick={clearPriceFilter}
               >
                 Xóa

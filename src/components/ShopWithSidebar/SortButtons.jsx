@@ -38,58 +38,73 @@ const SortButtons = ({ productSidebar, setProductSidebar }) => {
   }
 
   // Tất cả: xóa mọi sort/filter liên quan tới phần yêu cầu
-  const handleAll = () =>
-    navigateWithParams({}, ['isLatest', 'isFeatured', 'sortBy', 'sortDir'])
+  const handleAll = () => {
+    // Nếu đang ở "Bán chạy nhất/Hàng mới về" và có sort giá, khi về "Tất cả" sẽ xóa luôn feSort
+    const isFeaturedActive = searchParams.get('isFeatured') === 'true'
+    const isLatestActive = searchParams.get('isLatest') === 'true'
+    const deletions = ['isLatest', 'isFeatured', 'sortBy', 'sortDir']
+    if (isFeaturedActive || isLatestActive) deletions.push('feSort')
+    navigateWithParams({}, deletions)
+  }
 
   const handleBestSelling = () => {
     const isFeaturedActive = searchParams.get('isFeatured') === 'true'
     if (isFeaturedActive) {
-      handleAll()
-    } else {
-      // Bật bán chạy nhất, giữ nguyên sortBy/sortDir hiện tại nếu có
-      navigateWithParams({ isFeatured: 'true' }, ['isLatest'])
+      // Đang ở chế độ này rồi => không làm gì (giữ nguyên)
+      return
     }
+    // Bật bán chạy nhất, reset feSort để tránh xung đột sort FE
+    navigateWithParams({ isFeatured: 'true' }, ['isLatest', 'feSort'])
   }
 
   const handleLatest = () => {
     const isLatestActive = searchParams.get('isLatest') === 'true'
     if (isLatestActive) {
-      // Toggle về tất cả sản phẩm
-      handleAll()
+      // Đang ở chế độ này rồi => không làm gì (giữ nguyên)
+      return
+    }
+    // Bật hàng mới về, reset feSort để tránh xung đột sort FE
+    navigateWithParams({ isLatest: 'true' }, ['isFeatured', 'feSort'])
+  }
+
+  const handlePriceAsc = () => {
+    // FE sort: nếu đang priceAsc thì bỏ sort, ngược lại set priceAsc
+    const current = searchParams.get('feSort')
+    if (current === 'priceAsc') {
+      navigateWithParams({}, ['feSort', 'sortBy', 'sortDir'])
     } else {
-      // Bật hàng mới về, giữ nguyên sortBy/sortDir hiện tại nếu có
-      navigateWithParams({ isLatest: 'true' }, ['isFeatured'])
+      navigateWithParams({ feSort: 'priceAsc' }, ['sortBy', 'sortDir'])
     }
   }
 
-  const handlePriceAsc = () =>
-    // Chỉ cập nhật sort, không động tới isLatest/isFeatured
-    navigateWithParams({ sortBy: 'price', sortDir: 'asc' })
-
-  const handlePriceDesc = () =>
-    // Chỉ cập nhật sort, không động tới isLatest/isFeatured
-    navigateWithParams({ sortBy: 'price', sortDir: 'desc' })
+  const handlePriceDesc = () => {
+    // FE sort: nếu đang priceDesc thì bỏ sort, ngược lại set priceDesc
+    const current = searchParams.get('feSort')
+    if (current === 'priceDesc') {
+      navigateWithParams({}, ['feSort', 'sortBy', 'sortDir'])
+    } else {
+      navigateWithParams({ feSort: 'priceDesc' }, ['sortBy', 'sortDir'])
+    }
+  }
 
   // Trạng thái active theo URL hiện tại
   const isFeaturedActive = searchParams.get('isFeatured') === 'true'
   const isLatestActive = searchParams.get('isLatest') === 'true'
-  const sortBy = searchParams.get('sortBy')
-  const sortDir = searchParams.get('sortDir')
-  const isPriceAsc = sortBy === 'price' && sortDir === 'asc'
-  const isPriceDesc = sortBy === 'price' && sortDir === 'desc'
-  const isAllActive =
-    !isFeaturedActive && !isLatestActive && !sortBy && !sortDir
+  const feSort = searchParams.get('feSort')
+  const isPriceAsc = feSort === 'priceAsc'
+  const isPriceDesc = feSort === 'priceDesc'
+  // "Tất cả" active khi không bật 2 chế độ kia, bất kể feSort
+  const isAllActive = !isFeaturedActive && !isLatestActive
 
   // Helper render nút với style active
   const Button = ({ active, onClick, children }) => (
     <button
       type="button"
       onClick={onClick}
-      className={`px-[4px] rounded-[4px] py-[6px] lg:px-[12px] lg:py-[10px] text-sm transition-colors flex items-center gap-x-[4px] group ${
-        active
-          ? 'bg-blue text-white border-gray-200'
-          : 'hover:text-blue bg-white '
-      }`}
+      className={`px-[4px] rounded-[4px] py-[6px] lg:px-[12px] lg:py-[10px] text-sm transition-colors flex items-center gap-x-[4px] group ${active
+        ? 'bg-blue text-white border-gray-200'
+        : 'hover:text-blue bg-white '
+        }`}
     >
       {children}
     </button>
@@ -209,7 +224,12 @@ const SortButtons = ({ productSidebar, setProductSidebar }) => {
       </div>
       <div
         className="xl:hidden w-fit"
-        onClick={() => setProductSidebar(!productSidebar)}
+        onMouseDown={(e) => {
+          // Ngăn outside-click handler (mousedown) đóng/mở ngược trạng thái
+          e.preventDefault()
+          e.stopPropagation()
+          setProductSidebar((prev) => !prev)
+        }}
       >
         <div className="!w-[25px] !h-[25px] lg:w-[30px] lg:h-[30px] overflow-hidden relative">
           <Image
