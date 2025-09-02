@@ -21,6 +21,7 @@ const allowedParams = {
   modelV1: (v) => v, // có thể lặp nhiều key, sẽ gom thành mảng phía dưới
   version: (v) => v,
   screenSize: (v) => v,
+  keyword: (v) => v,
   sortBy: (v) => v,
   sortDir: (v) => v,
   feSort: (v) => v, // sort tại FE: priceAsc | priceDesc

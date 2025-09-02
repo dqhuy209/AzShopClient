@@ -41,10 +41,10 @@ const Header = () => {
   }
 
   const handleSearch = () => {
-    // push search query to the URL
+    // push keyword to the URL
     if (searchQuery.trim()) {
       const searchParams = new URLSearchParams()
-      searchParams.set('search', searchQuery.trim())
+      searchParams.set('keyword', searchQuery.trim())
       window.location.href = `/shop-with-sidebar?${searchParams.toString()}`
     }
   }
@@ -76,7 +76,7 @@ const Header = () => {
                   className="object-contain border border-white rounded-full p-[2px] lg:p-[16px]"
                 />
               </div>
-              <p className="font-medium text-custom-lg  lg:hidden lg:text-custom-lg text-white whitespace-nowrap">
+              <p className="font-medium text-white text-custom-lg lg:hidden lg:text-custom-lg whitespace-nowrap">
                 0855.38.2525
               </p>
             </div>
@@ -90,22 +90,29 @@ const Header = () => {
           </Link>
           <div className="w-full">
             <form>
-              <div className="relative w-full hidden lg:block">
+              <div className="relative hidden w-full lg:block">
                 <input
                   onChange={(e) => setSearchQuery(e.target.value)}
                   value={searchQuery}
                   type="search"
                   name="search"
                   id="search"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      handleSearch()
+                    }
+                  }}
                   placeholder="Tìm kiếm sản phẩm..."
                   autoComplete="off"
                   className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
                 />
 
                 <button
+                  onClick={handleSearch}
                   id="search-btn"
                   aria-label="Search"
-                  className="flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 ease-in duration-200 hover:text-blue"
+                  className="absolute flex items-center justify-center duration-200 ease-in -translate-y-1/2 right-3 top-1/2 hover:text-blue"
                 >
                   <svg
                     className="fill-current"
@@ -156,10 +163,10 @@ const Header = () => {
               </svg>
 
               <div>
-                <span className="text-custom-sm text-white uppercase whitespace-nowrap hidden xl:block">
+                <span className="hidden text-white uppercase text-custom-sm whitespace-nowrap xl:block">
                   HỖ TRỢ 24/7
                 </span>
-                <p className="font-medium text-custom-sm hidden xl:block lg:text-custom-lg text-white whitespace-nowrap">
+                <p className="hidden font-medium text-white text-custom-sm xl:block lg:text-custom-lg whitespace-nowrap">
                   0855.38.2525
                 </p>
               </div>
@@ -168,7 +175,7 @@ const Header = () => {
             {/* <!-- divider --> */}
             <span className="hidden xl:block w-px h-7.5 bg-gray-4"></span>
 
-            <div className="flex w-full lg:w-auto justify-end items-center gap-5">
+            <div className="flex items-center justify-end w-full gap-5 lg:w-auto">
               <div className="flex items-center gap-5">
                 <div className="lg:hidden">
                   <Dialog>
@@ -211,7 +218,7 @@ const Header = () => {
                             onClick={handleSearch}
                             id="search-btn"
                             aria-label="Search"
-                            className="flex items-center justify-center absolute right-3 top-1/2 -translate-y-1/2 ease-in duration-200 hover:text-blue"
+                            className="absolute flex items-center justify-center duration-200 ease-in -translate-y-1/2 right-3 top-1/2 hover:text-blue"
                           >
                             <svg
                               className="fill-current"
@@ -236,7 +243,7 @@ const Header = () => {
                   onClick={handleOpenCartModal}
                   className="flex items-end lg:gap-2.5"
                 >
-                  <span className="inline-block relative">
+                  <span className="relative inline-block">
                     <svg
                       width="24"
                       height="24"
@@ -275,7 +282,7 @@ const Header = () => {
                   </span>
 
                   <div>
-                    <span className="hidden lg:block text-custom-sm text-white uppercase whitespace-nowrap">
+                    <span className="hidden text-white uppercase lg:block text-custom-sm whitespace-nowrap">
                       GIỎ HÀNG
                     </span>
                   </div>
@@ -284,11 +291,11 @@ const Header = () => {
               <button
                 id="Toggle"
                 aria-label="Toggler"
-                className="xl:hidden block"
+                className="block xl:hidden"
                 onClick={() => setNavigationOpen(!navigationOpen)}
               >
                 <span className="block relative cursor-pointer w-5.5 h-5.5">
-                  <span className="du-block absolute right-0 w-full h-full">
+                  <span className="absolute right-0 w-full h-full du-block">
                     <span
                       className={`block relative top-0 left-0 bg-[#fff] rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-[0] ${!navigationOpen && '!w-full delay-300'}`}
                     ></span>
@@ -299,7 +306,7 @@ const Header = () => {
                       className={`block relative top-0 left-0 bg-[#fff] rounded-sm w-0 h-0.5 my-1 ease-in-out duration-200 delay-200 ${!navigationOpen && '!w-full delay-500'}`}
                     ></span>
                   </span>
-                  <span className="block absolute right-0 w-full h-full rotate-45">
+                  <span className="absolute right-0 block w-full h-full rotate-45">
                     <span
                       className={`block bg-[#fff] rounded-sm ease-in-out duration-200 delay-300 absolute left-2.5 top-0 w-0.5 h-full ${!navigationOpen && '!h-0 delay-[0] '}`}
                     ></span>
@@ -324,7 +331,7 @@ const Header = () => {
             >
               {/* <!-- Main Nav Start --> */}
               <nav className={'w-full'}>
-                <ul className="flex xl:items-center justify-evenly flex-col xl:flex-row gap-5 xl:gap-6 w-full">
+                <ul className="flex flex-col w-full gap-5 xl:items-center justify-evenly xl:flex-row xl:gap-6">
                   {menuDataHeader.map((menuItem, i) =>
                     menuItem.submenu ? (
                       <Dropdown
