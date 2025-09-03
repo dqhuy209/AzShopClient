@@ -1,12 +1,14 @@
 'use client'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { useCallback, useRef, useEffect, useState } from 'react'
+import React, { useCallback, useRef, useEffect, useState } from 'react'
 import 'swiper/css/navigation'
 import 'swiper/css'
 import Image from 'next/image'
 
 import { usePreviewSlider } from '@/app/context/PreviewSliderContext'
 import { useAppSelector } from '@/redux/store'
+import { ZoomAbleImage } from '@/components/Common/TransformWrapper'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 
 const PreviewSliderModal = () => {
   const { closePreviewModal, isModalPreviewOpen } = usePreviewSlider()
@@ -213,8 +215,9 @@ const PreviewSliderModal = () => {
 
   return (
     <div
-      className={`preview-slider w-full h-screen z-[99999] inset-0 flex justify-center items-center bg-black bg-opacity-90 ${isModalPreviewOpen ? 'fixed' : 'hidden'
-        }`}
+      className={`preview-slider w-full h-screen z-[99999] inset-0 flex justify-center items-center bg-black bg-opacity-90 ${
+        isModalPreviewOpen ? 'fixed' : 'hidden'
+      }`}
       onMouseDown={(e) => {
         // Ngăn background clicks khi zoom
         if (zoomLevel > 1 && !e.target.closest('.image-container')) {
@@ -368,7 +371,7 @@ const PreviewSliderModal = () => {
               <SwiperSlide key={index}>
                 <div className="flex items-center justify-center w-full h-full overflow-hidden">
                   <div
-                    className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out select-none image-container max-h-4xl"
+                    className="relative w-full flex items-center h-full max-w-4xl transition-transform duration-200 ease-in-out select-none image-container max-h-4xl"
                     style={{
                       transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
                       cursor:
@@ -388,11 +391,25 @@ const PreviewSliderModal = () => {
                       }
                     }}
                   >
+                    <TransformWrapper
+                      defaultScale={1}
+                      doubleClick={{ disabled: true }}
+                      wheel={{ disabled: true }}
+                      pinch={{ disabled: false }}
+                    >
+                      <TransformComponent>
+                        <img
+                          src={image || '/next.svg'}
+                          alt={`${data.name || 'Product'} image ${index + 1}`}
+                          className="object-contain pointer-events-none my-auto  lg:hidden"
+                        />
+                      </TransformComponent>
+                    </TransformWrapper>
                     <Image
                       src={image || '/next.svg'}
                       alt={`${data.name || 'Product'} image ${index + 1}`}
+                      className="object-contain pointer-events-none hidden lg:block"
                       fill
-                      className="object-contain pointer-events-none"
                       quality={100}
                       priority={index === (data.initialSlideIndex || 0)}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
@@ -403,48 +420,9 @@ const PreviewSliderModal = () => {
               </SwiperSlide>
             ))
           ) : // Fallback to legacy imgs structure if new images array is not available
-            data?.imgs?.previews && data.imgs.previews.length > 0 ? (
-              data.imgs.previews.map((image, index) => (
-                <SwiperSlide key={index}>
-                  <div className="flex items-center justify-center w-full h-full overflow-hidden">
-                    <div
-                      className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
-                      style={{
-                        transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
-                        cursor:
-                          zoomLevel > 1
-                            ? isDragging
-                              ? 'grabbing'
-                              : 'grab'
-                            : 'default',
-                        transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
-                      }}
-                      onMouseDown={handleMouseDown}
-                      onTouchStart={(e) => {
-                        // Ngăn touch events khi zoom để tránh conflict với Swiper
-                        if (zoomLevel > 1) {
-                          e.preventDefault()
-                          e.stopPropagation()
-                        }
-                      }}
-                    >
-                      <Image
-                        src={image || '/next.svg'}
-                        alt={`${data.title || 'Product'} image ${index + 1}`}
-                        fill
-                        className="object-contain pointer-events-none"
-                        quality={100}
-                        priority={index === (data.initialSlideIndex || 0)}
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
-                        draggable={false}
-                      />
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))
-            ) : (
-              // Ultimate fallback
-              <SwiperSlide>
+          data?.imgs?.previews && data.imgs.previews.length > 0 ? (
+            data.imgs.previews.map((image, index) => (
+              <SwiperSlide key={index}>
                 <div className="flex items-center justify-center w-full h-full overflow-hidden">
                   <div
                     className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
@@ -468,18 +446,57 @@ const PreviewSliderModal = () => {
                     }}
                   >
                     <Image
-                      src="/next.svg"
-                      alt="Product image"
+                      src={image || '/next.svg'}
+                      alt={`${data.title || 'Product'} image ${index + 1}`}
                       fill
                       className="object-contain pointer-events-none"
                       quality={100}
+                      priority={index === (data.initialSlideIndex || 0)}
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
                       draggable={false}
                     />
                   </div>
                 </div>
               </SwiperSlide>
-            )}
+            ))
+          ) : (
+            // Ultimate fallback
+            <SwiperSlide>
+              <div className="flex items-center justify-center w-full h-full overflow-hidden">
+                <div
+                  className="relative w-full h-full max-w-4xl transition-transform duration-200 ease-in-out image-container max-h-4xl"
+                  style={{
+                    transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
+                    cursor:
+                      zoomLevel > 1
+                        ? isDragging
+                          ? 'grabbing'
+                          : 'grab'
+                        : 'default',
+                    transitionDuration: isDragging ? '0ms' : '200ms', // Smooth transition khi không drag
+                  }}
+                  onMouseDown={handleMouseDown}
+                  onTouchStart={(e) => {
+                    // Ngăn touch events khi zoom để tránh conflict với Swiper
+                    if (zoomLevel > 1) {
+                      e.preventDefault()
+                      e.stopPropagation()
+                    }
+                  }}
+                >
+                  <Image
+                    src="/next.svg"
+                    alt="Product image"
+                    fill
+                    className="object-contain pointer-events-none"
+                    quality={100}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
+                    draggable={false}
+                  />
+                </div>
+              </div>
+            </SwiperSlide>
+          )}
         </Swiper>
       </div>
     </div>
