@@ -371,7 +371,7 @@ const PreviewSliderModal = () => {
               <SwiperSlide key={index}>
                 <div className="flex items-center justify-center w-full h-full overflow-hidden">
                   <div
-                    className="relative w-full flex items-center h-full max-w-4xl transition-transform duration-200 ease-in-out select-none image-container max-h-4xl"
+                    className="relative w-full flex justify-center items-center h-full max-w-4xl transition-transform duration-200 ease-in-out select-none image-container max-h-4xl"
                     style={{
                       transform: `scale(${zoomLevel}) translate(${panPosition.x}px, ${panPosition.y}px)`,
                       cursor:
