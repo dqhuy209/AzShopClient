@@ -4,7 +4,7 @@ import Link from 'next/link'
 const BlogItem = ({ blog }) => {
   return (
     <div className="px-4 pt-5 pb-4 bg-white shadow-1 rounded-xl sm:px-5">
-      <Link href="/blogs/blog-details" className="overflow-hidden rounded-md">
+      <Link href="/blogs/policy-details" className="overflow-hidden rounded-md">
         <Image
           src={blog.img}
           alt="blog"
@@ -35,11 +35,11 @@ const BlogItem = ({ blog }) => {
         </span>
 
         <h2 className="mb-4 text-lg font-medium duration-200 ease-out text-dark sm:text-xl hover:text-blue">
-          <Link href="/blogs/blog-details">{blog.title}</Link>
+          <Link href="/blogs/policy-details">{blog.title}</Link>
         </h2>
 
         <Link
-          href="/blogs/blog-details"
+          href="/blogs/policy-details"
           className="inline-flex items-center gap-2 py-2 duration-200 ease-out text-custom-sm hover:text-blue"
         >
           Read More

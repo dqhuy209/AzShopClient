@@ -1,6 +1,5 @@
 import Axios from '@/services/Axios'
 
-// Xây query string an toàn, hỗ trợ mảng => nhiều key lặp lại
 const getListProducts = (param = {}) => {
   const usp = new URLSearchParams()
   Object.entries(param).forEach(([key, value]) => {
@@ -16,12 +15,15 @@ const getListProducts = (param = {}) => {
   })
   return Axios.getRequest(`/products?${usp.toString()}`)
 }
-
+const getListProductByType = (type) => {
+  return Axios.getRequest(`/products/apple-watch?type=${type}`)
+}
 const productDetails = (id) => {
   return Axios.getRequest(`/products/${id}`)
 }
 const productService = {
   getListProducts,
+  getListProductByType,
   productDetails,
 }
 

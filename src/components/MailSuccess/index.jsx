@@ -11,7 +11,7 @@ const MailSuccess = () => {
           <div className="px-4 py-10 bg-white rounded-xl shadow-1 sm:py-15 lg:py-20 xl:py-25">
             <div className="text-center">
               <svg
-                className="w-20 h-20 mx-auto mb-5 text-green-500"
+                className="w-20 h-20 mx-auto mb-5 text-green-light"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -34,7 +34,7 @@ const MailSuccess = () => {
               </h3>
 
               <p className="max-w-[491px] w-full mx-auto mb-7.5">
-                Đơn hàng của bạn đã được xác nhận. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất để xác nhận đơn hàng.
+                Đơn hàng của bạn sẽ được xác nhận. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất để xác nhận đơn hàng.
               </p>
 
               <Link

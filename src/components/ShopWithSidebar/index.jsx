@@ -9,23 +9,22 @@ import Pagination from '../Common/Pagination'
 import productService from '@/services/productService'
 import categoryService from '@/services/categoryService'
 
-// whitelist các query được phép và cách chuyển đổi giá trị (đặt ngoài component để ổn định ref)
 const allowedParams = {
   isLatest: (v) => v === 'true',
   isFeatured: (v) => v === 'true',
   categoryId: (v) => v,
   minPrice: (v) => Number(v),
   maxPrice: (v) => Number(v),
-  color: (v) => v, // hỗ trợ comma-separated
+  color: (v) => v,
   caseMaterial: (v) => v,
-  modelV1: (v) => v, // có thể lặp nhiều key, sẽ gom thành mảng phía dưới
+  modelV1: (v) => v,
   version: (v) => v,
   screenSize: (v) => v,
   keyword: (v) => v,
   sortBy: (v) => v,
   sortDir: (v) => v,
-  feSort: (v) => v, // sort tại FE: priceAsc | priceDesc
-  page: (v) => Math.max(0, Number(v) - 1), // API zero-based
+  feSort: (v) => v,
+  page: (v) => Math.max(0, Number(v) - 1),
 }
 
 const ShopWithSidebar = () => {
@@ -99,20 +98,6 @@ const ShopWithSidebar = () => {
   const [categoriesLoading, setCategoriesLoading] = useState(true)
   const [categoriesError, setCategoriesError] = useState(null)
 
-  const genders = [
-    {
-      name: 'Men',
-      products: 10,
-    },
-    {
-      name: 'Women',
-      products: 23,
-    },
-    {
-      name: 'Unisex',
-      products: 8,
-    },
-  ]
 
   //  categories
   const fetchCategories = async () => {
@@ -311,7 +296,6 @@ const ShopWithSidebar = () => {
               selectedCategory={selectedCategory}
               handleCategoryChange={handleCategoryChange}
               fetchCategories={fetchCategories}
-              genders={genders}
               clearAllFilters={clearAllFilters}
             />
             {/* <!-- Sidebar End --> */}

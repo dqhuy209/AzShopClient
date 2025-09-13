@@ -121,7 +121,7 @@ export const menuData = [
         id: 74,
         title: 'Blog details',
         newTab: false,
-        path: '/blogs/blog-details',
+        path: '/blogs/policy-details',
       },
     ],
   },
@@ -140,27 +140,18 @@ export const menuDataHeader = [
     id: 2,
     title: 'Apple Watch Thời Trang',
     newTab: false,
-    // Gắn link lọc theo yêu cầu: 1 trong 2 điều kiện màu hồng hoặc vỏ thép
-    // Backend kỳ vọng OR giữa các thuộc tính, nên truyền cả 2 tham số
-    path: '/shop-with-sidebar?color=hong&caseMaterial=thep',
+    path: '/',
   },
   {
     id: 3,
     title: 'Apple Watch Thể Thao',
     newTab: false,
-    // Gắn link theo OR: truyền nhiều key modelV1 để thể hiện IN (ultra OR se1 OR se2)
-    path: '/shop-with-sidebar?modelV1=ultra&modelV1=se1&modelV1=se2',
-  },
-  {
-    id: 4,
-    title: 'Về Chúng Tôi',
-    newTab: false,
     path: '/',
   },
   {
     id: 5,
-    title: 'Chính sách',
+    title: 'Chính Sách',
     newTab: false,
-    path: '/blogs/blog-details',
+    path: '/blogs/policy-details',
   },
 ]
