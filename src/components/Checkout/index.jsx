@@ -47,6 +47,7 @@ const Checkout = () => {
   const [showPolicyModal, setShowPolicyModal] = useState(false)
   const [policies, setPolicies] = useState([])
   const [agreedToPolicy, setAgreedToPolicy] = useState(false)
+  const [paymentImageUrl, setPaymentImageUrl] = useState(null)
 
   useEffect(() => {
     const fetchPolicies = async () => {
@@ -60,33 +61,8 @@ const Checkout = () => {
     fetchPolicies()
   }, [])
 
-  // Kiểm tra khi vào trang checkout
-  useEffect(() => {
-    // Nếu không có items nào trong checkout thì chuyển về trang chủ
-    if (!currentItems || currentItems.length === 0) {
-      toast.error('Không có sản phẩm để thanh toán')
-      router.push('/')
-      return
-    }
-  }, [currentItems, router])
 
-  // Xử lý khi người dùng muốn quay lại
-  const handleGoBack = () => {
-    // Xóa tất cả sản phẩm checkout
-    dispatch(clearCheckout())
-
-    if (isBuyNowCheckout) {
-      // Nếu là mua ngay, quay về trang chủ
-      router.push('/')
-    } else {
-      // Nếu là giỏ hàng, quay về trang giỏ hàng
-      router.push('/cart')
-    }
-  }
-
-  // Kiểm tra form validation trước khi mở modal policy
   const handleOpenPolicyModal = () => {
-    // Kiểm tra các trường bắt buộc
     const requiredFields = ['customerName', 'customerPhone', 'customerAddress']
     const emptyFields = requiredFields.filter(field => !watch(field)?.trim())
 
@@ -101,14 +77,12 @@ const Checkout = () => {
       return
     }
 
-    // Kiểm tra email format nếu có nhập
     const email = watch('customerEmail')
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       toast.error('Email không đúng định dạng')
       return
     }
 
-    // Nếu tất cả đều hợp lệ, mở modal
     setShowPolicyModal(true)
   }
 
@@ -128,46 +102,46 @@ const Checkout = () => {
     }
   })
 
+  // Hàm xử lý khi có ảnh thanh toán được chọn hoặc xóa
+  const handlePaymentImageChange = (imageUrl) => {
+    setPaymentImageUrl(imageUrl)
+  }
+
   const onSubmit = async (data) => {
-    // Kiểm tra items
     if (!currentItems || currentItems.length === 0) {
       toast.error('Không có sản phẩm để đặt hàng')
       return
     }
 
-    const orderData = {
-      customerName: data.customerName,
-      customerEmail: data.customerEmail,
-      customerPhone: data.customerPhone,
-      customerAddress: data.customerAddress,
-      paymentMethod: 'COD',
-      notes: data.notes,
-      // orderImage: data.orderImage,
-      items: currentItems.map(item => ({
-        productId: item.id,
-        quantity: 1
-      }))
-    }
-
     try {
       setIsSubmitting(true)
-      // Gọi API checkout
+
+      const orderData = {
+        customerName: data.customerName,
+        customerEmail: data.customerEmail,
+        customerPhone: data.customerPhone,
+        customerAddress: data.customerAddress,
+        paymentMethod: 'COD',
+        notes: data.notes,
+        orderImage: paymentImageUrl,
+        items: currentItems.map(item => ({
+          productId: item.id,
+          quantity: 1
+        }))
+      }
+
       await checkoutService.checkout(orderData)
 
-      // Xóa tất cả sản phẩm checkout
+      router.push('/mail-success')
+
       dispatch(clearCheckout())
 
       if (isBuyNowCheckout) {
-        // Nếu là mua ngay, không cần xóa gì thêm (đã xóa checkout rồi)
       } else {
-        // Nếu là giỏ hàng thường, xóa những sản phẩm đã được đặt hàng
         currentItems.forEach(item => {
           dispatch(removeItemFromCart(item.id))
         })
       }
-
-      // Chuyển hướng đến trang thành công
-      router.push('/mail-success')
     } catch (error) {
       toast.error('Có lỗi xảy ra khi đặt hàng')
       console.error('Lỗi đặt hàng:', error)
@@ -282,14 +256,8 @@ const Checkout = () => {
                 </div>
 
                 {/* <!-- payment box --> */}
-                <PaymentMethod />
+                <PaymentMethod onImageChange={handlePaymentImageChange} />
 
-                {/* <!-- Thông báo trường bắt buộc --> */}
-                <div className="p-3 mt-4 text-xs rounded-md text-meta-4 bg-gray-1">
-                  <p className="mb-1 font-medium">Trường bắt buộc:</p>
-                  <p>• Họ tên • Số điện thoại • Địa chỉ</p>
-                  <p className="mt-1">• Email (nếu có) phải đúng định dạng</p>
-                </div>
 
                 {/* <!-- checkout button --> */}
                 <button

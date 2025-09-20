@@ -27,6 +27,17 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'localhost',
       },
+      // Cấu hình cho domain API mới
+      {
+        protocol: 'https',
+        hostname: 'api.azshop168.vn',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'api.azshop168.vn',
+        pathname: '/uploads/**',
+      },
     ],
   },
 }

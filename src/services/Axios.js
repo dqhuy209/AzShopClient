@@ -2,7 +2,6 @@ import axios from 'axios'
 
 let axiosInstance = null
 let headers = {
-  'Content-Type': 'application/json',
   'Cache-Control': 'no-cache',
 }
 

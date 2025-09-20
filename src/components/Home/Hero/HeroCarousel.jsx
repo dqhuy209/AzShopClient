@@ -7,12 +7,36 @@ import 'swiper/css'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const HeroCarousel = ({ banners = [] }) => {
-  // Kiểm tra nếu không có banner thì hiển thị loading hoặc fallback
-  if (!banners || banners.length === 0) {
+const HeroCarousel = ({ banners = [], loading = false, error = null }) => {
+  if (loading) {
     return (
       <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px] xl:h-[600px] bg-gray-200 animate-pulse flex items-center justify-center">
-        <p className="text-gray-500 text-sm sm:text-base">Đang tải banner...</p>
+        <div className="text-center">
+          <div className="w-8 h-8 mx-auto mb-2 border-b-2 border-blue-600 rounded-full animate-spin"></div>
+          <p className="text-sm text-gray-500 sm:text-base">Đang tải banner...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Hiển thị error state nếu có lỗi
+  if (error) {
+    return (
+      <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px] xl:h-[600px] bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="mb-2 text-4xl text-red-500">⚠️</div>
+          <p className="mb-2 text-sm text-gray-600 sm:text-base">Không thể tải banner</p>
+          <p className="text-xs text-gray-400">Đang hiển thị banner mặc định</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Kiểm tra nếu không có banner thì hiển thị fallback
+  if (!banners || banners.length === 0) {
+    return (
+      <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px] xl:h-[600px] bg-gray-200 flex items-center justify-center">
+        <p className="text-sm text-gray-500 sm:text-base">Không có banner nào</p>
       </div>
     )
   }
@@ -36,7 +60,7 @@ const HeroCarousel = ({ banners = [] }) => {
         prevEl: '.swiper-button-prev',
       }}
       modules={[Autoplay, Pagination, Navigation]}
-      className="hero-carousel relative w-full"
+      className="relative w-full hero-carousel"
       // Responsive breakpoints
       breakpoints={{
         320: {
@@ -71,7 +95,7 @@ const HeroCarousel = ({ banners = [] }) => {
     >
       {banners.map((banner, index) => (
         <SwiperSlide key={banner.id || index} className="w-full">
-          <div className="flex items-center flex-col-reverse sm:flex-row w-full">
+          <div className="flex flex-col-reverse items-center w-full sm:flex-row">
             <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[550px] xl:h-[600px] relative">
               <Link
                 href={
@@ -85,7 +109,7 @@ const HeroCarousel = ({ banners = [] }) => {
                   src={banner.imageUrl || '/images/hero/banner.jpg'}
                   alt={`Banner ${index + 1}`}
                   fill
-                  className="object-cover object-center sm:object-center md:object-center lg:object-center xl:object-center 2xl:object-center cursor-pointer transition-transform duration-300 w-full h-full"
+                  className="object-cover object-center w-full h-full transition-transform duration-300 cursor-pointer sm:object-center md:object-center lg:object-center xl:object-center 2xl:object-center"
                   priority={index === 0}
                   sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, (max-width: 1280px) 100vw, (max-width: 1500px) 100vw, 100vw"
                 />
