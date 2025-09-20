@@ -76,9 +76,17 @@ const Header = () => {
                   className="object-contain border border-white rounded-full p-[2px] lg:p-[16px]"
                 />
               </div>
-              <p className="font-medium text-white text-custom-lg lg:hidden lg:text-custom-lg whitespace-nowrap">
+              <div className="w-[100px] h-[40px] relative">
+                <Image
+                  src="/images/logo/text-logo.png"
+                  alt="Logo"
+                  fill
+                  className="w-full object-contain lg:hidden"
+                />
+              </div>
+              {/* <p className="font-medium text-white text-custom-lg lg:hidden lg:text-custom-lg whitespace-nowrap">
                 0855.38.2525
-              </p>
+              </p> */}
             </div>
             <Image
               src="/images/logo/text-logo.png"
@@ -177,7 +185,7 @@ const Header = () => {
 
             <div className="flex items-center justify-end w-full gap-5 lg:w-auto">
               <div className="flex items-center gap-5">
-                <div className="lg:hidden">
+                {/* <div className="lg:hidden">
                   <Dialog>
                     <DialogTrigger asChild>
                       <div className="w-[25px] h-[25px] relative">
@@ -238,7 +246,7 @@ const Header = () => {
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>
-                </div>
+                </div> */}
                 <button
                   onClick={handleOpenCartModal}
                   className="flex items-end lg:gap-2.5"
