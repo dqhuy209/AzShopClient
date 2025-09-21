@@ -57,6 +57,17 @@ const Header = () => {
     <header
       className={`fixed left-0 top-0 w-full z-[9999] transition-all ease-in-out duration-300  ${stickyMenu && 'shadow'}`}
     >
+      <button
+        onClick={handleOpenCartModal}
+        className="lg:hidden items-end lg:gap-2.5 fixed w-[50px] h-[50px] bottom-[150px] right-[30px] bg-[#ffb900] p-[5px] rounded-[10px]"
+      >
+        <div className="relative inline-block w-[40px] h-[40px]">
+          <Image src={'/images/icons/icon-cart.svg'} alt={'icon-cart'} fill />
+          <span className="flex items-center justify-center font-medium text-2xs absolute -right-2 -top-2.5 bg-blue w-4.5 h-4.5 rounded-full text-white">
+            {product.length}
+          </span>
+        </div>
+      </button>
       {/*bg-[#ec6804] bg-[url(/images/logo/bg-header.jpg)]*/}
       <div className="absolute z-[10] bg-black w-full h-full top-0 left-0"></div>
       <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 relative z-[20]">
@@ -249,7 +260,7 @@ const Header = () => {
                 </div> */}
                 <button
                   onClick={handleOpenCartModal}
-                  className="flex items-end lg:gap-2.5"
+                  className="lg:flex items-end lg:gap-2.5 hidden "
                 >
                   <span className="relative inline-block">
                     <svg
@@ -290,7 +301,7 @@ const Header = () => {
                   </span>
 
                   <div>
-                    <span className="hidden text-white uppercase lg:block text-custom-sm whitespace-nowrap">
+                    <span className="hidden  lg:block text-white uppercase text-custom-sm whitespace-nowrap">
                       GIỎ HÀNG
                     </span>
                   </div>
