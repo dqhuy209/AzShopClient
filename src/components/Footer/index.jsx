@@ -105,11 +105,25 @@ const Footer = () => {
             </ul>
 
             {/* <!-- Social Links start --> */}
-            <div className="flex items-center gap-4 mt-7.5">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4 mt-7.5">
+              <Link
+                target={'_blank'}
+                href="https://www.facebook.com/groups/azshophn"
+                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+              >
+                <Image
+                  src={'/images/icons/icon-group.png'}
+                  alt={'icon-group-facebook'}
+                  width={40}
+                  height={35}
+                />
+                <span className="text-white lg:hidden">Fanpage facebook</span>
+              </Link>
+
               <Link
                 target={'_blank'}
                 href="https://www.facebook.com/AZShopHN168"
-                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex"
+                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
               >
                 <Image
                   src={'/images/icons/icon-facebook.png'}
@@ -117,31 +131,47 @@ const Footer = () => {
                   width={40}
                   height={40}
                 />
+                <span className="text-white  lg:hidden">FB cá nhân</span>
               </Link>
-              <Link
-                target={'_blank'}
-                href="https://www.facebook.com/groups/azshophn"
-                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex"
-              >
-                <Image
-                  src={'/images/icons/icon-group.png'}
-                  alt={'icon-cho-tot'}
-                  width={35}
-                  height={35}
-                />
-              </Link>
-
               <Link
                 target={'_blank'}
                 href="https://www.chotot.com/cua-hang-dien-tu/azshophn168"
-                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex"
+                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
               >
                 <Image
-                  src={'/images/icons/icon-cho-tot.png'}
+                  src={'/images/icons/icon-tot.png'}
                   alt={'icon-cho-tot'}
-                  width={80}
+                  width={35}
+                  height={30}
+                  className="rounded-[10px]"
+                />
+                <span className="text-white  lg:hidden">Cửa hàng chợ tốt</span>
+              </Link>
+              <Link
+                target={'_blank'}
+                href="https://www.tiktok.com/@azshop168hn"
+                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-3"
+              >
+                <Image
+                  src={'/images/icons/tiktok.svg'}
+                  alt={'icon-tiktok'}
+                  width={30}
                   height={30}
                 />
+                <span className="text-white  lg:hidden">Tiktok</span>
+              </Link>
+              <Link
+                target={'_blank'}
+                href="https://zalo.me/0855382525"
+                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+              >
+                <Image
+                  src={'/images/icons/Icon_of_Zalo.svg.webp'}
+                  alt={'icon-zalo'}
+                  width={35}
+                  height={30}
+                />
+                <span className="text-white  lg:hidden">Zalo Chat</span>
               </Link>
             </div>
             {/* <!-- Social Links end --> */}

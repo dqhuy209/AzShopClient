@@ -17,6 +17,7 @@ import { Toaster } from 'react-hot-toast'
 import ScrollToTop from '@/components/Common/ScrollToTop'
 import PreLoader from '@/components/Common/PreLoader'
 import Head from 'next/head'
+import FooterMobile from '@/components/Common/FooterMobile'
 
 export default function RootLayout({ children }) {
   const [loading, setLoading] = useState(true)
@@ -36,7 +37,6 @@ export default function RootLayout({ children }) {
       <body>
         {loading ? (
           <PreLoader />
-
         ) : (
           <>
             <ReduxProvider>
@@ -49,14 +49,18 @@ export default function RootLayout({ children }) {
                     <QuickViewModal />
                     <CartSidebarModal />
                     <PreviewSliderModal />
-                    <Toaster position="top-right" toastOptions={{
-                      duration: 1500,
-                    }} />
+                    <Toaster
+                      position="top-right"
+                      toastOptions={{
+                        duration: 1500,
+                      }}
+                    />
                   </PreviewSliderProvider>
                 </ModalProvider>
               </CartModalProvider>
             </ReduxProvider>
-            <ScrollToTop />
+            {/*<ScrollToTop />*/}
+            <FooterMobile />
             <Footer />
           </>
         )}

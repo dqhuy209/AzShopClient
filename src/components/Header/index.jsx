@@ -57,6 +57,17 @@ const Header = () => {
     <header
       className={`fixed left-0 top-0 w-full z-[9999] transition-all ease-in-out duration-300  ${stickyMenu && 'shadow'}`}
     >
+      <button
+        onClick={handleOpenCartModal}
+        className="lg:hidden items-end lg:gap-2.5 fixed w-[50px] h-[50px] bottom-[150px] right-[30px] bg-[#ffb900] p-[5px] rounded-[10px]"
+      >
+        <div className="relative inline-block w-[40px] h-[40px]">
+          <Image src={'/images/icons/icon-cart.svg'} alt={'icon-cart'} fill />
+          <span className="flex items-center justify-center font-medium text-2xs absolute -right-2 -top-2.5 bg-blue w-4.5 h-4.5 rounded-full text-white">
+            {product.length}
+          </span>
+        </div>
+      </button>
       {/*bg-[#ec6804] bg-[url(/images/logo/bg-header.jpg)]*/}
       <div className="absolute z-[10] bg-black w-full h-full top-0 left-0"></div>
       <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 relative z-[20]">
@@ -76,9 +87,17 @@ const Header = () => {
                   className="object-contain border border-white rounded-full p-[2px] lg:p-[16px]"
                 />
               </div>
-              <p className="font-medium text-white text-custom-lg lg:hidden lg:text-custom-lg whitespace-nowrap">
+              <div className="w-[100px] h-[40px] relative">
+                <Image
+                  src="/images/logo/text-logo.png"
+                  alt="Logo"
+                  fill
+                  className="w-full object-contain lg:hidden"
+                />
+              </div>
+              {/* <p className="font-medium text-white text-custom-lg lg:hidden lg:text-custom-lg whitespace-nowrap">
                 0855.38.2525
-              </p>
+              </p> */}
             </div>
             <Image
               src="/images/logo/text-logo.png"
@@ -177,7 +196,7 @@ const Header = () => {
 
             <div className="flex items-center justify-end w-full gap-5 lg:w-auto">
               <div className="flex items-center gap-5">
-                <div className="lg:hidden">
+                {/* <div className="lg:hidden">
                   <Dialog>
                     <DialogTrigger asChild>
                       <div className="w-[25px] h-[25px] relative">
@@ -238,10 +257,10 @@ const Header = () => {
                       </DialogHeader>
                     </DialogContent>
                   </Dialog>
-                </div>
+                </div> */}
                 <button
                   onClick={handleOpenCartModal}
-                  className="flex items-end lg:gap-2.5"
+                  className="lg:flex items-end lg:gap-2.5 hidden "
                 >
                   <span className="relative inline-block">
                     <svg
@@ -282,7 +301,7 @@ const Header = () => {
                   </span>
 
                   <div>
-                    <span className="hidden text-white uppercase lg:block text-custom-sm whitespace-nowrap">
+                    <span className="hidden  lg:block text-white uppercase text-custom-sm whitespace-nowrap">
                       GIỎ HÀNG
                     </span>
                   </div>
