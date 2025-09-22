@@ -10,9 +10,9 @@ const PaymentMethod = ({ onImageChange }) => {
   const fileInputRef = useRef(null)
 
 
-  const qrImageSrc = useMemo(() => {
-    return process.env.NEXT_PUBLIC_QR_IMAGE || '/images/checkout/bank.svg'
-  }, [])
+  // const qrImageSrc = useMemo(() => {
+  //   return process.env.NEXT_PUBLIC_QR_IMAGE || '/images/checkout/bank.svg'
+  // }, [])
 
   const handleUploadClick = () => fileInputRef.current?.click()
 
@@ -81,7 +81,7 @@ const PaymentMethod = ({ onImageChange }) => {
           <p className="mb-3 font-medium text-dark">Quét QR để thanh toán</p>
           <div className="flex items-start gap-5">
             <div className="p-3 border rounded-md bg-gray-1 border-gray-3">
-              <Image src={qrImageSrc} alt="qr" width={160} height={160} className="object-contain" />
+              <Image src={'/images/checkout/ma-qr.jpg'} alt="qr" width={160} height={160} className="object-contain" />
             </div>
 
             <div className="flex-1">

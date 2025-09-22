@@ -13,7 +13,7 @@ const StoreInformation = () => {
       <div>
         <div className="w-full text-center mt-[20px]">
           <span className="text-2xl font-bold text-center">
-            Quý khách vui lòng lựa chọn hệ thống cửa hàng
+            Địa chỉ cửa hàng
           </span>
         </div>
 
@@ -21,7 +21,7 @@ const StoreInformation = () => {
           <Link
             target={'_blank'}
             href="https://www.facebook.com/groups/azshophn"
-            className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+            className="flex items-center gap-2 pl-2 duration-200 ease-out text-dark hover:text-blue"
           >
             <Image
               src={'/images/icons/icon-group.png'}
@@ -35,7 +35,7 @@ const StoreInformation = () => {
           <Link
             target={'_blank'}
             href="https://www.facebook.com/AZShopHN168"
-            className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+            className="flex items-center gap-2 pl-2 duration-200 ease-out text-dark hover:text-blue"
           >
             <Image
               src={'/images/icons/icon-facebook.png'}
@@ -43,12 +43,12 @@ const StoreInformation = () => {
               width={40}
               height={40}
             />
-            <span className="text-black  lg:hidden">FB cá nhân</span>
+            <span className="text-black lg:hidden">FB cá nhân</span>
           </Link>
           <Link
             target={'_blank'}
             href="https://www.chotot.com/cua-hang-dien-tu/azshophn168"
-            className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+            className="flex items-center gap-2 pl-2 duration-200 ease-out text-dark hover:text-blue"
           >
             <Image
               src={'/images/icons/icon-tot.png'}
@@ -57,12 +57,12 @@ const StoreInformation = () => {
               height={30}
               className="rounded-[10px]"
             />
-            <span className="text-black  lg:hidden">Cửa hàng chợ tốt</span>
+            <span className="text-black lg:hidden">Cửa hàng chợ tốt</span>
           </Link>
           <Link
             target={'_blank'}
             href="https://www.tiktok.com/@azshop168hn"
-            className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-3"
+            className="flex items-center gap-3 pl-2 duration-200 ease-out text-dark hover:text-blue"
           >
             <Image
               src={'/images/icons/tiktok.svg'}
@@ -70,12 +70,12 @@ const StoreInformation = () => {
               width={30}
               height={30}
             />
-            <span className="text-black  lg:hidden">Tiktok</span>
+            <span className="text-black lg:hidden">Tiktok</span>
           </Link>
           <Link
             target={'_blank'}
             href="https://zalo.me/0855382525"
-            className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+            className="flex items-center gap-2 pl-2 duration-200 ease-out text-dark hover:text-blue"
           >
             <Image
               src={'/images/icons/Icon_of_Zalo.svg.webp'}
@@ -83,16 +83,12 @@ const StoreInformation = () => {
               width={35}
               height={30}
             />
-            <span className="text-black  lg:hidden">Zalo Chat</span>
+            <span className="text-black lg:hidden">Zalo Chat</span>
           </Link>
         </div>
         <div className="w-full px-[15px] mt-[30px]">
           <span className="text-[16px] font-medium ">
-            DangQuangWatch là hệ thống bán lẻ độc quyền, ủy quyền chính hãng các
-            thương hiệu đồng hồ Thụy Sĩ, Nhật Bản, Áo... với hệ thống cửa hàng
-            tại 63 tỉnh thành, đa dạng mẫu mã Đồng hồ - Kính mát - Bút ký - Hộp
-            đựng - Dây đồng hồ chính hãng có giá bán và chất lượng tốt nhất.
-            Miễn phí giao hàng thanh toán tại nhà.
+            AzShop là hệ thống cửa hàng chuyên bán đồng hồ AppleWatch chính hãng.
           </span>
         </div>
 
@@ -116,9 +112,9 @@ const StoreInformation = () => {
             Cam kết 100% hàng chính hãng. 100% chính hãng đền 1 tỷ nếu phát hiện
             hàng giả - hàng nhái (Đồng hồ bán ra có đầy đủ giấy tờ và phụ kiện
             đi kèm) Miễn phí vận chuyển (COD) toàn quốc Ship hàng nhanh chóng và
-            hoàn toàn miễn phí khi mua hàng tại Đăng Quang Watch. 1 đổi 1 trong
+            hoàn toàn miễn phí khi mua hàng tại AzShop. 1 đổi 1 trong
             7 ngày Đổi mới trong vòng 7 ngày nếu có lỗi do nhà sản xuất. Chi
-            tiết quý khách vui lòng liên hệ 1800.6005
+            tiết quý khách vui lòng liên hệ 0855382525
           </span>
         </div>
       </div>
