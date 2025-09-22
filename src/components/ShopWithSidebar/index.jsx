@@ -8,24 +8,9 @@ import ProductItem from '../Common/ProductItem'
 import Pagination from '../Common/Pagination'
 import productService from '@/services/productService'
 import categoryService from '@/services/categoryService'
+import { allowedParams, getPreservedUrl as getPreservedUrlShared } from '@/utils/shopFilters'
 
-const allowedParams = {
-  isLatest: (v) => v === 'true',
-  isFeatured: (v) => v === 'true',
-  categoryId: (v) => v,
-  minPrice: (v) => Number(v),
-  maxPrice: (v) => Number(v),
-  color: (v) => v,
-  caseMaterial: (v) => v,
-  modelV1: (v) => v,
-  version: (v) => v,
-  screenSize: (v) => v,
-  keyword: (v) => v,
-  sortBy: (v) => v,
-  sortDir: (v) => v,
-  feSort: (v) => v,
-  page: (v) => Math.max(0, Number(v) - 1),
-}
+// dùng allowedParams từ helper chung để đồng bộ whitelist
 
 const ShopWithSidebar = () => {
   const searchParams = useSearchParams()
@@ -70,19 +55,8 @@ const ShopWithSidebar = () => {
 
   // Helper: tạo URL mới và preserve toàn bộ query hợp lệ, cho phép override/delete
   const getPreservedUrl = React.useCallback((overrides = {}, deletions = []) => {
-    const url = new URL(pathname, window.location.origin)
-    Object.keys(allowedParams).forEach((key) => {
-      const value = searchParams.get(key)
-      if (value != null && value !== '') {
-        url.searchParams.set(key, value)
-      }
-    })
-    deletions.forEach((k) => url.searchParams.delete(k))
-    Object.entries(overrides).forEach(([k, v]) => {
-      if (v === null || v === undefined || v === '') url.searchParams.delete(k)
-      else url.searchParams.set(k, String(v))
-    })
-    return url
+    // preserve query hiện tại dựa trên whitelist, basePath = pathname hiện tại
+    return getPreservedUrlShared(pathname, searchParams, overrides, deletions)
   }, [pathname, searchParams])
 
   const handleStickyMenu = () => {

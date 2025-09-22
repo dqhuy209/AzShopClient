@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 // Dropdown kích thước màn hình - chọn 1, toggle chọn/bỏ như giao diện cũ
-const ScreenSizeDropdown = () => {
+const ScreenSizeDropdown = ({ targetPath }) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -15,6 +15,7 @@ const ScreenSizeDropdown = () => {
 
   const toggleSize = (value) => {
     const url = new URL(pathname, window.location.origin)
+    if (targetPath) url.pathname = targetPath
     searchParams.forEach((v, k) => url.searchParams.set(k, v))
     if (activeSize === value) {
       url.searchParams.delete('screenSize')

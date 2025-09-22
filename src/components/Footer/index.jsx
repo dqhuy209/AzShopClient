@@ -77,12 +77,9 @@ const Footer = () => {
                   <span>0855.38.2525</span>
                 </Link>
               </li>
-              {/*TODO: thay mail đúng*/}
 
               <li>
-                <Link
-                  target={'_blank'}
-                  href="mailto:huyxautrai@gmail.com"
+                <div
                   className="flex items-center gap-4.5"
                 >
                   <svg
@@ -99,8 +96,8 @@ const Footer = () => {
                       fill="currentColor"
                     />
                   </svg>
-                  <span>huyxautrai@gmail.com</span>
-                </Link>
+                  <span>quang0589731111@gmail.com</span>
+                </div>
               </li>
             </ul>
 
@@ -108,8 +105,8 @@ const Footer = () => {
             <div className="flex flex-col lg:flex-row lg:items-center gap-4 mt-7.5">
               <Link
                 target={'_blank'}
-                href="https://www.facebook.com/groups/azshophn"
-                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+                href="https://www.facebook.com/WatchAZshop168"
+                className="flex items-center gap-2 pl-2 duration-200 ease-out text-dark hover:text-blue"
               >
                 <Image
                   src={'/images/icons/icon-group.png'}
@@ -123,7 +120,7 @@ const Footer = () => {
               <Link
                 target={'_blank'}
                 href="https://www.facebook.com/AZShopHN168"
-                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+                className="flex items-center gap-2 pl-2 duration-200 ease-out text-dark hover:text-blue"
               >
                 <Image
                   src={'/images/icons/icon-facebook.png'}
@@ -131,12 +128,12 @@ const Footer = () => {
                   width={40}
                   height={40}
                 />
-                <span className="text-white  lg:hidden">FB cá nhân</span>
+                <span className="text-white lg:hidden">FB cá nhân</span>
               </Link>
               <Link
                 target={'_blank'}
                 href="https://www.chotot.com/cua-hang-dien-tu/azshophn168"
-                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+                className="flex items-center gap-2 pl-2 duration-200 ease-out text-dark hover:text-blue"
               >
                 <Image
                   src={'/images/icons/icon-tot.png'}
@@ -145,12 +142,12 @@ const Footer = () => {
                   height={30}
                   className="rounded-[10px]"
                 />
-                <span className="text-white  lg:hidden">Cửa hàng chợ tốt</span>
+                <span className="text-white lg:hidden">Cửa hàng chợ tốt</span>
               </Link>
               <Link
                 target={'_blank'}
                 href="https://www.tiktok.com/@azshop168hn"
-                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-3"
+                className="flex items-center gap-3 pl-2 duration-200 ease-out text-dark hover:text-blue"
               >
                 <Image
                   src={'/images/icons/tiktok.svg'}
@@ -158,12 +155,12 @@ const Footer = () => {
                   width={30}
                   height={30}
                 />
-                <span className="text-white  lg:hidden">Tiktok</span>
+                <span className="text-white lg:hidden">Tiktok</span>
               </Link>
               <Link
                 target={'_blank'}
                 href="https://zalo.me/0855382525"
-                className="text-dark ease-out duration-200 hover:text-blue pl-2 flex items-center gap-2"
+                className="flex items-center gap-2 pl-2 duration-200 ease-out text-dark hover:text-blue"
               >
                 <Image
                   src={'/images/icons/Icon_of_Zalo.svg.webp'}
@@ -171,7 +168,7 @@ const Footer = () => {
                   width={35}
                   height={30}
                 />
-                <span className="text-white  lg:hidden">Zalo Chat</span>
+                <span className="text-white lg:hidden">Zalo Chat</span>
               </Link>
             </div>
             {/* <!-- Social Links end --> */}
@@ -195,7 +192,7 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="w-full sm:w-auto hidden lg:block">
+          <div className="hidden w-full sm:w-auto lg:block">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4418.696262665472!2d105.80201397584051!3d20.988948189143635!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135acbff6de7557%3A0x4dde2e8227c6b283!2zMWEgTmcuIDEyNCBOZ3V54buFbiBYaeG7g24sIEjhuqEgxJDDrG5oLCBUaGFuaCBYdcOibiwgSMOgIE7hu5lpIDEwMDAwLCBWaeG7h3QgTmFt!5e1!3m2!1svi!2s!4v1755231339023!5m2!1svi!2s"
               width={300}

@@ -9,14 +9,7 @@ import { selectTotalPrice } from '@/redux/features/cart-slice'
 import { useCartModalContext } from '@/app/context/CartSidebarModalContext'
 import Image from 'next/image'
 import './index.css'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden'
+
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -59,11 +52,11 @@ const Header = () => {
     >
       <button
         onClick={handleOpenCartModal}
-        className="lg:hidden items-end lg:gap-2.5 fixed w-[50px] h-[50px] bottom-[100px] right-[20px] bg-[#fedb00] p-[5px] rounded-[10px]"
+        className="lg:hidden items-end lg:gap-2.5 fixed w-[40px] h-[36px] bottom-[100px] right-[20px] bg-white rounded-[10px]"
       >
-        <div className="relative inline-block w-[40px] h-[40px]">
-          <Image src={'/images/icons/icon-cart.svg'} alt={'icon-cart'} fill />
-          <span className="flex items-center justify-center font-medium text-2xs absolute -right-2 -top-2.5 bg-blue w-4.5 h-4.5 rounded-full text-white">
+        <div className="relative inline-block w-[32px] h-[32px]">
+          <Image src={'/images/icons/icon-cart-black.svg'} alt={'icon-cart'} fill />
+          <span className="flex items-center justify-center font-medium text-2xs absolute -right-2 -top-1.5 bg-blue w-4.5 h-4.5 rounded-full text-white">
             {product.length}
           </span>
         </div>
@@ -93,7 +86,7 @@ const Header = () => {
                   src="/images/logo/text-logo.png"
                   alt="Logo"
                   fill
-                  className="w-full object-contain"
+                  className="object-contain w-full"
                 />
               </div>
               {/* <p className="font-medium text-white text-custom-lg lg:hidden lg:text-custom-lg whitespace-nowrap">
@@ -108,9 +101,9 @@ const Header = () => {
               className={'hidden lg:block'}
             />
           </Link>
-          <div className="w-full hidden lg:block">
+          <div className="hidden w-full lg:block">
             <form>
-              <div className="relative  w-full ">
+              <div className="relative w-full ">
                 <input
                   onChange={(e) => setSearchQuery(e.target.value)}
                   value={searchQuery}
@@ -193,7 +186,7 @@ const Header = () => {
 
             <span className="hidden xl:block w-px h-7.5 bg-gray-4"></span>
 
-            <div className="flex items-center justify-end w-fit lg:w-full gap-5 ">
+            <div className="flex items-center justify-end gap-5 w-fit lg:w-full ">
               <div className="flex items-center gap-5">
                 <button
                   onClick={handleOpenCartModal}
@@ -238,7 +231,7 @@ const Header = () => {
                   </span>
 
                   <div>
-                    <span className="hidden  lg:block text-white uppercase text-custom-sm whitespace-nowrap">
+                    <span className="hidden text-white uppercase lg:block text-custom-sm whitespace-nowrap">
                       GIỎ HÀNG
                     </span>
                   </div>
@@ -301,10 +294,10 @@ const Header = () => {
                 onClick={handleSearch}
                 id="search-btn"
                 aria-label="Search"
-                className="absolute rounded-[5px] bg-[#fedb00] w-[36px] h-[37px] flex items-center justify-center duration-200 ease-in -translate-y-1/2 right-[0.5px] top-1/2 hover:text-blue"
+                className="absolute rounded-[5px]  w-[36px] h-[37px] flex items-center justify-center duration-200 ease-in -translate-y-1/2 right-[0.5px] top-1/2 hover:text-blue"
               >
                 <svg
-                  className="fill-current"
+                  className="fill-current "
                   width="18"
                   height="18"
                   viewBox="0 0 18 18"

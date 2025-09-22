@@ -34,6 +34,8 @@ const Sidebar = ({
   fetchCategories,
   genders,
   clearAllFilters,
+  // targetPath: khi render ở FooterMobile, điều hướng mọi filter tới trang shop
+  targetPath,
 }) => {
   return (
     <div
@@ -126,16 +128,16 @@ const Sidebar = ({
           )}
 
           {/* Screen size box - Bộ lọc kích thước màn hình */}
-          <GenderDropdown />
+          <GenderDropdown targetPath={targetPath} />
 
           {/* Size box - Bộ lọc kích thước */}
-          <SizeDropdown />
+          <SizeDropdown targetPath={targetPath} />
 
           {/* Color box - Bộ lọc màu sắc */}
-          <ColorsDropdwon />
+          <ColorsDropdwon targetPath={targetPath} />
 
           {/* Price range box - Bộ lọc khoảng giá */}
-          <PriceDropdown />
+          <PriceDropdown targetPath={targetPath} />
         </div>
       </form>
     </div>

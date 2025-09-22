@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-const SizeDropdown = () => {
+const SizeDropdown = ({ targetPath }) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -15,6 +15,7 @@ const SizeDropdown = () => {
   // Chọn/bỏ chọn version và đồng bộ URL (reset page, preserve params khác)
   const toggleVersion = (value) => {
     const url = new URL(pathname, window.location.origin)
+    if (targetPath) url.pathname = targetPath
     searchParams.forEach((v, k) => url.searchParams.set(k, v))
     if (activeVersion === value) {
       // đang chọn lại => bỏ chọn

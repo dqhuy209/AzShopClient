@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
-const ColorsDropdwon = () => {
+// targetPath: khi có, luôn điều hướng đến trang này khi áp dụng/xóa bộ lọc
+const ColorsDropdwon = ({ targetPath }) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -23,6 +24,7 @@ const ColorsDropdwon = () => {
   const applyColorFilter = () => {
     try {
       const url = new URL(pathname, window.location.origin)
+      if (targetPath) url.pathname = targetPath
       // Sao chép params hiện tại
       searchParams.forEach((value, key) => {
         url.searchParams.set(key, value)
@@ -46,6 +48,7 @@ const ColorsDropdwon = () => {
   const clearColorFilter = () => {
     try {
       const url = new URL(pathname, window.location.origin)
+      if (targetPath) url.pathname = targetPath
       searchParams.forEach((value, key) => {
         url.searchParams.set(key, value)
       })

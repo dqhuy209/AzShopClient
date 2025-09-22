@@ -31,13 +31,6 @@ export const metadata = {
     type: 'website',
   },
 
-  // Twitter Card
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
-    description: 'Mua đồng hồ Apple Watch chính hãng giá tốt tại Az Shop.',
-    images: ['/images/logo/logo.png'],
-  },
 }
 
 export default function HomePage() {

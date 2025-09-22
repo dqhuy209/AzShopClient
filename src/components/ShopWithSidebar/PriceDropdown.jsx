@@ -6,15 +6,16 @@ import 'react-range-slider-input/dist/style.css'
 import { formatVND } from '@/utils/formatCurrency'
 
 
-const PriceDropdown = () => {
+// Cho phép nhận targetPath để điều hướng về trang shop khi dùng từ FooterMobile
+const PriceDropdown = ({ targetPath }) => {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   // Ngưỡng giá cố định
-  const MIN_PRICE = 1000
+  const MIN_PRICE = 1000000
   const MAX_PRICE = 100000000
-  const STEP = 1000
+  const STEP = 100000
 
   const [toggleDropdown, setToggleDropdown] = useState(true)
 
@@ -45,6 +46,8 @@ const PriceDropdown = () => {
   // Cập nhật URL với giá trị hiện tại
   const applyPriceFilter = () => {
     const url = new URL(pathname, window.location.origin)
+    // Nếu có targetPath (ví dụ '/shop-with-sidebar'), luôn điều hướng về đó
+    if (targetPath) url.pathname = targetPath
     // Copy params hiện tại
     searchParams.forEach((value, key) => {
       url.searchParams.set(key, value)
@@ -58,6 +61,7 @@ const PriceDropdown = () => {
   // Xóa bộ lọc giá khỏi URL
   const clearPriceFilter = () => {
     const url = new URL(pathname, window.location.origin)
+    if (targetPath) url.pathname = targetPath
     searchParams.forEach((value, key) => {
       url.searchParams.set(key, value)
     })
