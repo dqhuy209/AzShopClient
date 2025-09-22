@@ -59,7 +59,7 @@ const Header = () => {
     >
       <button
         onClick={handleOpenCartModal}
-        className="lg:hidden items-end lg:gap-2.5 fixed w-[50px] h-[50px] bottom-[150px] right-[30px] bg-[#ffb900] p-[5px] rounded-[10px]"
+        className="lg:hidden items-end lg:gap-2.5 fixed w-[50px] h-[50px] bottom-[100px] right-[20px] bg-[#fedb00] p-[5px] rounded-[10px]"
       >
         <div className="relative inline-block w-[40px] h-[40px]">
           <Image src={'/images/icons/icon-cart.svg'} alt={'icon-cart'} fill />
@@ -72,8 +72,9 @@ const Header = () => {
       <div className="absolute z-[10] bg-black w-full h-full top-0 left-0"></div>
       <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 relative z-[20]">
         <div
-          className={`flex flex-row gap-5 items-center xl:justify-between ease-out duration-200 ${stickyMenu ? 'py-3 lg:py-4' : 'py-3 xl:py-6'}`}
+          className={`flex flex-row gap-5 items-center justify-between lg:justify-between ease-out duration-200 ${stickyMenu ? 'pt-3 pb-2 lg:py-4' : 'pt-3 pb-2 xl:py-6'}`}
         >
+          <div className="w-[60px] h-[1px] lg:hidden"></div>
           <Link
             className="flex-shrink-0 flex gap-x-[10px] items-center"
             href="/"
@@ -87,12 +88,12 @@ const Header = () => {
                   className="object-contain border border-white rounded-full p-[2px] lg:p-[16px]"
                 />
               </div>
-              <div className="w-[100px] h-[40px] relative">
+              <div className="w-[130px] h-[40px] relative  lg:hidden">
                 <Image
                   src="/images/logo/text-logo.png"
                   alt="Logo"
                   fill
-                  className="w-full object-contain lg:hidden"
+                  className="w-full object-contain"
                 />
               </div>
               {/* <p className="font-medium text-white text-custom-lg lg:hidden lg:text-custom-lg whitespace-nowrap">
@@ -107,9 +108,9 @@ const Header = () => {
               className={'hidden lg:block'}
             />
           </Link>
-          <div className="w-full">
+          <div className="w-full hidden lg:block">
             <form>
-              <div className="relative hidden w-full lg:block">
+              <div className="relative  w-full ">
                 <input
                   onChange={(e) => setSearchQuery(e.target.value)}
                   value={searchQuery}
@@ -151,8 +152,7 @@ const Header = () => {
             </form>
           </div>
           {/* <!-- header top right --> */}
-          <div className="flex w-full lg:w-auto items-center lg:gap-7.5">
-            {/*hidden xl:flex*/}
+          <div className="flex w-fit lg:w-auto items-center lg:gap-7.5">
             <div className="lg:flex items-center gap-3.5">
               <svg
                 width="24"
@@ -191,73 +191,10 @@ const Header = () => {
               </div>
             </div>
 
-            {/* <!-- divider --> */}
             <span className="hidden xl:block w-px h-7.5 bg-gray-4"></span>
 
-            <div className="flex items-center justify-end w-full gap-5 lg:w-auto">
+            <div className="flex items-center justify-end w-fit lg:w-full gap-5 ">
               <div className="flex items-center gap-5">
-                {/* <div className="lg:hidden">
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <div className="w-[25px] h-[25px] relative">
-                        <Image
-                          src={'/images/icons/icon-search.svg'}
-                          alt={'search'}
-                          fill
-                        />
-                      </div>
-                    </DialogTrigger>
-                    <DialogContent
-                      className="!top-[90px] !p-0 [&>button]:hidden"
-                      aria-label="My dialog"
-                    >
-                      <VisuallyHidden>
-                        <DialogTitle>Ẩn tiêu đề</DialogTitle>
-                      </VisuallyHidden>
-                      <DialogHeader className="space-x-0">
-                        <div className="relative w-full ">
-                          <input
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            value={searchQuery}
-                            type="search"
-                            name="search"
-                            id="search"
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault()
-                                handleSearch()
-                              }
-                            }}
-                            placeholder="Tìm kiếm sản phẩm..."
-                            autoComplete="off"
-                            className="custom-search w-full rounded-r-[5px] bg-gray-1 !border-l-0 border border-gray-3 py-2.5 pl-4 pr-10 outline-none ease-in duration-200"
-                          />
-
-                          <button
-                            onClick={handleSearch}
-                            id="search-btn"
-                            aria-label="Search"
-                            className="absolute flex items-center justify-center duration-200 ease-in -translate-y-1/2 right-3 top-1/2 hover:text-blue"
-                          >
-                            <svg
-                              className="fill-current"
-                              width="18"
-                              height="18"
-                              viewBox="0 0 18 18"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M17.2687 15.6656L12.6281 11.8969C14.5406 9.28123 14.3437 5.5406 11.9531 3.1781C10.6875 1.91248 8.99995 1.20935 7.19995 1.20935C5.39995 1.20935 3.71245 1.91248 2.44683 3.1781C-0.168799 5.79373 -0.168799 10.0687 2.44683 12.6844C3.71245 13.95 5.39995 14.6531 7.19995 14.6531C8.91558 14.6531 10.5187 14.0062 11.7843 12.8531L16.4812 16.65C16.5937 16.7344 16.7343 16.7906 16.875 16.7906C17.0718 16.7906 17.2406 16.7062 17.3531 16.5656C17.5781 16.2844 17.55 15.8906 17.2687 15.6656ZM7.19995 13.3875C5.73745 13.3875 4.38745 12.825 3.34683 11.7844C1.20933 9.64685 1.20933 6.18748 3.34683 4.0781C4.38745 3.03748 5.73745 2.47498 7.19995 2.47498C8.66245 2.47498 10.0125 3.03748 11.0531 4.0781C13.1906 6.2156 13.1906 9.67498 11.0531 11.7844C10.0406 12.825 8.66245 13.3875 7.19995 13.3875Z"
-                                fill=""
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
-                </div> */}
                 <button
                   onClick={handleOpenCartModal}
                   className="lg:flex items-end lg:gap-2.5 hidden "
@@ -338,6 +275,50 @@ const Header = () => {
               {/* //   <!-- Hamburger Toggle BTN --> */}
             </div>
           </div>
+        </div>
+        <div className="w-full mb-[5px]">
+          <form>
+            <div className="relative w-full lg:hidden">
+              <input
+                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchQuery}
+                type="search"
+                name="search"
+                id="search"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    handleSearch()
+                  }
+                }}
+                placeholder="Tìm kiếm sản phẩm..."
+                autoComplete="off"
+                className="custom-search w-full rounded-r-[5px] bg-gray-1 
+                !border-l-0 border border-gray-3 py-[6px] pl-4 pr-10 outline-none ease-in duration-200"
+              />
+
+              <button
+                onClick={handleSearch}
+                id="search-btn"
+                aria-label="Search"
+                className="absolute rounded-[5px] bg-[#fedb00] w-[36px] h-[37px] flex items-center justify-center duration-200 ease-in -translate-y-1/2 right-[0.5px] top-1/2 hover:text-blue"
+              >
+                <svg
+                  className="fill-current"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M17.2687 15.6656L12.6281 11.8969C14.5406 9.28123 14.3437 5.5406 11.9531 3.1781C10.6875 1.91248 8.99995 1.20935 7.19995 1.20935C5.39995 1.20935 3.71245 1.91248 2.44683 3.1781C-0.168799 5.79373 -0.168799 10.0687 2.44683 12.6844C3.71245 13.95 5.39995 14.6531 7.19995 14.6531C8.91558 14.6531 10.5187 14.0062 11.7843 12.8531L16.4812 16.65C16.5937 16.7344 16.7343 16.7906 16.875 16.7906C17.0718 16.7906 17.2406 16.7062 17.3531 16.5656C17.5781 16.2844 17.55 15.8906 17.2687 15.6656ZM7.19995 13.3875C5.73745 13.3875 4.38745 12.825 3.34683 11.7844C1.20933 9.64685 1.20933 6.18748 3.34683 4.0781C4.38745 3.03748 5.73745 2.47498 7.19995 2.47498C8.66245 2.47498 10.0125 3.03748 11.0531 4.0781C13.1906 6.2156 13.1906 9.67498 11.0531 11.7844C10.0406 12.825 8.66245 13.3875 7.19995 13.3875Z"
+                    fill=""
+                  />
+                </svg>
+              </button>
+            </div>
+          </form>
         </div>
         {/* <!-- header top end --> */}
       </div>

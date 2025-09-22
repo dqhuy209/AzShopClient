@@ -19,10 +19,10 @@ const Hero = () => {
         const response = await bannerService.getBanner()
 
         if (response.data.success && response.data.data?.content) {
-          const bannerData = response.data.data.content.map(banner => ({
+          const bannerData = response.data.data.content.map((banner) => ({
             id: banner.id,
             imageUrl: banner.imageUrl,
-            linkUrl: banner.linkUrl
+            linkUrl: banner.linkUrl,
           }))
           setBanners(bannerData)
         } else {
@@ -30,8 +30,8 @@ const Hero = () => {
             {
               id: 1,
               imageUrl: '/images/hero/banner.jpg',
-              linkUrl: '/home'
-            }
+              linkUrl: '/home',
+            },
           ])
         }
       } catch (error) {
@@ -41,8 +41,8 @@ const Hero = () => {
           {
             id: 1,
             imageUrl: '/images/hero/banner.jpg',
-            linkUrl: '/home'
-          }
+            linkUrl: '/home',
+          },
         ])
       } finally {
         setLoading(false)
@@ -53,7 +53,7 @@ const Hero = () => {
   }, [])
 
   return (
-    <section className="overflow-hidden pt-[71px] lg:mt-[-23px] lg:pt-30 xl:pt-51.5 bg-[#E5EAF4]">
+    <section className="overflow-hidden pt-[100px] lg:mt-[-23px] lg:pt-30 xl:pt-51.5 bg-[#E5EAF4]">
       <div className="w-full mx-auto">
         <div className="flex flex-wrap">
           <div className="w-full">
