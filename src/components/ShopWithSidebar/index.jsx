@@ -163,10 +163,12 @@ const ShopWithSidebar = () => {
   }
 
   // Hàm gộp để lấy thông tin breadcrumb dựa trên tham số
+  // Hiển thị nhãn tìm kiếm theo keyword nếu có
   const getBreadcrumbInfo = () => {
     const isLatest = searchParams.get('isLatest')
     const isFeatured = searchParams.get('isFeatured')
     const categoryId = searchParams.get('categoryId')
+    const keyword = searchParams.get('keyword')
 
     // Xác định loại breadcrumb dựa trên tham số
     if (isLatest === 'true') {
@@ -187,6 +189,14 @@ const ShopWithSidebar = () => {
       return {
         title: 'Danh mục sản phẩm',
         pages: ['shop', '/', 'danh mục'],
+      }
+    }
+
+    // Nếu có keyword, ưu tiên hiển thị tiêu đề theo keyword
+    if (keyword) {
+      return {
+        title: `Tìm kiếm cho '${keyword}'`,
+        pages: ['shop', '/', `tìm kiếm`],
       }
     }
 

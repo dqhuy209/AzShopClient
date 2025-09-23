@@ -1,7 +1,8 @@
 'use client'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import { useSearchParams, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { menuData, menuDataHeader } from './menuData'
+import { menuDataHeader } from './menuData'
 import Dropdown from './Dropdown'
 import { useAppSelector } from '@/redux/store'
 import { useSelector } from 'react-redux'
@@ -9,10 +10,20 @@ import { selectTotalPrice } from '@/redux/features/cart-slice'
 import { useCartModalContext } from '@/app/context/CartSidebarModalContext'
 import Image from 'next/image'
 import './index.css'
+import productService from '@/services/productService'
 
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('')
+  const [suggestions, setSuggestions] = useState([])
+  const [loadingSuggest, setLoadingSuggest] = useState(false)
+  const [showSuggest, setShowSuggest] = useState(false)
+  const latestQueryRef = useRef('')
+  const blurTimeoutRef = useRef(null)
+  const suppressSuggestRef = useRef(false)
+  const searchParamsNext = useSearchParams()
+  const pathname = usePathname()
+  const inputRef = useRef(null)
   const [navigationOpen, setNavigationOpen] = useState(false)
   const [stickyMenu, setStickyMenu] = useState(false)
   const { openCartModal } = useCartModalContext()
@@ -33,13 +44,109 @@ const Header = () => {
     }
   }
 
-  const handleSearch = () => {
-    // push keyword to the URL
-    if (searchQuery.trim()) {
-      const searchParams = new URLSearchParams()
-      searchParams.set('keyword', searchQuery.trim())
-      window.location.href = `/shop-with-sidebar?${searchParams.toString()}`
+  /**
+   * Điều hướng sang trang kết quả với keyword đã chọn
+   * Lưu ý: nhận tham số để có thể dùng khi click vào gợi ý
+   */
+  const handleSearch = (kw) => {
+    const keyword = (kw ?? searchQuery).trim()
+    if (!keyword) return
+    const searchParams = new URLSearchParams()
+    searchParams.set('keyword', keyword)
+    // reset popup gợi ý trước khi điều hướng
+    setShowSuggest(false)
+    setSuggestions([])
+    setLoadingSuggest(false)
+    // blur input để ngăn focus kích hoạt gợi ý sau điều hướng
+    if (inputRef.current) inputRef.current.blur()
+    window.location.href = `/shop-with-sidebar?${searchParams.toString()}`
+  }
+
+  /**
+   * Gọi API gợi ý với debounce, tránh giật và tránh hiển thị kết quả cũ
+   */
+  useEffect(() => {
+    // Nếu đang suppress (vừa chọn gợi ý), bỏ qua 1 vòng effect
+    if (suppressSuggestRef.current) {
+      suppressSuggestRef.current = false
+      return
     }
+    // Không hiển thị gợi ý trên trang kết quả
+    if (pathname?.startsWith('/shop-with-sidebar')) {
+      setShowSuggest(false)
+      setSuggestions([])
+      setLoadingSuggest(false)
+      return
+    }
+
+    // nếu rỗng: không hiển thị popup, xóa gợi ý và dừng
+    if (!searchQuery.trim()) {
+      setSuggestions([])
+      setLoadingSuggest(false)
+      setShowSuggest(false)
+      latestQueryRef.current = ''
+      return
+    }
+
+    // khi người dùng nhập tiếp: hiển thị popup + đặt loading và dọn gợi ý cũ
+    setShowSuggest(true)
+    setLoadingSuggest(true)
+    setSuggestions([])
+    const currentQuery = searchQuery.trim()
+    latestQueryRef.current = currentQuery
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await productService.getSuggestProducts({ keyword: currentQuery })
+        // chỉ set nếu query này vẫn là mới nhất
+        if (latestQueryRef.current === currentQuery) {
+          const list = Array.isArray(res?.data?.data) ? res.data.data : []
+          setSuggestions(list)
+          setLoadingSuggest(false)
+        }
+      } catch (err) {
+        // ghi log nhưng không làm vỡ UI; ẩn gợi ý khi lỗi
+        console.error('Lỗi gợi ý sản phẩm:', err)
+        if (latestQueryRef.current === currentQuery) {
+          setSuggestions([])
+          setLoadingSuggest(false)
+        }
+      }
+    }, 300) // debounce 300ms
+
+    return () => clearTimeout(timer)
+  }, [searchQuery, pathname])
+
+  // Đồng bộ giữ keyword trên thanh tìm kiếm sau khi điều hướng
+  useEffect(() => {
+    const kw = searchParamsNext?.get('keyword') || ''
+    setSearchQuery(kw)
+    // khi thay đổi keyword từ URL (điều hướng), không mở popup gợi ý
+    setShowSuggest(false)
+    setSuggestions([])
+    setLoadingSuggest(false)
+  }, [searchParamsNext])
+
+  // Ẩn gợi ý khi blur (trễ nhẹ để cho phép click)
+  const handleBlurSuggest = () => {
+    blurTimeoutRef.current = setTimeout(() => {
+      setShowSuggest(false)
+    }, 120)
+  }
+  const handleFocusSuggest = () => {
+    if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
+    if (searchQuery.trim()) setShowSuggest(true)
+  }
+
+  // chọn 1 gợi ý
+  const handlePickSuggestion = (text) => {
+    // suppress 1 vòng effect để không gọi lại suggest + loading flicker
+    suppressSuggestRef.current = true
+    setShowSuggest(false)
+    setSuggestions([])
+    setLoadingSuggest(false)
+    setSearchQuery(text)
+    handleSearch(text)
   }
 
   useEffect(() => {
@@ -103,8 +210,9 @@ const Header = () => {
           </Link>
           <div className="hidden w-full lg:block">
             <form>
-              <div className="relative w-full ">
+              <div className="relative w-full z-[1000000]" onBlur={handleBlurSuggest} onFocus={handleFocusSuggest}>
                 <input
+                  ref={inputRef}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   value={searchQuery}
                   type="search"
@@ -141,6 +249,31 @@ const Header = () => {
                     />
                   </svg>
                 </button>
+                {showSuggest && (
+                  <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-[999999] bg-white border border-gray-3 rounded-md shadow-lg max-h-[360px] overflow-auto">
+                    {loadingSuggest ? (
+                      <div className="flex items-center gap-2 px-4 py-3 text-gray-600">
+                        <span className="w-4 h-4 border-b-2 rounded-full animate-spin border-blue"></span>
+                        <span>Đang tải gợi ý...</span>
+                      </div>
+                    ) : suggestions.length === 0 ? (
+                      <div className="px-4 py-3 text-gray-500">Không có gợi ý phù hợp</div>
+                    ) : (
+                      <ul>
+                        {suggestions.slice(0, 10).map((s, idx) => (
+                          <li
+                            key={idx}
+                            className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-1 text-dark"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => handlePickSuggestion(s)}
+                          >
+                            {s}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
               </div>
             </form>
           </div>
@@ -271,8 +404,9 @@ const Header = () => {
         </div>
         <div className="w-full mb-[5px]">
           <form>
-            <div className="relative w-full lg:hidden">
+            <div className="relative w-full lg:hidden z-[1000000]" onBlur={handleBlurSuggest} onFocus={handleFocusSuggest}>
               <input
+                ref={inputRef}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 value={searchQuery}
                 type="search"
@@ -310,12 +444,37 @@ const Header = () => {
                   />
                 </svg>
               </button>
+              {showSuggest && (
+                <div className="absolute left-0 right-0 top-[calc(100%+4px)] z-[50] bg-white border border-gray-3 rounded-md shadow-md max-h-[300px] overflow-auto">
+                  {loadingSuggest ? (
+                    <div className="flex items-center gap-2 px-3 py-2 text-gray-600">
+                      <span className="w-4 h-4 border-b-2 rounded-full animate-spin border-blue"></span>
+                      <span>Đang tải gợi ý...</span>
+                    </div>
+                  ) : suggestions.length === 0 ? (
+                    <div className="px-3 py-2 text-gray-500">Không có gợi ý phù hợp</div>
+                  ) : (
+                    <ul>
+                      {suggestions.slice(0, 5).map((s, idx) => (
+                        <li
+                          key={idx}
+                          className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-1 text-dark"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => handlePickSuggestion(s)}
+                        >
+                          {s}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
             </div>
           </form>
         </div>
         {/* <!-- header top end --> */}
       </div>
-      <div className="border-t border-gray-3 bg-[#ecebf0] z-[20] relative w-full">
+      <div className="border-t border-gray-3 bg-[#ecebf0] z-[10] relative w-full">
         <div className="max-w-[1170px] mx-auto px-4 sm:px-7.5 xl:px-0 hidden xl:block">
           <div className="h-[55px] w-full">
             {/* <!--=== Main Nav Start ===--> */}
