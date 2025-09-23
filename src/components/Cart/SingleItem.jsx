@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { removeItemFromCart, toggleSelectItem } from '@/redux/features/cart-slice'
 import Image from 'next/image'
 import { formatVNDRounded } from '@/utils/formatCurrency'
+import Link from 'next/link'
 
 const SingleItem = ({ item, isSelected }) => {
 
@@ -42,7 +43,7 @@ const SingleItem = ({ item, isSelected }) => {
             </div>
             <div>
               <h3 className="text-xs duration-200 ease-out sm:text-base text-dark hover:text-blue line-clamp-3">
-                <a href="#"> {item.title} </a>
+                <Link href={`/shop-details/${item?.id ?? ''}`}> {item.title} </Link>
               </h3>
             </div>
           </div>

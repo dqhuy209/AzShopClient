@@ -218,10 +218,10 @@ const Checkout = () => {
                         return (
                           <div
                             key={item.id}
-                            className="flex items-center justify-between py-5 border-b border-gray-3"
+                            className="flex justify-between py-5 border-b border-gray-3"
                           >
                             <div>
-                              <p className="text-dark-5 line-clamp-1">
+                              <p className="text-dark-5 ">
                                 {item.title || item.name || 'Sản phẩm'}
                               </p>
                             </div>
