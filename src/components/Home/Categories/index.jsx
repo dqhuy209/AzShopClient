@@ -55,7 +55,7 @@ const Categories = () => {
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <button className="swiper-button-prev">
+              <button className="hero-swiper-prev">
                 <svg
                   className="fill-current"
                   width="24"
@@ -72,7 +72,7 @@ const Categories = () => {
                   />
                 </svg>
               </button>
-              <button className="swiper-button-next">
+              <button className="hero-swiper-next">
                 <svg
                   className="fill-current"
                   width="24"
@@ -96,10 +96,9 @@ const Categories = () => {
             spaceBetween={30}
             slidesPerView={5}
             modules={[Navigation]}
-            watchSlidesProgress={true}
             navigation={{
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
+              nextEl: '.hero-swiper-next',
+              prevEl: '.hero-swiper-prev',
             }}
             breakpoints={{
               0: { slidesPerView: 2 },
