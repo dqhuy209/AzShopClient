@@ -119,7 +119,7 @@ const ProductItem = ({ item }) => {
       <div className="flex flex-col h-auto p-3 space-y-2">
         {/* Title với chiều cao cố định */}
         <div className="min-h-[2.4rem] flex items-start">
-          <h3 className="text-sm font-semibold leading-tight transition-colors duration-300 cursor-pointer decoration-transparent text-dark-3 hover:text-red line-clamp-2">
+          <h3 className="text-sm font-semibold leading-tight transition-colors duration-300 cursor-pointer decoration-transparent text-dark-3 hover:text-red ">
             <Link
               href={`/shop-details/${item?.id}`}
               className="hover:underline"
@@ -151,9 +151,10 @@ const ProductItem = ({ item }) => {
           )}
 
           {item?.currentCondition && (
-            <p className="flex items-center text-xs text-green">
+            <p className="flex text-xs text-green">
+
               <svg
-                className="flex-shrink-0 w-3 h-3 mr-1"
+                className="flex-shrink-0 w-3 h-3 mt-[0.5px] mr-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -165,13 +166,13 @@ const ProductItem = ({ item }) => {
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <span className="truncate">{item.currentCondition}</span>
+              <span className="mt-[-1px] lg:mt-0">{item.currentCondition}</span>
             </p>
           )}
         </div>
 
         {/* Price Section - luôn ở cuối */}
-        <div className="pt-1 lg:pt-2 mt-auto border-t border-gray-3">
+        <div className="pt-1 mt-auto border-t lg:pt-2 border-gray-3">
           <div className="space-y-1.5">
             {/* Main Price Display */}
             <div className="flex flex-col items-baseline gap-1 lg:gap-2">
@@ -182,7 +183,7 @@ const ProductItem = ({ item }) => {
               </span>
               {item?.discountPercent > 0 && (
                 <div className="flex items-center gap-x-[5px] lg:gap-x-[10px]">
-                  <span className=" text-xs lg:text-sm font-medium line-through text-meta-4">
+                  <span className="text-xs font-medium line-through lg:text-sm text-meta-4">
                     {formatVNDRounded.thousands(item?.sellingPrice)}
                   </span>
                   <div className="flex items-center text-xs font-medium text-red whitespace-nowrap bg-red-light-6 p-[5px] rounded-[4px]">
