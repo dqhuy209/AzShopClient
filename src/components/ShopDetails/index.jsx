@@ -12,7 +12,6 @@ import toast from 'react-hot-toast'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useRouter } from 'next/navigation'
 
-
 const ShopDetails = ({ product }) => {
   const router = useRouter()
   const cartItems = useAppSelector((state) => state.cartReducer.items)
@@ -111,10 +110,12 @@ const ShopDetails = ({ product }) => {
   // Xử lý mua ngay - chuyển thẳng đến checkout với sản phẩm này
   const handleBuyNow = () => {
     // Thiết lập sản phẩm vào checkout
-    dispatch(setBuyNowCheckout({
-      ...product,
-      quantity: 1,
-    }))
+    dispatch(
+      setBuyNowCheckout({
+        ...product,
+        quantity: 1,
+      })
+    )
 
     // Chuyển hướng đến trang checkout
     router.push('/checkout')
@@ -156,11 +157,37 @@ const ShopDetails = ({ product }) => {
                         aria-label="Previous thumbnail"
                       >
                         {/* Mũi tên trái cho mobile (horizontal), mũi tên lên cho desktop (vertical) */}
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="lg:hidden">
-                          <path d="M15 18L9 12L15 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="lg:hidden"
+                        >
+                          <path
+                            d="M15 18L9 12L15 6"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hidden lg:block">
-                          <path d="M18 15L12 9L6 15" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="hidden lg:block"
+                        >
+                          <path
+                            d="M18 15L12 9L6 15"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                       </button>
 
@@ -171,11 +198,37 @@ const ShopDetails = ({ product }) => {
                         aria-label="Next thumbnail"
                       >
                         {/* Mũi tên phải cho mobile (horizontal), mũi tên xuống cho desktop (vertical) */}
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hidden lg:block">
-                          <path d="M6 9L12 15L18 9" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="hidden lg:block"
+                        >
+                          <path
+                            d="M6 9L12 15L18 9"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="lg:hidden">
-                          <path d="M9 18L15 12L9 6" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="lg:hidden"
+                        >
+                          <path
+                            d="M9 18L15 12L9 6"
+                            stroke="black"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
                       </button>
                     </>
@@ -204,8 +257,9 @@ const ShopDetails = ({ product }) => {
                           }}
                           key={key}
                           className={`flex items-center justify-center w-[60px] h-[60px] lg:w-20 lg:h-20  overflow-hidden rounded-lg bg-gray-2
-                       ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
-                            }`}
+                       ease-out duration-200 hover:border-2 hover:border-blue ${
+                         activePreview === key && 'border-2 border-blue'
+                       }`}
                         >
                           {item.type === 'image' ? (
                             <Image
@@ -216,12 +270,13 @@ const ShopDetails = ({ product }) => {
                               className="object-cover aspect-square"
                             />
                           ) : (
-                            <>
+                            <div className="relative w-full h-full">
                               {/* Hiển thị poster frame thật của video */}
                               <video
                                 className="object-cover w-full h-full aspect-square"
                                 muted
                                 playsInline
+                                controls={false}
                                 preload="metadata"
                               >
                                 <source src={item.url} type="video/mp4" />
@@ -244,7 +299,7 @@ const ShopDetails = ({ product }) => {
                                   <path d="M10 8L16 12L10 16V8Z" fill="#fff" />
                                 </svg>
                               </span>
-                            </>
+                            </div>
                           )}
                         </button>
                       </SwiperSlide>
@@ -253,8 +308,8 @@ const ShopDetails = ({ product }) => {
                 </div>
 
                 <div
-                  className="order-1 lg:order-2 relative z-1 overflow-hidden flex
-                 items-center justify-center w-full h-[400px]
+                  className="order-1 lg:order-2 relative z-1 flex
+                 items-center justify-center w-full h-[400px] relative
                   lg:!h-[512px] bg-gray-2 rounded-lg shadow-1"
                 >
                   <div>
@@ -310,15 +365,14 @@ const ShopDetails = ({ product }) => {
                           '/placeholder.jpg'
                         }
                         alt="product-preview"
-                        width={400}
-                        height={400}
+                        fill
                         className="object-cover max-w-full max-h-full"
                       />
                     ) : (
                       <video
                         key={mediaItems[activePreview]?.url} // Thêm key để force re-render video
                         controls
-                        className="object-contain max-w-full max-h-full"
+                        className="w-full max-h-[400px] lg:max-h-[512px] object-cover object-center"
                       >
                         <source
                           src={mediaItems[activePreview]?.url}
@@ -458,10 +512,11 @@ const ShopDetails = ({ product }) => {
               <button
                 key={key}
                 onClick={() => setActiveTab(item.id)}
-                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
-                  ? 'text-blue before:w-full'
-                  : 'text-dark before:w-0'
-                  }`}
+                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${
+                  activeTab === item.id
+                    ? 'text-blue before:w-full'
+                    : 'text-dark before:w-0'
+                }`}
               >
                 {item.title}
               </button>
@@ -473,8 +528,9 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${activeTab === 'tabOne' ? 'flex' : 'hidden'
-                }`}
+              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${
+                activeTab === 'tabOne' ? 'flex' : 'hidden'
+              }`}
             >
               <div className="w-full p-4 mt-10 bg-white rounded-lg sm:p-6">
                 <h2 className="text-2xl font-medium text-dark mb-7">
@@ -495,8 +551,9 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content two start --> */}
           <div>
             <div
-              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === 'tabTwo' ? 'block' : 'hidden'
-                }`}
+              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${
+                activeTab === 'tabTwo' ? 'block' : 'hidden'
+              }`}
             >
               {/* Thông tin sản phẩm chi tiết */}
 

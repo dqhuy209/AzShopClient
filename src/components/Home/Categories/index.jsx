@@ -9,28 +9,12 @@ import 'swiper/css/navigation'
 import 'swiper/css'
 import SingleItem from './SingleItem'
 import '/src/components/Home/NewArrivals/index.css'
-import Link from 'next/link'
+import { Navigation } from 'swiper/modules'
 
 const Categories = () => {
   const sliderRef = useRef(null)
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
-
-  const handlePrev = useCallback(() => {
-    if (!sliderRef.current) return
-    sliderRef.current.swiper.slidePrev()
-  }, [])
-
-  const handleNext = useCallback(() => {
-    if (!sliderRef.current) return
-    sliderRef.current.swiper.slideNext()
-  }, [])
-
-  useEffect(() => {
-    if (sliderRef.current) {
-      sliderRef.current.swiper.init()
-    }
-  }, [])
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -70,9 +54,8 @@ const Categories = () => {
                 </h2>
               </span>
             </div>
-
             <div className="flex items-center gap-3">
-              <button onClick={handlePrev} className="swiper-button-prev">
+              <button className="swiper-button-prev">
                 <svg
                   className="fill-current"
                   width="24"
@@ -89,8 +72,7 @@ const Categories = () => {
                   />
                 </svg>
               </button>
-
-              <button onClick={handleNext} className="swiper-button-next">
+              <button className="swiper-button-next">
                 <svg
                   className="fill-current"
                   width="24"
@@ -109,44 +91,28 @@ const Categories = () => {
               </button>
             </div>
           </div>
-
           <Swiper
             ref={sliderRef}
             spaceBetween={30}
             slidesPerView={5}
+            modules={[Navigation]}
+            watchSlidesProgress={true}
+            navigation={{
+              nextEl: '.swiper-button-next',
+              prevEl: '.swiper-button-prev',
+            }}
             breakpoints={{
-              // when window width is >= 640px
-              0: {
-                slidesPerView: 2,
-              },
-              430: {
-                slidesPerView: 2,
-              },
-              1000: {
-                slidesPerView: 4,
-                // spaceBetween: 4,
-              },
-              // when window width is >= 768px
-              1200: {
-                slidesPerView: 5,
-              },
+              0: { slidesPerView: 2 },
+              430: { slidesPerView: 2 },
+              1000: { slidesPerView: 4 },
+              1200: { slidesPerView: 5 },
             }}
           >
-            {loading ? (
-              <div className="py-8 text-center col-span-full">
-                <p className="text-gray-500">Đang tải danh mục...</p>
-              </div>
-            ) : categories && categories.length > 0 ? (
-              categories.map((item, key) => (
-                <SwiperSlide key={key}>
-                  <SingleItem item={item} />
-                </SwiperSlide>
-              ))
-            ) : (
-              <div className="py-8 text-center col-span-full">
-                <p className="text-gray-500">Không có danh mục nào</p>
-              </div>
-            )}
+            {categories.map((item, key) => (
+              <SwiperSlide key={key}>
+                <SingleItem item={item} />
+              </SwiperSlide>
+            ))}
           </Swiper>
         </div>
       </div>
