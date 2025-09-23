@@ -15,16 +15,21 @@ const getListProducts = (param = {}) => {
   })
   return Axios.getRequest(`/products?${usp.toString()}`)
 }
-const getListProductByType = (type) => {
-  return Axios.getRequest(`/products/apple-watch?type=${type}`)
+const getSuggestProducts = (param = {}) => {
+  const usp = new URLSearchParams()
+  Object.entries(param).forEach(([key, value]) => {
+    if (value === undefined || value === null || value === '') return
+    usp.append(key, String(value))
+  })
+  return Axios.getRequest(`/suggest?${usp.toString()}`)
 }
 const productDetails = (id) => {
   return Axios.getRequest(`/products/${id}`)
 }
 const productService = {
   getListProducts,
-  getListProductByType,
   productDetails,
+  getSuggestProducts,
 }
 
 export default productService

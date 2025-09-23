@@ -8,12 +8,10 @@ import Image from 'next/image'
 import './index.css'
 
 export default function NewArrival() {
-  // State để lưu trữ danh sách sản phẩm và trạng thái loading
   const [productDetail, setProductDetail] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  // Fetch dữ liệu sản phẩm khi component mount
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -21,9 +19,9 @@ export default function NewArrival() {
         setError(null)
 
         const response = await productService.getListProducts({
-          limit: 8,
-          isLatest: true,
-          isFeatured: false,
+          limit: 12,
+          // isLatest: true,
+          // isFeatured: true,
         })
 
         setProductDetail(response.data.data.content)
@@ -36,7 +34,7 @@ export default function NewArrival() {
     }
 
     fetchProducts()
-  }, []) // Chỉ chạy một lần khi component mount
+  }, [])
 
   return (
     <section className="overflow-hidden pt-15">
@@ -71,9 +69,9 @@ export default function NewArrival() {
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-[10px] lg:gap-x-7.5 gap-y-9">
             {[...Array(8)].map((_, index) => (
               <div key={index} className="animate-pulse">
-                <div className="bg-gray-200 h-64 rounded-lg mb-3"></div>
-                <div className="bg-gray-200 h-4 rounded w-3/4 mb-2"></div>
-                <div className="bg-gray-200 h-4 rounded w-1/2"></div>
+                <div className="h-64 mb-3 bg-gray-200 rounded-lg"></div>
+                <div className="w-3/4 h-4 mb-2 bg-gray-200 rounded"></div>
+                <div className="w-1/2 h-4 bg-gray-200 rounded"></div>
               </div>
             ))}
           </div>
@@ -85,7 +83,7 @@ export default function NewArrival() {
             <p className="text-red-500">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="px-4 py-2 mt-2 text-white bg-blue-500 rounded hover:bg-blue-600"
             >
               Thử lại
             </button>

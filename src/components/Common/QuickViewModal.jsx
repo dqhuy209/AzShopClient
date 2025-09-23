@@ -26,15 +26,12 @@ const QuickViewModal = () => {
 
   const dispatch = useDispatch()
 
-  // get the product data
   const product = useAppSelector((state) => state.quickViewReducer.value)
 
   const [activePreview, setActivePreview] = useState(0)
 
-  // Thêm ref cho Swiper
   const sliderRef = useRef(null)
 
-  // Hàm điều hướng cho thumbnail slider
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return
     sliderRef.current.swiper.slidePrev()
@@ -45,33 +42,24 @@ const QuickViewModal = () => {
     sliderRef.current.swiper.slideNext()
   }, [])
 
-  // Khởi tạo Swiper khi component mount
   useEffect(() => {
     if (sliderRef.current) {
       sliderRef.current.swiper.init()
     }
   }, [])
 
-  // Disable scroll khi modal mở
   useEffect(() => {
     if (isModalOpen) {
-      // Lưu trạng thái scroll hiện tại
       const originalStyle = window.getComputedStyle(document.body).overflow
-      // Disable scroll
       document.body.style.overflow = 'hidden'
 
-      // Cleanup khi component unmount hoặc modal đóng
       return () => {
         document.body.style.overflow = originalStyle
       }
     }
   }, [isModalOpen])
 
-  /**
-   * Xây mảng media thống nhất cho gallery (video + ảnh)
-   * - Video luôn ở đầu tiên để người dùng thấy ngay
-   * - Mỗi phần tử có { type: 'image' | 'video', url: string }
-   */
+
   const mediaItems = useMemo(() => {
     const displayProduct = productData || product
     const videoItems = (displayProduct?.videos || [])
@@ -83,39 +71,22 @@ const QuickViewModal = () => {
     return [...videoItems, ...imageItems]
   }, [productData, product])
 
-  // Handle close modal with proper cleanup
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     closeModal()
     dispatch(resetQuickView())
     setProductData(null)
     setActivePreview(0)
     setQuantity(1)
     setCurrentProductId(null)
-  }
+  }, [closeModal, dispatch])
 
-  // fetch product details when modal opens
-  useEffect(() => {
-    if (isModalOpen && product?.id) {
-      // Only fetch if this is a different product
-      if (currentProductId !== product.id) {
-        // Reset states when opening modal for new product
-        setActivePreview(0)
-        setQuantity(1)
-        setProductData(null)
-        setCurrentProductId(product.id)
-        fetchProductDetails()
-      }
-    }
-  }, [isModalOpen, product?.id, currentProductId])
-
-  const fetchProductDetails = async () => {
+  const fetchProductDetails = useCallback(async () => {
     if (!product?.id) return
 
     try {
       setLoading(true)
       const response = await productService.productDetails(product.id)
       if (response.data?.success) {
-        // Only update if this is still the current product
         if (currentProductId === product.id) {
           setProductData(response.data.data)
         }
@@ -125,16 +96,25 @@ const QuickViewModal = () => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [product?.id, currentProductId])
 
-  // preview modal - chỉ cho ảnh
+  useEffect(() => {
+    if (isModalOpen && product?.id) {
+      if (currentProductId !== product.id) {
+        setActivePreview(0)
+        setQuantity(1)
+        setProductData(null)
+        setCurrentProductId(product.id)
+        fetchProductDetails()
+      }
+    }
+  }, [isModalOpen, product?.id, currentProductId, fetchProductDetails])
+
   const handlePreviewSlider = () => {
-    // Nếu đang chọn video thì không mở slider
     const currentItem = mediaItems[activePreview]
     if (!currentItem || currentItem.type !== 'image') return
 
-    // Tính index trong mảng ảnh dựa trên vị trí hiện tại trong mediaItems
-    // Vì video ở đầu nên cần tính lại index
+
     const imageIndex =
       mediaItems.slice(0, activePreview + 1).filter((m) => m.type === 'image')
         .length - 1
@@ -205,7 +185,7 @@ const QuickViewModal = () => {
         setCurrentProductId(null)
       }
     }
-  }, [isModalOpen, closeModal, isModalPreviewOpen])
+  }, [isModalOpen, closeModal, isModalPreviewOpen, handleCloseModal])
 
   const displayProduct = productData || product
 
@@ -247,8 +227,8 @@ const QuickViewModal = () => {
             <div className="w-[526px] flex-shrink-0 h-full">
               <div className="flex h-full gap-5">
                 <div className="relative flex flex-col gap-5 overflow-hidden">
-                  {/* Nút điều hướng cho thumbnail slider - chỉ hiển thị khi có từ 7 ảnh trở lên */}
-                  {mediaItems.length >= 7 && (
+                  {/* Nút điều hướng cho thumbnail slider - chỉ hiển thị khi > 7 mục để tránh trống với 6 ảnh */}
+                  {mediaItems.length > 7 && (
                     <>
                       {/* Nút prev - mũi tên lên */}
                       <button
@@ -280,8 +260,17 @@ const QuickViewModal = () => {
                     ref={sliderRef}
                     direction="vertical"
                     spaceBetween={20}
-                    slidesPerView={7}
+                    /*
+                     * Số lượng slide hiển thị theo chiều dọc được tính động
+                     * để khớp với số media hiện có (tối đa 7). Điều này fix lỗi
+                     * layout khi chỉ có 6 ảnh nhưng slidesPerView = 7.
+                     */
+                    slidesPerView={Math.min(mediaItems.length || 0, 7)}
                     loop={false}
+                    /* Tự vô hiệu hóa cuộn khi số slide <= slidesPerView */
+                    watchOverflow={true}
+                    /* Tránh cảm giác "trượt được" khi dữ liệu không đủ */
+                    allowTouchMove={mediaItems.length > 7}
                     style={{ height: 'auto' }}
                   >
                     {mediaItems.map((item, key) => (

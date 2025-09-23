@@ -36,11 +36,7 @@ const ShopDetails = ({ product }) => {
       sliderRef.current.swiper.init()
     }
   }, [])
-  /**
-   * Xây mảng media thống nhất cho gallery (video + ảnh)
-   * - Video luôn ở đầu tiên để người dùng thấy ngay
-   * - Mỗi phần tử có { type: 'image' | 'video', url: string }
-   */
+
   const mediaItems = useMemo(() => {
     const videoItems = (product.videos || [])
       .filter(Boolean)
@@ -64,22 +60,16 @@ const ShopDetails = ({ product }) => {
   ]
   const [activeTab, setActiveTab] = useState('tabOne')
 
-  // Đồng bộ activePreview với previewImg và khởi tạo mặc định
   useEffect(() => {
     setActivePreview(previewImg)
   }, [previewImg])
 
-  /**
-   * Mở modal preview slider CHỈ cho ảnh
-   * - Tính chỉ số slide theo mảng ảnh (bỏ qua các phần tử video trong mediaItems)
-   */
+
   const handlePreviewSlider = () => {
-    // Nếu đang chọn video thì không mở slider
     const currentItem = mediaItems[activePreview]
     if (!currentItem || currentItem.type !== 'image') return
 
-    // Tính index trong mảng ảnh dựa trên vị trí hiện tại trong mediaItems
-    // Vì video ở đầu nên cần tính lại index
+
     const imageIndex =
       mediaItems.slice(0, activePreview + 1).filter((m) => m.type === 'image')
         .length - 1
@@ -91,9 +81,7 @@ const ShopDetails = ({ product }) => {
     dispatch(updateproductDetails(productToPreview))
     openPreviewModal()
   }
-  // Thêm vào giỏ hàng
   const handleAddToCart = () => {
-    // Nếu sản phẩm đã có, chỉ thông báo và không dispatch (bán 1 sản phẩm duy nhất)
     if (cartItems?.some((p) => p.id === product?.id)) {
       toast.error('Sản phẩm đã có trong giỏ hàng')
       return
@@ -107,9 +95,7 @@ const ShopDetails = ({ product }) => {
     toast.success('Thêm sản phẩm vào giỏ hàng thành công')
   }
 
-  // Xử lý mua ngay - chuyển thẳng đến checkout với sản phẩm này
   const handleBuyNow = () => {
-    // Thiết lập sản phẩm vào checkout
     dispatch(
       setBuyNowCheckout({
         ...product,
@@ -117,7 +103,6 @@ const ShopDetails = ({ product }) => {
       })
     )
 
-    // Chuyển hướng đến trang checkout
     router.push('/checkout')
   }
 
@@ -235,7 +220,7 @@ const ShopDetails = ({ product }) => {
                   )}
 
                   <Swiper
-                    className={'w-screen lg:h-[512px]'}
+                    className={'w-full lg:h-[512px]'}
                     ref={sliderRef}
                     spaceBetween={30}
                     slidesPerView={6}
@@ -257,9 +242,8 @@ const ShopDetails = ({ product }) => {
                           }}
                           key={key}
                           className={`flex items-center justify-center w-[60px] h-[60px] lg:w-20 lg:h-20  overflow-hidden rounded-lg bg-gray-2
-                       ease-out duration-200 hover:border-2 hover:border-blue ${
-                         activePreview === key && 'border-2 border-blue'
-                       }`}
+                       ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
+                            }`}
                         >
                           {item.type === 'image' ? (
                             <Image
@@ -309,7 +293,7 @@ const ShopDetails = ({ product }) => {
 
                 <div
                   className="order-1 lg:order-2 relative z-1 flex
-                 items-center justify-center w-full h-[400px] relative
+                 items-center justify-center w-full h-[400px]
                   lg:!h-[512px] bg-gray-2 rounded-lg shadow-1"
                 >
                   <div>
@@ -369,9 +353,17 @@ const ShopDetails = ({ product }) => {
                         className="object-cover max-w-full max-h-full"
                       />
                     ) : (
+
                       <video
-                        key={mediaItems[activePreview]?.url} // Thêm key để force re-render video
+                        key={mediaItems[activePreview]?.url}
                         controls
+                        playsInline
+                        muted
+                        preload="metadata"
+                        poster={
+                          (mediaItems.find((m) => m.type === 'image')?.url) ||
+                          '/placeholder.jpg'
+                        }
                         className="w-full max-h-[400px] lg:max-h-[512px] object-cover object-center"
                       >
                         <source
@@ -392,8 +384,8 @@ const ShopDetails = ({ product }) => {
             <div className="max-w-[539px] w-full">
               {/* Tiêu đề và badge giảm giá */}
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold leading-tight text-[22px] xl:text-4xl text-dark">
-                  {product.name || 'Tên sản phẩm'}
+                <h2 className="text-xl font-bold leading-tight text-[22px] xl:text-4xl text-dark">
+                  <span className="select-all">{product.name || 'Tên sản phẩm'}</span>
                 </h2>
                 {product.discountPercent > 0 && (
                   <div className="inline-flex px-4 py-2 text-base font-semibold text-white rounded-lg shadow-lg bg-red-light">
@@ -512,11 +504,10 @@ const ShopDetails = ({ product }) => {
               <button
                 key={key}
                 onClick={() => setActiveTab(item.id)}
-                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${
-                  activeTab === item.id
-                    ? 'text-blue before:w-full'
-                    : 'text-dark before:w-0'
-                }`}
+                className={`font-medium lg:text-lg ease-out duration-200 hover:text-blue relative before:h-0.5 before:bg-blue before:absolute before:left-0 before:bottom-0 before:ease-out before:duration-200 hover:before:w-full ${activeTab === item.id
+                  ? 'text-blue before:w-full'
+                  : 'text-dark before:w-0'
+                  }`}
               >
                 {item.title}
               </button>
@@ -528,9 +519,8 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${
-                activeTab === 'tabOne' ? 'flex' : 'hidden'
-              }`}
+              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${activeTab === 'tabOne' ? 'flex' : 'hidden'
+                }`}
             >
               <div className="w-full p-4 mt-10 bg-white rounded-lg sm:p-6">
                 <h2 className="text-2xl font-medium text-dark mb-7">
@@ -551,9 +541,8 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content two start --> */}
           <div>
             <div
-              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${
-                activeTab === 'tabTwo' ? 'block' : 'hidden'
-              }`}
+              className={`rounded-xl bg-white shadow-1 p-4 sm:p-6 mt-10 ${activeTab === 'tabTwo' ? 'block' : 'hidden'
+                }`}
             >
               {/* Thông tin sản phẩm chi tiết */}
 

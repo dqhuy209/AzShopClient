@@ -1,26 +1,43 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Image from 'next/image'
 import checkoutService from '@/services/checkout'
 import toast from 'react-hot-toast'
 
 const PaymentMethod = ({ onImageChange }) => {
   const [proofImage, setProofImage] = useState(null)
-  const [imageUrl, setImageUrl] = useState(null) // Lưu URL ảnh từ server
+  const [imageUrl, setImageUrl] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef(null)
 
-
-  // const qrImageSrc = useMemo(() => {
-  //   return process.env.NEXT_PUBLIC_QR_IMAGE || '/images/checkout/bank.svg'
-  // }, [])
-
+  const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false)
+  const [previewSrc, setPreviewSrc] = useState(null)
   const handleUploadClick = () => fileInputRef.current?.click()
+
+
+  const openPreview = (src) => {
+    if (!src) return
+    setPreviewSrc(src)
+    setIsImagePreviewOpen(true)
+  }
+
+  const closePreview = () => {
+    setIsImagePreviewOpen(false)
+    setTimeout(() => setPreviewSrc(null), 150)
+  }
+
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'Escape') closePreview()
+    }
+    if (isImagePreviewOpen) window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [isImagePreviewOpen])
 
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0]
     if (!file) return
 
-    // Validate file
     if (!file.type.startsWith('image/')) {
       toast.error('Vui lòng chọn file ảnh hợp lệ')
       return
@@ -31,23 +48,20 @@ const PaymentMethod = ({ onImageChange }) => {
       return
     }
 
-    // Preview ảnh ngay lập tức
     setProofImage(URL.createObjectURL(file))
     setIsUploading(true)
 
     try {
-      // Tạo FormData giống admin
       const formData = new FormData()
       formData.append('file', file)
 
       const { data } = await checkoutService.uploadOrderImage(formData)
-      // Lấy fileUrl từ response mới: data.data.fileUrl
       const imageUrl = data.data?.fileUrl
 
       if (!imageUrl) throw new Error('Không nhận được URL ảnh')
 
       setImageUrl(imageUrl)
-      onImageChange?.(imageUrl) // Truyền fileUrl cho form với key orderImage
+      onImageChange?.(imageUrl)
       toast.success('Tải ảnh thanh toán thành công!')
     } catch (error) {
       console.error('Lỗi upload ảnh:', error)
@@ -81,7 +95,15 @@ const PaymentMethod = ({ onImageChange }) => {
           <p className="mb-3 font-medium text-dark">Quét QR để thanh toán</p>
           <div className="flex items-start gap-5">
             <div className="p-3 border rounded-md bg-gray-1 border-gray-3">
-              <Image src={'/images/checkout/ma-qr.jpg'} alt="qr" width={160} height={160} className="object-contain" />
+
+              <button
+                type="button"
+                onClick={() => openPreview('/images/checkout/ma-qr.jpg')}
+                className="block focus:outline-none"
+                title="Nhấn để xem ảnh lớn"
+              >
+                <Image src={'/images/checkout/ma-qr.jpg'} alt="qr" width={160} height={160} className="object-contain cursor-pointer" />
+              </button>
             </div>
 
             <div className="flex-1">
@@ -128,13 +150,20 @@ const PaymentMethod = ({ onImageChange }) => {
                     )}
                   </div>
                   <div className="relative w-[200px] h-[200px] overflow-hidden rounded border border-gray-3">
-                    <Image
-                      src={proofImage}
-                      alt="payment-proof"
-                      width={200}
-                      height={200}
-                      className="object-cover w-full h-full"
-                    />
+
+                    <button
+                      type="button"
+                      onClick={() => openPreview(proofImage)}
+                      className="block w-full h-full focus:outline-none"
+                    >
+                      <Image
+                        src={proofImage}
+                        alt="payment-proof"
+                        width={200}
+                        height={200}
+                        className="object-cover w-full h-full cursor-pointer"
+                      />
+                    </button>
                     {isUploading && (
                       <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
                         <div className="w-8 h-8 border-4 border-white rounded-full border-t-transparent animate-spin"></div>
@@ -147,6 +176,35 @@ const PaymentMethod = ({ onImageChange }) => {
           </div>
         </div>
       </div>
+
+      {isImagePreviewOpen && previewSrc && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/80 p-4"
+          onClick={closePreview}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="relative flex items-center justify-center w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={closePreview}
+              className="absolute z-10 w-8 h-8 bg-white rounded-full shadow -top-3 -right-3 text-dark hover:bg-gray-1"
+              aria-label="Đóng"
+              title="Đóng"
+            >
+              ×
+            </button>
+            <Image
+              src={previewSrc}
+              alt="preview"
+              width={1000}
+              height={1000}
+              className="max-h-[85vh] w-auto h-auto object-contain rounded"
+              priority
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
