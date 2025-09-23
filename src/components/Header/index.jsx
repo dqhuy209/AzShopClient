@@ -18,6 +18,8 @@ const Header = () => {
   const [suggestions, setSuggestions] = useState([])
   const [loadingSuggest, setLoadingSuggest] = useState(false)
   const [showSuggest, setShowSuggest] = useState(false)
+  const [isInputFocused, setIsInputFocused] = useState(false)
+  const [recentKeywords, setRecentKeywords] = useState([])
   const latestQueryRef = useRef('')
   const blurTimeoutRef = useRef(null)
   const suppressSuggestRef = useRef(false)
@@ -44,109 +46,129 @@ const Header = () => {
     }
   }
 
-  /**
-   * Điều hướng sang trang kết quả với keyword đã chọn
-   * Lưu ý: nhận tham số để có thể dùng khi click vào gợi ý
-   */
+
   const handleSearch = (kw) => {
     const keyword = (kw ?? searchQuery).trim()
     if (!keyword) return
+    saveRecentKeyword(keyword)
     const searchParams = new URLSearchParams()
     searchParams.set('keyword', keyword)
-    // reset popup gợi ý trước khi điều hướng
     setShowSuggest(false)
     setSuggestions([])
     setLoadingSuggest(false)
-    // blur input để ngăn focus kích hoạt gợi ý sau điều hướng
     if (inputRef.current) inputRef.current.blur()
     window.location.href = `/shop-with-sidebar?${searchParams.toString()}`
   }
 
-  /**
-   * Gọi API gợi ý với debounce, tránh giật và tránh hiển thị kết quả cũ
-   */
+
   useEffect(() => {
-    // Nếu đang suppress (vừa chọn gợi ý), bỏ qua 1 vòng effect
     if (suppressSuggestRef.current) {
       suppressSuggestRef.current = false
       return
     }
-    // Không hiển thị gợi ý trên trang kết quả
-    if (pathname?.startsWith('/shop-with-sidebar')) {
-      setShowSuggest(false)
-      setSuggestions([])
+
+    const trimmed = searchQuery.trim()
+    if (!isInputFocused || !trimmed) {
       setLoadingSuggest(false)
+      setSuggestions([])
+
+      if (!trimmed) latestQueryRef.current = ''
       return
     }
 
-    // nếu rỗng: không hiển thị popup, xóa gợi ý và dừng
-    if (!searchQuery.trim()) {
-      setSuggestions([])
-      setLoadingSuggest(false)
-      setShowSuggest(false)
-      latestQueryRef.current = ''
-      return
-    }
-
-    // khi người dùng nhập tiếp: hiển thị popup + đặt loading và dọn gợi ý cũ
     setShowSuggest(true)
     setLoadingSuggest(true)
     setSuggestions([])
-    const currentQuery = searchQuery.trim()
+    const currentQuery = trimmed
     latestQueryRef.current = currentQuery
 
     const timer = setTimeout(async () => {
       try {
         const res = await productService.getSuggestProducts({ keyword: currentQuery })
-        // chỉ set nếu query này vẫn là mới nhất
         if (latestQueryRef.current === currentQuery) {
           const list = Array.isArray(res?.data?.data) ? res.data.data : []
           setSuggestions(list)
           setLoadingSuggest(false)
         }
       } catch (err) {
-        // ghi log nhưng không làm vỡ UI; ẩn gợi ý khi lỗi
         console.error('Lỗi gợi ý sản phẩm:', err)
         if (latestQueryRef.current === currentQuery) {
           setSuggestions([])
           setLoadingSuggest(false)
         }
       }
-    }, 300) // debounce 300ms
+    }, 300)
 
     return () => clearTimeout(timer)
-  }, [searchQuery, pathname])
+  }, [searchQuery, isInputFocused])
 
-  // Đồng bộ giữ keyword trên thanh tìm kiếm sau khi điều hướng
+
   useEffect(() => {
     const kw = searchParamsNext?.get('keyword') || ''
     setSearchQuery(kw)
-    // khi thay đổi keyword từ URL (điều hướng), không mở popup gợi ý
+
     setShowSuggest(false)
     setSuggestions([])
     setLoadingSuggest(false)
+
+    loadRecentKeywords()
   }, [searchParamsNext])
 
-  // Ẩn gợi ý khi blur (trễ nhẹ để cho phép click)
+
   const handleBlurSuggest = () => {
     blurTimeoutRef.current = setTimeout(() => {
+      setIsInputFocused(false)
       setShowSuggest(false)
     }, 120)
   }
   const handleFocusSuggest = () => {
     if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current)
-    if (searchQuery.trim()) setShowSuggest(true)
+    setIsInputFocused(true)
+
+    setShowSuggest(true)
+    loadRecentKeywords()
   }
 
-  // chọn 1 gợi ý
   const handlePickSuggestion = (text) => {
-    // suppress 1 vòng effect để không gọi lại suggest + loading flicker
     suppressSuggestRef.current = true
     setShowSuggest(false)
     setSuggestions([])
     setLoadingSuggest(false)
     setSearchQuery(text)
+    saveRecentKeyword(text)
     handleSearch(text)
+  }
+
+
+  const loadRecentKeywords = () => {
+    try {
+      const raw = localStorage.getItem('az_recent_keywords')
+      const list = raw ? JSON.parse(raw) : []
+      if (Array.isArray(list)) setRecentKeywords(list)
+    } catch (e) {
+      console.error('Không thể đọc lịch sử tìm kiếm:', e)
+    }
+  }
+  const saveRecentKeyword = (kw) => {
+    try {
+      const trimmed = kw?.trim()
+      if (!trimmed) return
+      const raw = localStorage.getItem('az_recent_keywords')
+      const list = Array.isArray(JSON.parse(raw || '[]')) ? JSON.parse(raw || '[]') : []
+      const next = [trimmed, ...list.filter((x) => x !== trimmed)].slice(0, 8)
+      localStorage.setItem('az_recent_keywords', JSON.stringify(next))
+      setRecentKeywords(next)
+    } catch (e) {
+      console.error('Không thể lưu lịch sử tìm kiếm:', e)
+    }
+  }
+  const clearRecentKeywords = () => {
+    try {
+      localStorage.removeItem('az_recent_keywords')
+      setRecentKeywords([])
+    } catch (e) {
+      console.error('Không thể xoá lịch sử tìm kiếm:', e)
+    }
   }
 
   useEffect(() => {
@@ -256,14 +278,12 @@ const Header = () => {
                         <span className="w-4 h-4 border-b-2 rounded-full animate-spin border-blue"></span>
                         <span>Đang tải gợi ý...</span>
                       </div>
-                    ) : suggestions.length === 0 ? (
-                      <div className="px-4 py-3 text-gray-500">Không có gợi ý phù hợp</div>
-                    ) : (
+                    ) : suggestions.length > 0 ? (
                       <ul>
                         {suggestions.slice(0, 10).map((s, idx) => (
                           <li
                             key={idx}
-                            className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-1 text-dark"
+                            className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-2 text-dark"
                             onMouseDown={(e) => e.preventDefault()}
                             onClick={() => handlePickSuggestion(s)}
                           >
@@ -271,6 +291,30 @@ const Header = () => {
                           </li>
                         ))}
                       </ul>
+                    ) : recentKeywords.length > 0 ? (
+                      <div>
+                        <div className="px-4 pt-4 pb-2   text-base text-gray-500 border-b-[1px] border-gray-3">Không có sản phẩm nào phù hợp</div>
+                        <div className="px-4 pt-3 pb-2 text-sm uppercase text-gray-6">Lịch sử tìm kiếm</div>
+                        <ul>
+                          {recentKeywords.map((kw, idx) => (
+                            <li
+                              key={`rk-${idx}`}
+                              className="px-4 py-2 text-sm cursor-pointer hover:bg-gray-2 text-gray-5"
+                              onMouseDown={(e) => e.preventDefault()}
+                              onClick={() => handlePickSuggestion(kw)}
+                            >
+                              {kw}
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="px-4 py-2 text-right">
+                          <button type="button" className="text-xs text-blue hover:underline" onMouseDown={(e) => e.preventDefault()} onClick={clearRecentKeywords}>
+                            Xoá lịch sử
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="px-4 py-3 text-gray-500">Không có sản phẩm nào phù hợp</div>
                     )}
                   </div>
                 )}
@@ -451,14 +495,12 @@ const Header = () => {
                       <span className="w-4 h-4 border-b-2 rounded-full animate-spin border-blue"></span>
                       <span>Đang tải gợi ý...</span>
                     </div>
-                  ) : suggestions.length === 0 ? (
-                    <div className="px-3 py-2 text-gray-500">Không có gợi ý phù hợp</div>
-                  ) : (
+                  ) : suggestions.length > 0 ? (
                     <ul>
                       {suggestions.slice(0, 5).map((s, idx) => (
                         <li
                           key={idx}
-                          className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-1 text-dark"
+                          className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-2 text-dark"
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={() => handlePickSuggestion(s)}
                         >
@@ -466,6 +508,30 @@ const Header = () => {
                         </li>
                       ))}
                     </ul>
+                  ) : recentKeywords.length > 0 ? (
+                    <div>
+                      <div className="px-3 pt-4 pb-2 text-base text-dark  border-b-[1px] border-gray-3">Không có sản phẩm nào phù hợp</div>
+                      <div className="px-3 pt-2 pb-1 text-sm uppercase text-gray-6">Lịch sử tìm kiếm</div>
+                      <ul>
+                        {recentKeywords.map((kw, idx) => (
+                          <li
+                            key={`m-rk-${idx}`}
+                            className="px-3 py-2 text-sm cursor-pointer hover:bg-gray-2 text-gray-5"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={() => handlePickSuggestion(kw)}
+                          >
+                            {kw}
+                          </li>
+                        ))}
+                      </ul>
+                      <div className="px-3 py-2 text-right">
+                        <button type="button" className="text-xs text-blue hover:underline" onMouseDown={(e) => e.preventDefault()} onClick={clearRecentKeywords}>
+                          Xoá lịch sử
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="px-3 py-2 text-gray-500">Không có gợi ý phù hợp</div>
                   )}
                 </div>
               )}
