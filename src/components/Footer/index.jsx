@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer className="mt-10 overflow-hidden border-t-2 border-gray-2 bg-[#000] lg:bg-[#fff] ">
       <div className="max-w-[1170px] mx-auto px-4 sm:px-8 xl:px-0 ">
-        <div className="flex flex-wrap xl:flex-nowrap gap-10 xl:gap-19 xl:justify-between  xl:pt-12 pb-6 xl:pb-15 pt-12.5 ">
+        <div className="flex flex-wrap xl:flex-nowrap gap-10 xl:gap-19 xl:justify-between  xl:pt-12 pb-[80px] xl:pb-15 pt-12.5 ">
           <div className="max-w-[330px] w-full">
             <h2 className="mb-[20px] text-blue lg:text-dark text-custom-xl lg:text-custom-1 font-medium ">
               LIÊN HỆ HỖ TRỢ
@@ -79,9 +79,7 @@ const Footer = () => {
               </li>
 
               <li>
-                <div
-                  className="flex items-center gap-4.5"
-                >
+                <div className="flex items-center gap-4.5">
                   <svg
                     width="24"
                     height="24"
