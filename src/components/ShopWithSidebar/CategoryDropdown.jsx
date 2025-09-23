@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const CategoryItem = ({ category, isSelected, onToggle }) => {
   return (
@@ -45,7 +45,13 @@ const CategoryItem = ({ category, isSelected, onToggle }) => {
   )
 }
 const CategoryDropdown = ({ categories, selectedCategory, onCategoryChange }) => {
-  const [toggleDropdown, setToggleDropdown] = useState(true)
+  // Mặc định: mở nếu đang có category được chọn
+  const [toggleDropdown, setToggleDropdown] = useState(() => !!selectedCategory)
+
+  // Đồng bộ mở/đóng nếu selectedCategory thay đổi (ví dụ sau điều hướng)
+  useEffect(() => {
+    setToggleDropdown(!!selectedCategory)
+  }, [selectedCategory])
 
   return (
     <div className="bg-white rounded-lg shadow-1">

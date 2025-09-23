@@ -8,10 +8,19 @@ const ScreenSizeDropdown = ({ targetPath }) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const [toggleDropdown, setToggleDropdown] = useState(true)
+  // Mặc định: chỉ mở nếu đang có screenSize trong URL
+  const [toggleDropdown, setToggleDropdown] = useState(() => !!(typeof window !== 'undefined' && (new URLSearchParams(window.location.search)).get('screenSize')))
 
   const sizes = ['38mm', '40mm', '41mm', '42mm', '44mm', '45mm', '46mm', '49mm']
   const activeSize = searchParams.get('screenSize') || ''
+
+  // Đồng bộ mở/đóng theo URL mỗi khi query đổi (trường hợp mở sidebar sau khi đã điều hướng)
+  React.useEffect(() => {
+    try {
+      const has = !!(searchParams.get('screenSize'))
+      setToggleDropdown(has)
+    } catch { }
+  }, [searchParams])
 
   const toggleSize = (value) => {
     const url = new URL(pathname, window.location.origin)

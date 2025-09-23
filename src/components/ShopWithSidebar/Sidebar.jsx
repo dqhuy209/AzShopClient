@@ -3,7 +3,8 @@ import React from 'react'
 import CategoryDropdown from './CategoryDropdown'
 import GenderDropdown from './GenderDropdown'
 import SizeDropdown from './SizeDropdown'
-import ColorsDropdwon from './ColorsDropdwon'
+import ColorDropdown from './ColorDropdown'
+import CaseMaterialDropdown from './CaseMaterialDropdown'
 import PriceDropdown from './PriceDropdown'
 
 /**
@@ -134,7 +135,10 @@ const Sidebar = ({
           <SizeDropdown targetPath={targetPath} />
 
           {/* Color box - Bộ lọc màu sắc */}
-          <ColorsDropdwon targetPath={targetPath} />
+          <ColorDropdown targetPath={targetPath} />
+
+          {/* Case material box - Bộ lọc chất liệu vỏ */}
+          <CaseMaterialDropdown targetPath={targetPath} />
 
           {/* Price range box - Bộ lọc khoảng giá */}
           <PriceDropdown targetPath={targetPath} />

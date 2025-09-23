@@ -17,7 +17,12 @@ const PriceDropdown = ({ targetPath }) => {
   const MAX_PRICE = 100000000
   const STEP = 100000
 
-  const [toggleDropdown, setToggleDropdown] = useState(true)
+  // Mặc định: mở khi URL có minPrice hoặc maxPrice
+  const [toggleDropdown, setToggleDropdown] = useState(() => {
+    if (typeof window === 'undefined') return false
+    const sp = new URLSearchParams(window.location.search)
+    return sp.has('minPrice') || sp.has('maxPrice')
+  })
 
   const [selectedPrice, setSelectedPrice] = useState({
     from: MIN_PRICE,
@@ -34,6 +39,14 @@ const PriceDropdown = ({ targetPath }) => {
     const from = Math.min(clampedMin, clampedMax)
     const to = Math.max(clampedMin, clampedMax)
     setSelectedPrice({ from, to })
+  }, [searchParams])
+
+  // Đồng bộ mở/đóng theo URL mỗi khi query đổi
+  useEffect(() => {
+    try {
+      const has = searchParams.has('minPrice') || searchParams.has('maxPrice')
+      setToggleDropdown(has)
+    } catch { }
   }, [searchParams])
 
   // Build text hiển thị

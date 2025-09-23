@@ -7,10 +7,19 @@ const SizeDropdown = ({ targetPath }) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
-  const [toggleDropdown, setToggleDropdown] = useState(true)
+  // Mặc định: mở nếu URL đã có 'version'
+  const [toggleDropdown, setToggleDropdown] = useState(() => !!(typeof window !== 'undefined' && (new URLSearchParams(window.location.search)).get('version')))
 
   // Lấy trạng thái version hiện tại từ URL
   const activeVersion = searchParams.get('version') || ''
+
+  // Đồng bộ mở/đóng theo URL mỗi khi query đổi
+  React.useEffect(() => {
+    try {
+      const has = !!(searchParams.get('version'))
+      setToggleDropdown(has)
+    } catch { }
+  }, [searchParams])
 
   // Chọn/bỏ chọn version và đồng bộ URL (reset page, preserve params khác)
   const toggleVersion = (value) => {
