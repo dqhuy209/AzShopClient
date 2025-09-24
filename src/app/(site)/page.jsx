@@ -1,6 +1,8 @@
 import Home from '@/components/Home'
 
+
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://azshop.vn'),
   title: 'Az Shop | Đồng hồ AppleWatch giá tốt',
   description:
     'Mua đồng hồ Apple Watch chính hãng giá tốt tại Az Shop. Đa dạng mẫu mã, bảo hành uy tín.',

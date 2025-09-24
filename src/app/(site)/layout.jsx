@@ -16,7 +16,6 @@ import { PreviewSliderProvider } from '../context/PreviewSliderContext'
 import PreviewSliderModal from '@/components/Common/PreviewSlider'
 import { Toaster } from 'react-hot-toast'
 
-import ScrollToTop from '@/components/Common/ScrollToTop'
 import PreLoader from '@/components/Common/PreLoader'
 import Head from 'next/head'
 import FooterMobile from '@/components/Common/FooterMobile'
