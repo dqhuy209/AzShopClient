@@ -9,7 +9,9 @@ const BlogDetails = () => {
     const fetchPolicies = async () => {
       try {
         const response = await bannerService.getPolicy()
-        setPolicies(response.data.data.content)
+        const allPolicies = response?.data?.data?.content ?? []
+        const secondPolicy = allPolicies[1] || null
+        setPolicies(secondPolicy ? [secondPolicy] : [])
       } catch (error) {
         console.error('Error fetching categories:', error)
       }
@@ -22,11 +24,11 @@ const BlogDetails = () => {
         title={'CHÍNH SÁCH VÀ ĐIỀU KHOẢN'}
         pages={['CHÍNH SÁCH VÀ ĐIỀU KHOẢN']}
       />
-      <section className="overflow-hidden py-20">
+      <section className="py-20 overflow-hidden">
         <div className="max-w-[1170px] w-full mx-auto px-4 sm:px-8 xl:px-0">
           {policies.map((policy, index) => (
             <div key={index}>
-              <h2 className="font-medium text-dark text-xl lg:text-2xl xl:text-custom-4xl mb-4">
+              <h2 className="mb-4 text-xl font-medium text-dark lg:text-2xl xl:text-custom-4xl">
                 {policy.title}
               </h2>
 

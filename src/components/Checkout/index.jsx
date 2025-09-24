@@ -48,13 +48,15 @@ const Checkout = () => {
   const [policies, setPolicies] = useState([])
   const [agreedToPolicy, setAgreedToPolicy] = useState(false)
   const [paymentImageUrl, setPaymentImageUrl] = useState(null)
-  const [showPaymentModal, setShowPaymentModal] = useState(false) // Modal tải ảnh thanh toán sau khi đồng ý chính sách
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
 
   useEffect(() => {
     const fetchPolicies = async () => {
       try {
         const response = await bannerService.getPolicy()
-        setPolicies(response.data.data.content)
+        const allPolicies = response?.data?.data?.content ?? []
+        const secondPolicy = allPolicies[0] || null
+        setPolicies(secondPolicy ? [secondPolicy] : [])
       } catch (error) {
         console.error('Error fetching policies:', error)
       }
