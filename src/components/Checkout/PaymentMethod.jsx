@@ -3,7 +3,7 @@ import Image from 'next/image'
 import checkoutService from '@/services/checkout'
 import toast from 'react-hot-toast'
 
-const PaymentMethod = ({ onImageChange }) => {
+const PaymentMethod = ({ onImageChange, initialImageUrl }) => {
   const [proofImage, setProofImage] = useState(null)
   const [imageUrl, setImageUrl] = useState(null)
   const [isUploading, setIsUploading] = useState(false)
@@ -12,6 +12,13 @@ const PaymentMethod = ({ onImageChange }) => {
   const [isImagePreviewOpen, setIsImagePreviewOpen] = useState(false)
   const [previewSrc, setPreviewSrc] = useState(null)
   const handleUploadClick = () => fileInputRef.current?.click()
+  useEffect(() => {
+    if (initialImageUrl) {
+      setImageUrl(initialImageUrl)
+      setProofImage(initialImageUrl)
+    }
+  }, [initialImageUrl])
+
 
 
   const openPreview = (src) => {
@@ -48,7 +55,8 @@ const PaymentMethod = ({ onImageChange }) => {
       return
     }
 
-    setProofImage(URL.createObjectURL(file))
+    const localPreviewUrl = URL.createObjectURL(file)
+    setProofImage(localPreviewUrl)
     setIsUploading(true)
 
     try {
@@ -61,6 +69,8 @@ const PaymentMethod = ({ onImageChange }) => {
       if (!imageUrl) throw new Error('Không nhận được URL ảnh')
 
       setImageUrl(imageUrl)
+      setProofImage(imageUrl)
+      try { URL.revokeObjectURL(localPreviewUrl) } catch { }
       onImageChange?.(imageUrl)
       toast.success('Tải ảnh thanh toán thành công!')
     } catch (error) {
@@ -74,7 +84,7 @@ const PaymentMethod = ({ onImageChange }) => {
   }
 
   const handleRemoveImage = () => {
-    if (proofImage) URL.revokeObjectURL(proofImage)
+    try { URL.revokeObjectURL(proofImage) } catch { }
     setProofImage(null)
     setImageUrl(null)
     fileInputRef.current.value = ''
@@ -83,30 +93,30 @@ const PaymentMethod = ({ onImageChange }) => {
   }
 
   return (
-    <div className="bg-white shadow-1 rounded-[10px] mt-7.5">
-      <div className="border-b border-gray-3 py-5 px-4 sm:px-8.5">
-        <h3 className="text-xl font-semibold text-dark">Thanh toán</h3>
-      </div>
-
+    <div className="bg-white shadow-1 rounded-[10px] mt-2">
       <div className="p-4 sm:p-8.5">
-
-
         <div className="p-4 border rounded-md border-gray-3 sm:p-5">
           <p className="mb-3 font-medium text-dark">Quét QR để thanh toán</p>
-          <div className="flex items-start gap-5">
-            <div className="p-3 border rounded-md bg-gray-1 border-gray-3">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-5">
+            <div className="w-full p-3 border rounded-md bg-gray-1 border-gray-3 sm:w-[300px]">
 
               <button
                 type="button"
                 onClick={() => openPreview('/images/checkout/ma-qr.jpg')}
-                className="block focus:outline-none"
+                className="block w-full focus:outline-none"
                 title="Nhấn để xem ảnh lớn"
               >
-                <Image src={'/images/checkout/ma-qr.jpg'} alt="qr" width={160} height={160} className="object-contain cursor-pointer" />
+                <Image
+                  src={'/images/checkout/ma-qr.jpg'}
+                  alt="qr"
+                  width={300}
+                  height={300}
+                  className="object-contain w-full h-auto cursor-pointer"
+                />
               </button>
             </div>
 
-            <div className="flex-1">
+            <div className="flex-1 w-full ">
               <p className="mb-3 text-sm text-meta-4">
                 Vui lòng tải ảnh minh chứng thanh toán (biên lai/chụp màn hình). Ảnh chỉ dùng để xác thực đơn.
               </p>
@@ -134,7 +144,7 @@ const PaymentMethod = ({ onImageChange }) => {
               </div>
 
               {proofImage && (
-                <div className="mt-4">
+                <div className="w-full mt-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm">
                       {isUploading ? 'Đang tải ảnh lên server...' : 'Ảnh đã tải thành công:'}
@@ -149,7 +159,7 @@ const PaymentMethod = ({ onImageChange }) => {
                       </button>
                     )}
                   </div>
-                  <div className="relative w-[200px] h-[200px] overflow-hidden rounded border border-gray-3">
+                  <div className="relative w-full overflow-hidden border rounded border-gray-3 sm:w-[200px] sm:h-[200px]">
 
                     <button
                       type="button"
@@ -159,9 +169,9 @@ const PaymentMethod = ({ onImageChange }) => {
                       <Image
                         src={proofImage}
                         alt="payment-proof"
-                        width={200}
-                        height={200}
-                        className="object-cover w-full h-full cursor-pointer"
+                        width={800}
+                        height={800}
+                        className="object-contain w-full h-auto cursor-pointer sm:object-cover sm:h-full"
                       />
                     </button>
                     {isUploading && (

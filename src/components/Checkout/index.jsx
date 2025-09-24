@@ -48,6 +48,7 @@ const Checkout = () => {
   const [policies, setPolicies] = useState([])
   const [agreedToPolicy, setAgreedToPolicy] = useState(false)
   const [paymentImageUrl, setPaymentImageUrl] = useState(null)
+  const [showPaymentModal, setShowPaymentModal] = useState(false) // Modal tải ảnh thanh toán sau khi đồng ý chính sách
 
   useEffect(() => {
     const fetchPolicies = async () => {
@@ -63,26 +64,7 @@ const Checkout = () => {
 
 
   const handleOpenPolicyModal = () => {
-    const requiredFields = ['customerName', 'customerPhone', 'customerAddress']
-    const emptyFields = requiredFields.filter(field => !watch(field)?.trim())
-
-    if (emptyFields.length > 0) {
-      const fieldNames = {
-        customerName: 'Họ tên',
-        customerPhone: 'Số điện thoại',
-        customerAddress: 'Địa chỉ'
-      }
-      const missingFields = emptyFields.map(field => fieldNames[field]).join(', ')
-      toast.error(`Vui lòng điền: ${missingFields}`)
-      return
-    }
-
-    const email = watch('customerEmail')
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      toast.error('Email không đúng định dạng')
-      return
-    }
-
+    // Form đã được validate bởi react-hook-form (thông qua handleSubmit)
     setShowPolicyModal(true)
   }
 
@@ -110,6 +92,12 @@ const Checkout = () => {
   const onSubmit = async (data) => {
     if (!currentItems || currentItems.length === 0) {
       toast.error('Không có sản phẩm để đặt hàng')
+      return
+    }
+
+    // Bắt buộc phải có ảnh thanh toán trước khi tạo đơn
+    if (!paymentImageUrl) {
+      toast.error('Vui lòng tải lên ảnh thanh toán trước khi xác nhận')
       return
     }
 
@@ -256,13 +244,13 @@ const Checkout = () => {
                 </div>
 
                 {/* <!-- payment box --> */}
-                <PaymentMethod onImageChange={handlePaymentImageChange} />
+                {/* Đã chuyển sang hiển thị trong modal sau khi đồng ý chính sách */}
 
 
                 {/* <!-- checkout button --> */}
                 <button
                   type="button"
-                  onClick={handleOpenPolicyModal}
+                  onClick={handleSubmit(handleOpenPolicyModal)}
                   disabled={isSubmitting || !currentItems || currentItems.length === 0 || !isFormValid()}
                   className={`flex justify-center w-full px-6 py-3 mt-7.5 font-medium duration-200 ease-out rounded-md transition-all ${isSubmitting || !currentItems || currentItems.length === 0 || !isFormValid()
                     ? 'bg-gray-5 text-gray-6 cursor-not-allowed'
@@ -291,7 +279,6 @@ const Checkout = () => {
               </svg>
             </button>
 
-            <h2 className="mb-6 text-2xl font-bold">Chính sách và Điều khoản</h2>
             <div className="space-y-6">
               {policies.map((policy, index) => (
                 <div key={index} className="mb-6">
@@ -309,7 +296,7 @@ const Checkout = () => {
                 onChange={(e) => setAgreedToPolicy(e.target.checked)}
                 className="w-4 h-4 text-blue-600"
               />
-              <label htmlFor="agreePolicy" className="text-sm">
+              <label htmlFor="agreePolicy" className="text-base font-semibold">
                 Tôi đã đọc và đồng ý với các điều khoản và chính sách trên
               </label>
             </div>
@@ -317,16 +304,73 @@ const Checkout = () => {
             <div className="flex justify-end mt-6 space-x-4">
               <button
                 onClick={() => setShowPolicyModal(false)}
-                className="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200"
+                className="px-4 py-2 rounded-md text-gray-6 bg-gray-4 hover:bg-gray-3"
               >
                 Đóng
               </button>
               <button
-                onClick={handleSubmit(onSubmit)}
+                // Sau khi đồng ý sẽ mở modal tải ảnh thanh toán
+                onClick={() => {
+                  if (!agreedToPolicy) return
+                  setShowPolicyModal(false)
+                  setShowPaymentModal(true)
+                }}
                 disabled={!agreedToPolicy || isSubmitting}
-                className="px-4 py-2 text-white rounded-md bg-blue hover:bg-blue-dark disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className={`px-4 py-2 rounded-md transition-colors ${!agreedToPolicy || isSubmitting
+                  ? 'bg-gray-5 text-gray-6 cursor-not-allowed'
+                  : 'bg-blue hover:bg-blue-light text-white cursor-pointer'
+                  }`}
               >
                 Xác nhận thanh toán
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Proof Modal */}
+      {showPaymentModal && !isSubmitting && (
+        <div className="fixed inset-0 flex items-center justify-center mt-10 z-999999">
+          <div className="fixed inset-0 bg-black opacity-50" onClick={() => setShowPaymentModal(false)}></div>
+          <div className="relative z-50 w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-white rounded-lg p-8">
+            <button
+              onClick={() => setShowPaymentModal(false)}
+              className="absolute text-gray-500 top-4 right-4 hover:text-gray-700"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <h2 className="mb-3 text-2xl font-bold">Tải ảnh thanh toán</h2>
+            {/* Gợi ý/điều khoản vận chuyển theo yêu cầu */}
+            <div className="mb-5 text-sm text-dark">
+              <ul className="pl-5 space-y-1 list-disc">
+                <li>Khách qua cửa hàng mua ở địa chỉ: số 1A ngõ 124 Nguyễn Xiển, Hà Nội</li>
+                <li>Nội thành HN: tuỳ xa gần cọc 100-200 em tự đi ship</li>
+                <li>Ở các tỉnh thành khác: Ship cod cọc trước 300 nhận hàng kiểm tra thanh toán nốt</li>
+              </ul>
+            </div>
+
+            {/* Reuse PaymentMethod để upload ảnh minh chứng; truyền initialImageUrl để giữ ảnh khi reopen modal */}
+            <PaymentMethod onImageChange={handlePaymentImageChange} initialImageUrl={paymentImageUrl} />
+
+            <div className="flex justify-end mt-6 space-x-4">
+              <button
+                onClick={() => setShowPaymentModal(false)}
+                className="px-4 py-2 rounded-md text-gray-6 bg-gray-4 hover:bg-gray-2"
+              >
+                Quay lại
+              </button>
+              <button
+                onClick={handleSubmit(onSubmit)}
+                disabled={!paymentImageUrl || isSubmitting}
+                className={`px-4 py-2 rounded-md transition-colors ${!paymentImageUrl || isSubmitting
+                  ? 'bg-gray-5 text-gray-6 cursor-not-allowed'
+                  : 'bg-blue hover:bg-blue-light text-white cursor-pointer'
+                  }`}
+              >
+                Xác nhận và đặt hàng
               </button>
             </div>
           </div>
