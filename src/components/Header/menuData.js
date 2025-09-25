@@ -1,5 +1,3 @@
-import { Menu } from '@/types/Menu'
-
 export const menuData = [
   {
     id: 1,
@@ -140,12 +138,14 @@ export const menuDataHeader = [
     id: 2,
     title: 'Apple Watch Thời Trang',
     newTab: false,
+    // path: '/shop-with-sidebar?caseMaterial=thep&color=do&color=hong&color=trang&color=starlight',
     path: '/',
   },
   {
     id: 3,
     title: 'Apple Watch Thể Thao',
     newTab: false,
+    // path: '/shop-with-sidebar?modelV1=thep&color=den',
     path: '/',
   },
   {

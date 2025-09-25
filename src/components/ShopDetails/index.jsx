@@ -519,7 +519,7 @@ const ShopDetails = ({ product }) => {
           {/* <!-- tab content one start --> */}
           <div>
             <div
-              className={`flex-col sm:flex-row gap-7.5 xl:gap-12.5  ${activeTab === 'tabOne' ? 'flex' : 'hidden'
+              className={`flex-col gap-4 xl:gap-12.5  ${activeTab === 'tabOne' ? 'flex' : 'hidden'
                 }`}
             >
               <div className="w-full p-4 mt-10 bg-white rounded-lg sm:p-6">
@@ -531,6 +531,18 @@ const ShopDetails = ({ product }) => {
                 ) : (
                   <p className="mb-6">
                     Chưa có mô tả chi tiết cho sản phẩm này.
+                  </p>
+                )}
+              </div>
+              <div className="w-full p-4 mt-2 bg-white rounded-lg sm:p-6">
+                <h2 className="text-2xl font-medium text-dark mb-7">
+                  Mô tả danh mục:
+                </h2>
+                {product.categoryDescription ? (
+                  <p className="mb-6">{product.categoryDescription}</p>
+                ) : (
+                  <p className="mb-6">
+                    Chưa có mô tả chi tiết cho danh mục này.
                   </p>
                 )}
               </div>

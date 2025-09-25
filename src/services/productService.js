@@ -13,7 +13,7 @@ const getListProducts = (param = {}) => {
       usp.append(key, String(value))
     }
   })
-  return Axios.getRequest(`/products?${usp.toString()}`)
+  return Axios.getRequest(`/productsV1?${usp.toString()}`)
 }
 const getSuggestProducts = (param = {}) => {
   const usp = new URLSearchParams()

@@ -189,9 +189,8 @@ const QuickViewModal = () => {
 
   return (
     <div
-      className={`${
-        isModalOpen ? 'z-50' : 'hidden'
-      } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 z-9999`}
+      className={`${isModalOpen ? 'z-50' : 'hidden'
+        } fixed inset-0 flex items-center justify-center p-4 bg-dark/70 z-9999`}
     >
       <div className="w-full max-w-[1100px] h-[600px] rounded-xl shadow-3 bg-white p-6 sm:p-8 relative modal-content">
         <button
@@ -224,7 +223,7 @@ const QuickViewModal = () => {
           <div className="flex gap-12.5 h-full">
             {/* Phần ảnh bên trái - lấp đầy toàn bộ chiều cao */}
             <div className="w-[526px] flex h-full">
-              <div className="flex h-full gap-5 w-full">
+              <div className="flex w-full h-full gap-5">
                 <div className="relative flex flex-col h-full gap-5 overflow-hidden">
                   {/* Nút điều hướng cho thumbnail slider - chỉ hiển thị khi > 7 mục để tránh trống với 6 ảnh */}
                   {mediaItems.length > 7 && (
@@ -299,9 +298,8 @@ const QuickViewModal = () => {
                       <SwiperSlide key={key}>
                         <button
                           onClick={() => setActivePreview(key)}
-                          className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${
-                            activePreview === key && 'border-2 border-blue'
-                          }`}
+                          className={`flex items-center justify-center w-20 h-20 overflow-hidden rounded-lg bg-gray-1 ease-out duration-200 hover:border-2 hover:border-blue ${activePreview === key && 'border-2 border-blue'
+                            }`}
                         >
                           {item.type === 'video' ? (
                             <>
@@ -339,6 +337,7 @@ const QuickViewModal = () => {
                               alt="thumbnail"
                               width={61}
                               height={61}
+                              quality={70}
                               className="object-cover aspect-square"
                             />
                           )}
@@ -349,7 +348,7 @@ const QuickViewModal = () => {
                 </div>
 
                 <div className="relative flex items-center justify-center flex-1 w-full h-full border rounded-lg z-1 bg-gray-1 border-gray-3">
-                  <div className=" w-full h-full flex items-center justify-center">
+                  <div className="flex items-center justify-center w-full h-full ">
                     {/* Nút phóng to chỉ hiển thị khi đang ở ảnh */}
                     {mediaItems[activePreview]?.type === 'image' && (
                       <button
@@ -392,6 +391,7 @@ const QuickViewModal = () => {
                         alt="product-preview"
                         fill
                         className="object-cover rounded-lg "
+                        quality={70}
                       />
                     )}
                   </div>
@@ -474,97 +474,97 @@ const QuickViewModal = () => {
                 displayProduct?.color ||
                 displayProduct?.version ||
                 displayProduct?.modelV1) && (
-                <div className="rounded-lg bg-gray-50 border-blue">
-                  <h4 className="flex items-center gap-2 mb-3 text-lg font-bold text-dark">
-                    <svg
-                      className="w-5 h-5 text-blue"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                      />
-                    </svg>
-                    Thông tin sản phẩm
-                  </h4>
-                  <div className="space-y-3">
-                    {/* Kích cỡ màn hình */}
-                    {displayProduct.screenSize && (
-                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
-                        <span className="font-medium text-dark-2">
-                          Kích cỡ màn hình
-                        </span>
-                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
-                          {displayProduct.screenSize}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Chất liệu vỏ */}
-                    {displayProduct.caseMaterial && (
-                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
-                        <span className="font-medium text-dark-2">
-                          Chất liệu vỏ
-                        </span>
-                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
-                          {displayProduct.caseMaterial}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Màu sắc */}
-                    {displayProduct.color && (
-                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
-                        <span className="font-medium text-dark-2">Màu sắc</span>
-                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
-                          {displayProduct.color}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Phiên bản */}
-                    {displayProduct.version && (
-                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
-                        <span className="font-medium text-dark-2">
-                          Phiên bản
-                        </span>
-                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
-                          {displayProduct.version}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Dòng máy */}
-                    {displayProduct.modelV1 && (
-                      <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
-                        <span className="font-medium text-dark-2">
-                          Dòng máy
-                        </span>
-                        <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
-                          {displayProduct.modelV1}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Hiển thị thông báo nếu không có thông tin */}
-                    {!displayProduct.screenSize &&
-                      !displayProduct.caseMaterial &&
-                      !displayProduct.color &&
-                      !displayProduct.version &&
-                      !displayProduct.modelV1 && (
-                        <div className="px-3 py-2 text-center">
-                          <span className="text-sm text-meta-4">
-                            Chưa có thông tin chi tiết cho sản phẩm này
+                  <div className="rounded-lg bg-gray-50 border-blue">
+                    <h4 className="flex items-center gap-2 mb-3 text-lg font-bold text-dark">
+                      <svg
+                        className="w-5 h-5 text-blue"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                        />
+                      </svg>
+                      Thông tin sản phẩm
+                    </h4>
+                    <div className="space-y-3">
+                      {/* Kích cỡ màn hình */}
+                      {displayProduct.screenSize && (
+                        <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                          <span className="font-medium text-dark-2">
+                            Kích cỡ màn hình
+                          </span>
+                          <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                            {displayProduct.screenSize}
                           </span>
                         </div>
                       )}
+
+                      {/* Chất liệu vỏ */}
+                      {displayProduct.caseMaterial && (
+                        <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                          <span className="font-medium text-dark-2">
+                            Chất liệu vỏ
+                          </span>
+                          <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                            {displayProduct.caseMaterial}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Màu sắc */}
+                      {displayProduct.color && (
+                        <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                          <span className="font-medium text-dark-2">Màu sắc</span>
+                          <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                            {displayProduct.color}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Phiên bản */}
+                      {displayProduct.version && (
+                        <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                          <span className="font-medium text-dark-2">
+                            Phiên bản
+                          </span>
+                          <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                            {displayProduct.version}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Dòng máy */}
+                      {displayProduct.modelV1 && (
+                        <div className="flex items-center justify-between px-3 py-2 bg-white rounded-md">
+                          <span className="font-medium text-dark-2">
+                            Dòng máy
+                          </span>
+                          <span className="px-3 py-1 font-medium rounded bg-gray-50 text-dark">
+                            {displayProduct.modelV1}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Hiển thị thông báo nếu không có thông tin */}
+                      {!displayProduct.screenSize &&
+                        !displayProduct.caseMaterial &&
+                        !displayProduct.color &&
+                        !displayProduct.version &&
+                        !displayProduct.modelV1 && (
+                          <div className="px-3 py-2 text-center">
+                            <span className="text-sm text-meta-4">
+                              Chưa có thông tin chi tiết cho sản phẩm này
+                            </span>
+                          </div>
+                        )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {/* Price Section */}
               <div className="space-y-2">
@@ -573,8 +573,8 @@ const QuickViewModal = () => {
                   <span className="text-3xl font-bold text-red">
                     {formatVNDRounded.thousands(
                       displayProduct?.finalPrice ||
-                        displayProduct?.sellingPrice ||
-                        displayProduct.discountedPrice
+                      displayProduct?.sellingPrice ||
+                      displayProduct.discountedPrice
                     )}
                   </span>
                   {displayProduct?.discountPercent > 0 && (
